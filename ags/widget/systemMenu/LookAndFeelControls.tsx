@@ -17,61 +17,19 @@ import {
     setMenuPosition
 } from "../bar/Bar";
 import Divider from "../common/Divider";
+import {Config, Theme} from "../utils/config/parser";
 
-interface ThemeProps {
-    name: string;
-    icon: string;
-    pixelAdjustment: number;
-}
-
-enum Theme {
-    BLOOD_RUST,
-    DESERT_POWER,
-    EVER_FOREST,
-    NORD,
-    ROSE_PINE,
-    VARDA,
-}
-
-const ThemeDetails: Record<Theme, ThemeProps> = {
-    [Theme.BLOOD_RUST]: { name: "bloodrust", icon: "󰚌", pixelAdjustment: 2 },
-    [Theme.DESERT_POWER]: { name: "desertpower", icon: "󱥒", pixelAdjustment: 3 },
-    [Theme.EVER_FOREST]: { name: "everforest", icon: "󰌪", pixelAdjustment: 1 },
-    [Theme.NORD]: { name: "nord", icon: "", pixelAdjustment: 2 },
-    [Theme.ROSE_PINE]: { name: "rosepine", icon: "", pixelAdjustment: 5 },
-    [Theme.VARDA]: { name: "varda", icon: "", pixelAdjustment: 3 },
-};
-
-const selectedTheme = Variable(Theme.VARDA)
+const selectedTheme = Variable<Theme | null>(null)
 const files: Variable<string[][]> = Variable([])
 const numberOfColumns = 2
 let buttonsEnabled = true
 
-function getThemeFromName(themeName: string): Theme | null {
-    switch (themeName) {
-        case "bloodrust":
-            return Theme.BLOOD_RUST
-        case "desertpower":
-            return Theme.DESERT_POWER
-        case "everforest":
-            return Theme.EVER_FOREST
-        case "nord":
-            return Theme.NORD
-        case "rosepine":
-            return Theme.ROSE_PINE
-        case "varda":
-            return Theme.VARDA
-        default:
-            return null
-    }
-}
-
-function setTheme(theme: string) {
+function setTheme(theme: string, config: Config) {
     if (!buttonsEnabled) {
         return
     }
     buttonsEnabled = false
-    execAsync(`/home/john/workspace/Varda-Theme/themes/setTheme.sh ${theme}`)
+    execAsync(`${config.themeUpdateScript} ${theme}`)
         .finally(() => {
             buttonsEnabled = true
         })
@@ -90,8 +48,26 @@ function chunkIntoColumns<T>(arr: T[], numCols: number): T[][] {
     return columns;
 }
 
-function updateFiles() {
-    execAsync(["bash", "-c", `ls /home/john/workspace/Varda-Theme/themes/${ThemeDetails[selectedTheme.get()].name}/wallpaper`])
+function chunkEvenly<T>(items: T[], maxPerRow: number): T[][] {
+    const total = items.length;
+    const rowCount = Math.ceil(total / maxPerRow);
+    const baseSize = Math.floor(total / rowCount);
+    const remainder = total % rowCount;
+
+    const chunks: T[][] = [];
+    let index = 0;
+
+    for (let i = 0; i < rowCount; i++) {
+        const size = baseSize + (i < remainder ? 1 : 0); // Spread out the extras
+        chunks.push(items.slice(index, index + size));
+        index += size;
+    }
+
+    return chunks;
+}
+
+function updateFiles(theme: Theme) {
+    execAsync(["bash", "-c", `ls ${theme.wallpaperDir}`])
         .catch((error) => {
             print(error)
         })
@@ -111,15 +87,15 @@ function updateFiles() {
         })
 }
 
-function setWallpaper(path: string) {
-    execAsync(["bash", "-c", `/home/john/workspace/Varda-Theme/themes/setWallpaper.sh ${path}`])
+function setWallpaper(path: string, config: Config) {
+    execAsync(["bash", "-c", `${config.wallpaperUpdateScript} ${path}`])
         .catch((error) => {
             print(error)
         })
 }
 
 function updateMargins(box: Gtk.Box, theme: Theme) {
-    let pixelAdjustment = ThemeDetails[theme].pixelAdjustment
+    let pixelAdjustment = theme.pixelOffset
     const leftPadding = 15 - pixelAdjustment
     const rightPadding = 15 + pixelAdjustment
 
@@ -218,97 +194,60 @@ function BarWidgetOptions2() {
     </box>
 }
 
-function BarWidgetOptions() {
-    return <box
-        vertical={false}
-        halign={Gtk.Align.CENTER}
-        spacing={8}>
-        <button
-            cssClasses={menuPosition((pos) => {
-                if (pos === MenuPosition.DEFAULT) {
-                    return ["iconButton"]
-                } else {
-                    return ["activeIconButton"]
-                }
-            })}
-            label="󰣇"
-            onClicked={() => {
-                if (menuPosition.get() === MenuPosition.DEFAULT) {
-                    setMenuPosition(MenuPosition.ALTERNATE)
-                } else {
-                    setMenuPosition(MenuPosition.DEFAULT)
-                }
-            }}/>
-        <button
-            cssClasses={clockPosition((pos) => {
-                if (pos === ClockPosition.DEFAULT) {
-                    return ["iconButton"]
-                } else {
-                    return ["activeIconButton"]
-                }
-            })}
-            label=""
-            onClicked={() => {
-                if (clockPosition.get() === ClockPosition.DEFAULT) {
-                    setClockPosition(ClockPosition.ALTERNATE)
-                } else {
-                    setClockPosition(ClockPosition.DEFAULT)
-                }
-            }}/>
-    </box>
-}
-
 function ThemeButton(
-    {theme}:
-    {theme: Theme}
+    {
+        theme,
+        config,
+    }:
+    {
+        theme: Theme,
+        config: Config
+    }
 ) {
-    const leftPadding = 18 - ThemeDetails[theme].pixelAdjustment
-    const rightPadding = 18 + ThemeDetails[theme].pixelAdjustment
+    const leftPadding = 18 - theme.pixelOffset
+    const rightPadding = 18 + theme.pixelOffset
     return <button
         cssClasses={selectedTheme((selectedTheme) =>
             selectedTheme === theme ? ["themeButtonSelected"] : ["themeButton"])}
         onClicked={() => {
-            setTheme(ThemeDetails[theme].name)
+            setTheme(theme.name, config)
         }}>
         <label
             marginTop={8}
             marginBottom={8}
             marginStart={leftPadding}
             marginEnd={rightPadding}
-            label={ThemeDetails[theme].icon}/>
+            label={theme.icon}/>
     </button>
 }
 
-function ThemeOptions() {
+function ThemeOptions({config}: {config: Config}) {
+    const themeRows = chunkEvenly(config.themes, 5)
+
     return <box
         vertical={true}
         spacing={4}>
-        <box
-            vertical={false}
-            cssClasses={["row"]}
-            halign={Gtk.Align.CENTER}
-            spacing={12}>
-            <ThemeButton theme={Theme.VARDA}/>
-            <ThemeButton theme={Theme.EVER_FOREST}/>
-            <ThemeButton theme={Theme.NORD}/>
-            <ThemeButton theme={Theme.ROSE_PINE}/>
-        </box>
-        <box
-            vertical={false}
-            cssClasses={["row"]}
-            halign={Gtk.Align.CENTER}
-            spacing={12}>
-            <ThemeButton theme={Theme.BLOOD_RUST}/>
-            <ThemeButton theme={Theme.DESERT_POWER}/>
-        </box>
+        {themeRows.map((themeRow) => {
+            return <box
+                vertical={false}
+                cssClasses={["row"]}
+                halign={Gtk.Align.CENTER}
+                spacing={12}>
+                {themeRow.map((theme) => {
+                    return <ThemeButton theme={theme} config={config}/>
+                })}
+            </box>
+        })}
     </box>
 }
 
 function WallpaperColumn(
     {
         column,
+        config,
     }: {
-        column: number
+        column: number,
+        config: Config,
     }
 ) {
     return <box
@@ -319,14 +258,14 @@ function WallpaperColumn(
                 return null
             }
             return filesList[column].map((file) => {
-                const path = `/home/john/workspace/Varda-Theme/themes/${ThemeDetails[selectedTheme.get()].name}/wallpaper/${file}`
+                const path = `${selectedTheme.get()?.wallpaperDir}/${file}`
                 // 140x70 is a magic number that scales well and doesn't cause unwanted expansion of the scroll window
                 const texture = createScaledTexture(140, 70, path)
 
                 return <button
                     cssClasses={["wallpaperButton"]}
                     onClicked={() => {
-                        setWallpaper(path)
+                        setWallpaper(path, config)
                     }}>
                     <Gtk.Picture
                         heightRequest={90}
@@ -340,18 +279,19 @@ function WallpaperColumn(
     </box>
 }
 
-export default function () {
-    selectedTheme.set(getThemeFromName(readFile("./themeName")) ?? Theme.VARDA)
-    monitorFile("./themeName", () => {
-        const newTheme = getThemeFromName(readFile("./themeName"))
-        if (newTheme !== null) {
-            selectedTheme.set(newTheme)
+export default function ({config}: {config: Config}) {
+    selectedTheme.subscribe((theme) => {
+        if (theme != null) {
+            updateFiles(theme)
         }
     })
 
-    updateFiles()
-    selectedTheme.subscribe(() => {
-        updateFiles()
+    selectedTheme.set(config.themes.find((t) => t.name == readFile("./themeName")) ?? null)
+    monitorFile("./themeName", () => {
+        const newTheme = config.themes.find((t) => t.name == readFile("./themeName")) ?? null
+        if (newTheme !== null) {
+            selectedTheme.set(newTheme)
+        }
     })
 
     const wallpaperChooserRevealed = Variable(false)
@@ -373,15 +313,21 @@ export default function () {
                 marginTop={10}
                 marginBottom={10}
                 setup={(self) => {
-                    updateMargins(self, selectedTheme.get())
+                    const currentTheme = selectedTheme.get()
+                    if (currentTheme != null) {
+                        updateMargins(self, currentTheme)
+                    }
+
                     selectedTheme.subscribe((theme) => {
-                        updateMargins(self, theme)
+                        if (theme != null) {
+                            updateMargins(self, theme)
+                        }
                     })
                 }}>
                 <label
                     cssClasses={["systemMenuIconLabel"]}
                     label={selectedTheme((theme) => {
-                        return ThemeDetails[theme].icon
+                        return theme?.icon ?? ""
                     })}/>
             </box>
             <label
@@ -410,12 +356,15 @@ export default function () {
             transitionType={Gtk.RevealerTransitionType.SLIDE_DOWN}>
             <box
                 vertical={true}>
-                <ThemeOptions/>
-                <Divider
-                    marginStart={20}
-                    marginEnd={20}
-                    marginTop={10}
-                    marginBottom={10}/>
+                {config.themes.length > 1 && <box
+                    vertical={true}>
+                    <ThemeOptions config={config}/>
+                    <Divider
+                        marginStart={20}
+                        marginEnd={20}
+                        marginTop={10}
+                        marginBottom={10}/>
+                </box>}
                 <BarPositionOptions/>
                 <box marginTop={10}/>
                 <BarWidgetOptions2/>
@@ -423,7 +372,7 @@ export default function () {
                 <box
                     vertical={false}>
                     {Array.from({length: numberOfColumns}).map((_, index) => {
-                        return <WallpaperColumn column={index}/>
+                        return <WallpaperColumn column={index} config={config}/>
                     })}
                 </box>
             </box>

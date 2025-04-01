@@ -14,6 +14,7 @@ import {readFile} from "astal/file";
 import VerticalBar from "./widget/bar/VerticalBar";
 import HorizontalBar from "./widget/bar/HorizontalBar";
 import {decreaseVolume, increaseVolume, muteVolume} from "./widget/utils/audio";
+import {getConfig} from "./widget/utils/config/parser";
 
 App.start({
     instanceName: "OkPanel",
@@ -26,6 +27,8 @@ App.start({
             : 1
 
         const barRestored = unpackBarDetails(readFile("./savedBar").trim())
+
+        const config = getConfig()
 
         print(`Screen ratio: ${ratio}`)
 
@@ -40,7 +43,7 @@ App.start({
         VerticalBar()
         HorizontalBar()
         Calendar()
-        SystemMenuWindow()
+        SystemMenuWindow(config)
         VolumeAlert()
         BrightnessAlert()
         ChargingAlertSound()

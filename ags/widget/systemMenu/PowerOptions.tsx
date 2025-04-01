@@ -1,8 +1,9 @@
 import {App, Gtk} from "astal/gtk4"
 import {SystemMenuWindowName} from "./SystemMenuWindow";
 import {execAsync} from "astal/process"
+import {Config} from "../utils/config/parser";
 
-export default function () {
+export default function ({config}: {config: Config}) {
     return <box
         vertical={false}
         cssClasses={["row"]}
@@ -12,28 +13,28 @@ export default function () {
             label="󰍃"
             onClicked={() => {
                 App.toggle_window(SystemMenuWindowName)
-                execAsync("uwsm stop")
+                execAsync(config.systemCommands.logout)
             }}/>
         <button
             cssClasses={["systemMenuIconButton"]}
             label=""
             onClicked={() => {
                 App.toggle_window(SystemMenuWindowName)
-                execAsync("uwsm app -- hyprlock")
+                execAsync(config.systemCommands.lock)
             }}/>
         <button
             cssClasses={["systemMenuIconButton"]}
             label=""
             onClicked={() => {
                 App.toggle_window(SystemMenuWindowName)
-                execAsync("systemctl reboot")
+                execAsync(config.systemCommands.restart)
             }}/>
         <button
             cssClasses={["systemMenuIconButton"]}
             label="⏻"
             onClicked={() => {
                 App.toggle_window(SystemMenuWindowName)
-                execAsync("systemctl poweroff")
+                execAsync(config.systemCommands.shutdown)
             }}/>
     </box>
 }
