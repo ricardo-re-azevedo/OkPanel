@@ -1,9 +1,9 @@
 import {App, Gtk} from "astal/gtk4"
 import {SystemMenuWindowName} from "./SystemMenuWindow";
 import {execAsync} from "astal/process"
-import {Config} from "../utils/config/parser";
+import {config} from "../utils/config/config";
 
-export default function ({config}: {config: Config}) {
+export default function () {
     return <box
         vertical={false}
         cssClasses={["row"]}

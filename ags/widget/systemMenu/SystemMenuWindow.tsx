@@ -10,11 +10,10 @@ import NetworkControls from "./NetworkControls";
 import BluetoothControls from "./BluetoothControls";
 import LookAndFeelControls from "./LookAndFeelControls";
 import {Bar, MenuPosition, menuPosition, selectedBar} from "../bar/Bar";
-import {Config} from "../utils/config/parser";
 
 export const SystemMenuWindowName = "systemMenuWindow"
 
-export default function (config: Config) {
+export default function () {
     const {audio} = Wp.get_default()!
 
     const barValues = Variable.derive([
@@ -80,13 +79,13 @@ export default function (config: Config) {
                             defaultEndpoint={audio.default_microphone}
                             endpointsBinding={bind(audio, "microphones")}
                             getIcon={getMicrophoneIcon}/>
-                        <LookAndFeelControls config={config}/>
+                        <LookAndFeelControls/>
                         {/*MediaPlayersAstal uses the astal mpris component.  It causes UI jank.  Until it gets fix
                         use MediaPlayers.  It uses a home-made mpris component that doesn't cause the jank.*/}
                         {/*<MediaPlayersAstal/>*/}
                         <MediaPlayers/>
                         <box marginTop={10}/>
-                        <PowerOptions config={config}/>
+                        <PowerOptions/>
                         <box marginTop={20}/>
                         <box
                             vertical={false}

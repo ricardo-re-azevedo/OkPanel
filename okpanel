@@ -1,0 +1,9 @@
+#/bin/bash
+
+if [ -d "/usr/share/OkPanel" ]; then
+    dir="/usr/share/OkPanel"
+else
+    dir=$(pwd)/ags
+fi
+
+ags run --gtk4 -d $dir -a $dir -a $HOME

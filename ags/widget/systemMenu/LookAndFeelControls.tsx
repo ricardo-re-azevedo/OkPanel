@@ -1,6 +1,5 @@
 import {App, Gtk} from "astal/gtk4"
 import {execAsync} from "astal/process"
-import {monitorFile, readFile} from "astal/file"
 import {bind, Variable} from "astal"
 import {SystemMenuWindowName} from "./SystemMenuWindow";
 import Pango from "gi://Pango?version=1.0";
@@ -17,22 +16,20 @@ import {
     setMenuPosition
 } from "../bar/Bar";
 import Divider from "../common/Divider";
-import {Config, Theme} from "../utils/config/parser";
+import {config, selectedTheme, setTheme, setWallpaper, Theme} from "../utils/config/config";
 
-const selectedTheme = Variable<Theme | null>(null)
 const files: Variable<string[][]> = Variable([])
 const numberOfColumns = 2
 let buttonsEnabled = true
 
-function setTheme(theme: string, config: Config) {
+function updateTheme(theme: Theme) {
     if (!buttonsEnabled) {
         return
     }
     buttonsEnabled = false
-    execAsync(`${config.themeUpdateScript} ${theme}`)
-        .finally(() => {
-            buttonsEnabled = true
-        })
+    setTheme(theme, () => {
+        buttonsEnabled = true
+    })
 }
 
 function chunkIntoColumns<T>(arr: T[], numCols: number): T[][] {
@@ -84,13 +81,6 @@ function updateFiles(theme: Theme) {
                     numberOfColumns
                 )
             )
-        })
-}
-
-function setWallpaper(path: string, config: Config) {
-    execAsync(["bash", "-c", `${config.wallpaperUpdateScript} ${path}`])
-        .catch((error) => {
-            print(error)
         })
 }
 
@@ -196,12 +186,10 @@ function BarWidgetOptions2() {
 
 function ThemeButton(
     {
-        theme,
-        config,
+        theme
     }:
     {
         theme: Theme,
-        config: Config
     }
 ) {
     const leftPadding = 18 - theme.pixelOffset
@@ -210,7 +198,7 @@ function ThemeButton(
         cssClasses={selectedTheme((selectedTheme) =>
             selectedTheme === theme ? ["themeButtonSelected"] : ["themeButton"])}
         onClicked={() => {
-            setTheme(theme.name, config)
+            updateTheme(theme)
         }}>
         <label
             marginTop={8}
@@ -221,7 +209,7 @@ function ThemeButton(
     </button>
 }
 
-function ThemeOptions({config}: {config: Config}) {
+function ThemeOptions() {
     const themeRows = chunkEvenly(config.themes, 5)
 
     return <box
@@ -234,7 +222,7 @@ function ThemeOptions({config}: {config: Config}) {
                 halign={Gtk.Align.CENTER}
                 spacing={12}>
                 {themeRow.map((theme) => {
-                    return <ThemeButton theme={theme} config={config}/>
+                    return <ThemeButton theme={theme}/>
                 })}
             </box>
         })}
@@ -243,11 +231,9 @@ function ThemeOptions({config}: {config: Config}) {
 
 function WallpaperColumn(
     {
-        column,
-        config,
+        column
     }: {
         column: number,
-        config: Config,
     }
 ) {
     return <box
@@ -265,7 +251,7 @@ function WallpaperColumn(
                 return <button
                     cssClasses={["wallpaperButton"]}
                     onClicked={() => {
-                        setWallpaper(path, config)
+                        setWallpaper(path)
                     }}>
                     <Gtk.Picture
                         heightRequest={90}
@@ -279,20 +265,13 @@ function WallpaperColumn(
     </box>
 }
 
-export default function ({config}: {config: Config}) {
+export default function () {
     selectedTheme.subscribe((theme) => {
         if (theme != null) {
             updateFiles(theme)
         }
     })
-
-    selectedTheme.set(config.themes.find((t) => t.name == readFile("./themeName")) ?? null)
-    monitorFile("./themeName", () => {
-        const newTheme = config.themes.find((t) => t.name == readFile("./themeName")) ?? null
-        if (newTheme !== null) {
-            selectedTheme.set(newTheme)
-        }
-    })
+    updateFiles(selectedTheme.get())
 
     const wallpaperChooserRevealed = Variable(false)
 
@@ -358,7 +337,7 @@ export default function ({config}: {config: Config}) {
                 vertical={true}>
                 {config.themes.length > 1 && <box
                     vertical={true}>
-                    <ThemeOptions config={config}/>
+                    <ThemeOptions/>
                     <Divider
                         marginStart={20}
                         marginEnd={20}
@@ -372,7 +351,7 @@ export default function ({config}: {config: Config}) {
                 <box
                     vertical={false}>
                     {Array.from({length: numberOfColumns}).map((_, index) => {
-                        return <WallpaperColumn column={index} config={config}/>
+                        return <WallpaperColumn column={index}/>
                     })}
                 </box>
             </box>

@@ -1,49 +1,26 @@
 import { App } from "astal/gtk4"
-import style from "./scss/main.scss"
 import Calendar from "./widget/calendar/Calendar"
 import SystemMenuWindow from "./widget/systemMenu/SystemMenuWindow";
 import {BrightnessAlert, ChargingAlertSound, VolumeAlert} from "./widget/alerts/Alerts";
-import {exec} from "astal/process"
 import NotificationPopups from "./widget/notification/NotificationPopups";
 import AppLauncher, {AppLauncherWindowName} from "./widget/appLauncher/AppLauncher";
 import Screenshot, {ScreenshotWindowName} from "./widget/screenshot/Screenshot";
 import Screenshare, {ScreenshareWindowName, updateResponse, updateWindows} from "./widget/screenshare/Screenshare";
-import Hyprland from "gi://AstalHyprland"
-import {selectedBar, Bar, unpackBarDetails} from "./widget/bar/Bar";
-import {readFile} from "astal/file";
 import VerticalBar from "./widget/bar/VerticalBar";
 import HorizontalBar from "./widget/bar/HorizontalBar";
 import {decreaseVolume, increaseVolume, muteVolume} from "./widget/utils/audio";
-import {getConfig} from "./widget/utils/config/parser";
+import {loadConfig} from "./widget/utils/config/config";
 
 App.start({
     instanceName: "OkPanel",
-    css: style,
+    css: "/tmp/OkPanel/style.css",
     main(...args: Array<string>) {
-        const hyprland = Hyprland.get_default()
-        const mainMonitor = hyprland.monitors.find((monitor) => monitor.id === 0)
-        const ratio = mainMonitor?.width && mainMonitor?.height
-            ? mainMonitor.width / mainMonitor.height
-            : 1
-
-        const barRestored = unpackBarDetails(readFile("./savedBar").trim())
-
-        const config = getConfig()
-
-        print(`Screen ratio: ${ratio}`)
-
-        if (!barRestored) {
-            if (ratio > 2) {
-                selectedBar.set(Bar.LEFT)
-            } else {
-                selectedBar.set(Bar.TOP)
-            }
-        }
+        loadConfig(args[0], args[1])
 
         VerticalBar()
         HorizontalBar()
         Calendar()
-        SystemMenuWindow(config)
+        SystemMenuWindow()
         VolumeAlert()
         BrightnessAlert()
         ChargingAlertSound()
@@ -54,8 +31,9 @@ App.start({
     },
     requestHandler(request: string, res: (response: any) => void) {
         if (request === "theme") {
-            exec("sass ./scss/main.scss ./style.css")
-            App.apply_css("./style.css")
+            //TODO make this apply theme
+            // exec("sass ./scss/main.scss ./style.css")
+            // App.apply_css("./style.css")
             res("ags theme applied")
         } else if (request === "appLauncher") {
             App.toggle_window(AppLauncherWindowName)
