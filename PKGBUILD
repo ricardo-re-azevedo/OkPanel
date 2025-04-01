@@ -16,7 +16,10 @@ depends=(
     'networkmanager'
     'sassc'
 )
-source=("okpanel-$pkgver.tar.gz")  # generated with `makepkg --source`
+source=(
+    "okpanel"
+    "ags/*"
+)
 sha256sums=('SKIP')  # or real hash
 
 package() {
