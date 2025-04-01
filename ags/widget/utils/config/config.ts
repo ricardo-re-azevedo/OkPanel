@@ -81,6 +81,7 @@ TARGET_DIR="/tmp/OkPanel/scss"
 if [ -d "$TARGET_DIR" ]; then
     rm -rf "$TARGET_DIR"
 fi
+mkdir -p /tmp/OkPanel
 cp -r "$SOURCE_DIR" "$TARGET_DIR"
 
 cat > "$TARGET_DIR/variables.scss" <<EOF
@@ -174,6 +175,7 @@ export function loadConfig(projectDirectory: string, homeDirectory: string) {
     homeDir = homeDirectory
     checkConfigIntegrity()
 
+    print(selectedTheme.get().name)
     setTheme(selectedTheme.get(), () => {})
     restoreBar()
 }
