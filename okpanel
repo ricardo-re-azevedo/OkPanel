@@ -3,7 +3,8 @@
 if [ -d "/usr/share/OkPanel" ]; then
     dir="/usr/share/OkPanel"
 else
-    dir=$(pwd)/ags
+    DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+    dir=$DIR/ags
 fi
 
 ags run --gtk4 -d $dir -a $dir -a $HOME
