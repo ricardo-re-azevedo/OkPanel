@@ -152,6 +152,17 @@ fi
     })
 }
 
+function initialSetTheme(theme: Theme) {
+    execAsync(`bash -c '
+# compile the scss in /tmp
+${compileThemeBashScript(theme)}
+    '`).catch((error) => {
+        print(error)
+    }).finally(() => {
+        App.apply_css("/tmp/OkPanel/style.css")
+    })
+}
+
 function getConfig(): Config {
     const homePath = exec('bash -c "echo $HOME"')
     const configStr = readFile(`${homePath}/.config/OkPanel/okpanel.json`) ?? "";
@@ -162,9 +173,7 @@ function getConfig(): Config {
     const savedTheme = config.themes.find((theme) => theme.name === savedThemeName)
     if (savedTheme !== undefined) {
         selectedTheme.set(savedTheme)
-    }
-
-    if (selectedTheme.get() === defaultTheme && config.themes.length > 0) {
+    } else if (config.themes.length > 0) {
         selectedTheme.set(config.themes[0])
     }
 
@@ -175,9 +184,7 @@ export function loadConfig(projectDirectory: string, homeDirectory: string) {
     projectDir = projectDirectory
     homeDir = homeDirectory
     checkConfigIntegrity()
-
-    print(selectedTheme.get().name)
-    setTheme(selectedTheme.get(), () => {})
+    initialSetTheme(selectedTheme.get())
     restoreBar()
 }
 
