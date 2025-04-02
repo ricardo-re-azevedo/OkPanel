@@ -37,7 +37,7 @@ const defaultTheme: Theme = {
     name: "Everforest",
     icon: "󰌪",
     pixelOffset: 0,
-    wallpaperDir: "/usr/share/wallpapers/everforest",
+    wallpaperDir: "",
     colors: {
         background: "#1E2326",
         foreground: "#D3C6AA",

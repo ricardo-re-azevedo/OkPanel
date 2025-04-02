@@ -64,6 +64,9 @@ function chunkEvenly<T>(items: T[], maxPerRow: number): T[][] {
 }
 
 function updateFiles(theme: Theme) {
+    if (theme.wallpaperDir === "") {
+        return
+    }
     execAsync(["bash", "-c", `ls ${theme.wallpaperDir}`])
         .catch((error) => {
             print(error)
@@ -241,7 +244,7 @@ function WallpaperColumn(
         vertical={true}>
         {files((filesList) => {
             if (filesList.length === 0) {
-                return null
+                return <box/>
             }
             return filesList[column].map((file) => {
                 const path = `${selectedTheme.get()?.wallpaperDir}/${file}`
