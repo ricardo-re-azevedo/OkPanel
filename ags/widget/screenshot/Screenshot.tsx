@@ -3,6 +3,7 @@ import {execAsync} from "astal/process"
 import {bind, Variable, GLib} from "astal"
 import Divider from "../common/Divider";
 import Pango from "gi://Pango?version=1.0";
+import {playCameraShutter} from "../utils/audio";
 
 export const isRecording = Variable(false)
 
@@ -230,12 +231,12 @@ function ScreenShots() {
                             `
                                     sleep 0.7
                                     grim ${path}
-                                    play $HOME/.config/OkPanel/ags/sounds/camera-shutter.ogg
-                                    `
+                            `
                         ]
                     ).catch((error) => {
                         print(error)
                     }).finally(() => {
+                        playCameraShutter()
                         showScreenshotNotification(path)
                     })
                 }}/>
@@ -252,12 +253,12 @@ function ScreenShots() {
                             "-c",
                             `
                                     grim -g "$(slurp -o)" ${path}
-                                    play $HOME/.config/OkPanel/ags/sounds/camera-shutter.ogg
-                                    `
+                            `
                         ]
                     ).catch((error) => {
                         print(error)
                     }).finally(() => {
+                        playCameraShutter()
                         showScreenshotNotification(path)
                     })
                 }}/>
@@ -274,12 +275,12 @@ function ScreenShots() {
                             "-c",
                             `
                                     grim -g "$(slurp)" ${path}
-                                    play $HOME/.config/OkPanel/ags/sounds/camera-shutter.ogg
-                                    `
+                            `
                         ]
                     ).catch((error) => {
                         print(error)
                     }).finally(() => {
+                        playCameraShutter()
                         showScreenshotNotification(path)
                     })
                 }}/>

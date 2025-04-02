@@ -4,7 +4,7 @@ import Hyprland from "gi://AstalHyprland"
 import {CalendarWindowName} from "../calendar/Calendar"
 import Wp from "gi://AstalWp"
 import Battery from "gi://AstalBattery"
-import {getMicrophoneIcon, getVolumeIcon} from "../utils/audio"
+import {getMicrophoneIcon, getVolumeIcon, playBatteryWarning} from "../utils/audio"
 import {getNetworkIconBinding} from "../utils/network"
 import {getBatteryIcon} from "../utils/battery"
 import {execAsync} from "astal/process"
@@ -157,10 +157,6 @@ export function BatteryButton() {
 
     let batteryWarningInterval: GLib.Source | null = null
 
-    function warningSound() {
-        execAsync('bash -c "play $HOME/.config/hypr/assets/sounds/battery-low.ogg"')
-    }
-
     const batteryVar = Variable.derive([
         bind(battery, "percentage"),
         bind(battery, "state")
@@ -177,9 +173,9 @@ export function BatteryButton() {
             } else {
                 if (batteryWarningInterval === null && battery.isBattery) {
                     batteryWarningInterval = setInterval(() => {
-                        warningSound()
+                        playBatteryWarning()
                     }, 120_000)
-                    warningSound()
+                    playBatteryWarning()
                 }
                 return ["warningIconLabel"]
             }

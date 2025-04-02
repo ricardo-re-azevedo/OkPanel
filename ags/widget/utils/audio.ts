@@ -1,5 +1,6 @@
 import Wp from "gi://AstalWp"
 import {execAsync} from "astal/process";
+import {projectDir} from "./config/config";
 
 export function getVolumeIcon(speaker?: Wp.Endpoint) {
     let volume = speaker?.volume
@@ -75,10 +76,7 @@ export function increaseVolume() {
     } else {
         defaultSpeaker.volume = 1
     }
-    execAsync('bash -c "play $HOME/.config/OkPanel/ags/sounds/audio-volume-change.oga"')
-        .catch((error) => {
-            print(error)
-        })
+    playVolumeTick()
 }
 
 export function decreaseVolume() {
@@ -89,7 +87,39 @@ export function decreaseVolume() {
     } else {
         defaultSpeaker.volume = 0
     }
-    execAsync('bash -c "play $HOME/.config/OkPanel/ags/sounds/audio-volume-change.oga"')
+    playVolumeTick()
+}
+
+export function playVolumeTick() {
+    execAsync(`bash -c "play ${projectDir}/sounds/audio-volume-change.oga"`)
+        .catch((error) => {
+            print(error)
+        })
+}
+
+export function playCameraShutter() {
+    execAsync(`bash -c "play ${projectDir}/sounds/camera-shutter.ogg"`)
+        .catch((error) => {
+            print(error)
+        })
+}
+
+export function playBatteryWarning() {
+    execAsync(`bash -c "play ${projectDir}/sounds/battery-low.ogg"`)
+        .catch((error) => {
+            print(error)
+        })
+}
+
+export function playPowerPlug() {
+    execAsync(`bash -c "play ${projectDir}/sounds/power-plug.ogg"`)
+        .catch((error) => {
+            print(error)
+        })
+}
+
+export function playPowerUnplug() {
+    execAsync(`bash -c "play ${projectDir}/sounds/power-unplug.ogg"`)
         .catch((error) => {
             print(error)
         })

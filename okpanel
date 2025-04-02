@@ -1,10 +1,123 @@
-#/bin/bash
+#!/usr/bin/env bash
 
-if [ -d "/usr/share/OkPanel" ]; then
-    dir="/usr/share/OkPanel"
-else
-    DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-    dir=$DIR/ags
-fi
+print_help() {
+  cat <<EOF
+Usage: $(basename "$0") <command> [options]
 
-ags run --gtk4 -d $dir -a $dir -a $HOME
+Commands:
+  run           Run the main application.
+  quit          Exit or stop the application.
+  launcher      Launch a specific component.
+  screenshot    Take a screenshot.
+  share         Share something.
+  theme         Apply a theme with color options.
+  volume-up     Increase system volume.
+  volume-down   Decrease system volume.
+  mute          Mute system sound.
+  help          Show this help message.
+
+Theme Options (used with 'theme' command):
+  -b,  --background  HEX   Background color
+  -f,  --foreground  HEX   Foreground color
+  -p,  --primary     HEX   Primary accent color
+  -bt, --button      HEX   Button color
+  -h,  --hover       HEX   Hover color
+  -s,  --slider      HEX   Slider color
+  -w,  --warning     HEX   Warning/error color
+
+Global Options:
+  -h,  --help         Show help for a specific command
+EOF
+}
+
+print_theme_help() {
+  cat <<EOF
+Usage: $(basename "$0") theme [options]
+
+Required Options:
+  -b,  --background  HEX   Background color
+  -f,  --foreground  HEX   Foreground color
+  -p,  --primary     HEX   Primary accent color
+  -bt, --button      HEX   Button color
+  -h,  --hover       HEX   Hover color
+  -s,  --slider      HEX   Slider color
+  -w,  --warning     HEX   Warning/error color
+EOF
+}
+
+is_hex_color() {
+  [[ "$1" =~ ^#[0-9a-fA-F]{6}$ ]]
+}
+
+run_theme_command() {
+  local bg fg primary btn hover slider warning
+
+  while [[ $# -gt 0 ]]; do
+    case $1 in
+      -b|--background) bg=$2; shift ;;
+      -f|--foreground) fg=$2; shift ;;
+      -p|--primary) primary=$2; shift ;;
+      -bt|--button) btn=$2; shift ;;
+      -h|--hover) hover=$2; shift ;;
+      -s|--slider) slider=$2; shift ;;
+      -w|--warning) warning=$2; shift ;;
+      -h|--help) print_theme_help; exit 0 ;;
+      *) echo "Unknown theme option: $1"; print_theme_help; exit 1 ;;
+    esac
+    shift
+  done
+
+  # Validate all required options
+  for color in "$bg" "$fg" "$primary" "$btn" "$hover" "$slider" "$warning"; do
+    if ! is_hex_color "$color"; then
+      echo "Invalid or missing color: $color"
+      print_theme_help
+      exit 1
+    fi
+  done
+
+  echo "Setting theme with colors:"
+  echo "Background: $bg"
+  echo "Foreground: $fg"
+  echo "Primary: $primary"
+  echo "Button: $btn"
+  echo "Hover: $hover"
+  echo "Slider: $slider"
+  echo "Warning: $warning"
+
+  astal -i "OkPanel" "theme -b $bg -f $fg -p $primary -bt $btn -h $hover -s $slider -w $warning"
+}
+
+run_run_command() {
+  if [ -d "/usr/share/OkPanel" ]; then
+      dir="/usr/share/OkPanel"
+  else
+      DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+      dir=$DIR/ags
+  fi
+
+  ags run --gtk4 -d $dir -a $dir -a $HOME
+}
+
+main() {
+  if [[ $# -lt 1 ]]; then
+    print_help
+    exit 1
+  fi
+
+  case $1 in
+    run)          run_run_command;;
+    quit)         ags quit -i "OkPanel";;
+    launcher)     astal -i "OkPanel" "appLauncher";;
+    screenshot)   astal -i "OkPanel" "screenshot";;
+    share)        astal -i "OkPanel" "screenshare";;
+    volume-up)    astal -i "OkPanel" "volume-up";;
+    volume-down)  astal -i "OkPanel" "volume-down";;
+    mute)         astal -i "OkPanel" "mute";;
+    theme)        shift; run_theme_command "$@";;
+    help|-h|--help) print_help;;
+    *) echo "Unknown command: $1"; print_help; exit 1 ;;
+  esac
+}
+
+main "$@"

@@ -3,6 +3,7 @@ import {exec, execAsync} from "astal/process";
 import {Variable} from "astal";
 import {App} from "astal/gtk4";
 import {restoreBar} from "../../bar/Bar";
+import Gio from "gi://Gio?version=2.0";
 
 export type Theme = {
     name: string;
@@ -182,8 +183,10 @@ export function loadConfig(projectDirectory: string, homeDirectory: string) {
 
 function checkConfigIntegrity() {
     config.themes.forEach((theme) => {
-        if (theme.name === undefined
-            || theme.wallpaperDir === undefined
+        if (theme.name === undefined) {
+            throw Error("Config invalid.  Problem with themes.")
+        }
+        if (theme.wallpaperDir === undefined
             || theme.icon === undefined
             || theme.pixelOffset === undefined
             || theme.colors === undefined
@@ -195,7 +198,10 @@ function checkConfigIntegrity() {
             || theme.colors.sliderTrough === undefined
             || theme.colors.warning === undefined
         ) {
-            throw Error("Config invalid.  Problem with themes.")
+            throw Error(`Config invalid.  Problem with ${theme.name} theme.`)
+        }
+        if (!Gio.file_new_for_path(theme.wallpaperDir).query_exists(null)) {
+            throw Error(`Config invalid.  Wallpaper directory for theme ${theme.name} does not exist.`)
         }
     })
     if (config.systemCommands === undefined
@@ -205,5 +211,15 @@ function checkConfigIntegrity() {
         || config.systemCommands.shutdown === undefined
     ) {
         throw Error("Config invalid.  Problem with system commands.")
+    }
+    if (config.wallpaperUpdateScript !== undefined) {
+        if (!Gio.file_new_for_path(config.wallpaperUpdateScript).query_exists(null)) {
+            throw Error(`Config invalid.  Wallpaper update script does not exist.`)
+        }
+    }
+    if (config.themeUpdateScript !== undefined) {
+        if (!Gio.file_new_for_path(config.themeUpdateScript).query_exists(null)) {
+            throw Error(`Config invalid.  Theme update script does not exist.`)
+        }
     }
 }

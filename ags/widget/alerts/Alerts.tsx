@@ -1,7 +1,7 @@
 import {App, Astal, Gtk} from "astal/gtk4"
 import Wp from "gi://AstalWp"
 import {bind, Variable, Binding, GLib} from "astal"
-import {getVolumeIcon} from "../utils/audio";
+import {getVolumeIcon, playPowerPlug, playPowerUnplug} from "../utils/audio";
 import Brightness from "../utils/connectables/brightness";
 import {getBrightnessIcon} from "../utils/brightness";
 import Battery from "gi://AstalBattery"
@@ -125,9 +125,9 @@ export function ChargingAlertSound() {
             return
         }
         if (charging) {
-            execAsync('bash -c "play $HOME/.config/OkPanel/ags/sounds/power-plug.ogg"')
+            playPowerPlug()
         } else {
-            execAsync('bash -c "play $HOME/.config/OkPanel/ags/sounds/power-unplug.ogg"')
+            playPowerUnplug()
         }
     })
 }
