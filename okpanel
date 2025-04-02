@@ -110,7 +110,7 @@ main() {
     quit)         ags quit -i "OkPanel";;
     launcher)     astal -i "OkPanel" "appLauncher";;
     screenshot)   astal -i "OkPanel" "screenshot";;
-    share)        astal -i "OkPanel" "screenshare";;
+    share)        astal -i "OkPanel" "screenshare$XDPH_WINDOW_SHARING_LIST}";;
     volume-up)    astal -i "OkPanel" "volume-up";;
     volume-down)  astal -i "OkPanel" "volume-down";;
     mute)         astal -i "OkPanel" "mute";;
