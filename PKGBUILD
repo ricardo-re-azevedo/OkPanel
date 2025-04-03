@@ -14,7 +14,6 @@ depends=(
   'grim'
   'slurp'
   'networkmanager'
-  'network-manager-applet'
   'wireplumber'
   'bluez'
   'bluez-utils'
