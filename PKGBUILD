@@ -14,7 +14,14 @@ depends=(
   'grim'
   'slurp'
   'networkmanager'
+  'network-manager-applet'
   'sassc'
+  'wireplumber'
+  'bluez'
+  'bluez-utils'
+  'dart-sass'
+  'upower'
+  'brightnessctl'
 )
 source=(
   "okpanel"
