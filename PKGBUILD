@@ -15,25 +15,24 @@ depends=(
   'slurp'
   'networkmanager'
   'network-manager-applet'
-  'sassc'
   'wireplumber'
   'bluez'
   'bluez-utils'
   'dart-sass'
   'upower'
   'brightnessctl'
+  'ttf-jetbrains-mono-nerd'
 )
-source=(
-  "okpanel"
-  "ags/"
-)
-sha256sums=('SKIP' 'SKIP')
+source=("$pkgname::git+$url#branch=main")
+sha256sums=("SKIP")
 
 package() {
-  cd "$srcdir/$pkgname-$pkgver"
+  cd "${pkgname}"
+  ls
 
-  install -Dm755 okpanel "$pkgdir/usr/bin/okpanel"
+  install -Dm755 bin/okpanel "$pkgdir/usr/bin/okpanel"
+  install -Dm755 bin/okpanelShare "$pkgdir/usr/bin/okpanelShare"
 
   mkdir -p "$pkgdir/usr/share/OkPanel"
-  rsync -a --exclude='girs' --exclude='node_modules' ags/ "$pkgdir/usr/share/OkPanel/"
+  rsync -a --exclude='@girs' --exclude='node_modules' ags/ "$pkgdir/usr/share/OkPanel/"
 }

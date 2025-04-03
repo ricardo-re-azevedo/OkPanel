@@ -92,8 +92,7 @@ run_run_command() {
   if [ -d "/usr/share/OkPanel" ]; then
       dir="/usr/share/OkPanel"
   else
-      DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-      dir=$DIR/ags
+      dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/ags
   fi
 
   ags run --gtk4 -d $dir -a $dir -a $HOME
