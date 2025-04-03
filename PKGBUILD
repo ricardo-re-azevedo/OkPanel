@@ -23,12 +23,12 @@ depends=(
   'brightnessctl'
   'ttf-jetbrains-mono-nerd'
 )
+makedepends=('rsync')
 source=("$pkgname::git+$url#branch=main")
 sha256sums=("SKIP")
 
 package() {
   cd "${pkgname}"
-  ls
 
   install -Dm755 bin/okpanel "$pkgdir/usr/bin/okpanel"
   install -Dm755 bin/okpanelShare "$pkgdir/usr/bin/okpanelShare"
