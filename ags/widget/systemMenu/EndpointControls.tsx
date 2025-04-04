@@ -49,6 +49,7 @@ export default function (
         }
         revealedContent={
             <box
+                marginTop={10}
                 vertical={true}>
                 {endpointsBinding.as((endpoints) => {
                     return endpoints.map((endpoint) => {

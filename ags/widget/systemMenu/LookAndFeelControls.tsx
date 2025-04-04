@@ -228,6 +228,7 @@ export default function () {
         }
         revealedContent={
             <box
+                marginTop={10}
                 vertical={true}>
                 {config.themes.length > 1 && <box
                     vertical={true}>

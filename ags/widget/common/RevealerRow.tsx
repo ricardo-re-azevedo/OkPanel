@@ -3,6 +3,11 @@ import {App, Gtk} from "astal/gtk4";
 import LargeIconButton from "./LargeIconButton";
 
 type Params = {
+    marginTop?: number;
+    marginBottom?: number;
+    marginStart?: number;
+    marginEnd?: number;
+    visible?: boolean | Binding<boolean>;
     icon: string | Binding<string>;
     iconOffset: number | Binding<number>;
     windowName: string;
@@ -14,6 +19,11 @@ type Params = {
 
 export default function (
     {
+        marginTop = 0,
+        marginBottom = 0,
+        marginStart = 0,
+        marginEnd = 0,
+        visible = true,
         icon,
         iconOffset,
         windowName,
@@ -38,6 +48,11 @@ export default function (
     }, 1_000)
 
     return <box
+        visible={visible}
+        marginTop={marginTop}
+        marginBottom={marginBottom}
+        marginEnd={marginEnd}
+        marginStart={marginStart}
         vertical={true}>
         <box
             vertical={false}>

@@ -11,11 +11,13 @@ import BluetoothControls from "./BluetoothControls";
 import LookAndFeelControls from "./LookAndFeelControls";
 import {Bar, selectedBar} from "../bar/Bar";
 import {BarWidget, config} from "../utils/config/config";
+import Bluetooth from "gi://AstalBluetooth";
 
 export const SystemMenuWindowName = "systemMenuWindow"
 
 export default function () {
     const {audio} = Wp.get_default()!
+    const bluetooth = Bluetooth.get_default()
 
     return <window
         exclusivity={Astal.Exclusivity.NORMAL}
@@ -83,7 +85,8 @@ export default function () {
                         marginTop={20}
                         marginStart={20}
                         marginEnd={20}
-                        vertical={true}>
+                        vertical={true}
+                        spacing={10}>
                         <NetworkControls/>
                         <BluetoothControls/>
                         <EndpointControls
@@ -99,10 +102,9 @@ export default function () {
                         use MediaPlayers.  It uses a home-made mpris component that doesn't cause the jank.*/}
                         {/*<MediaPlayersAstal/>*/}
                         <MediaPlayers/>
-                        <box marginTop={10}/>
                         <PowerOptions/>
-                        <box marginTop={20}/>
                         <box
+                            marginTop={10}
                             vertical={false}>
                             <NotificationHistory/>
                         </box>

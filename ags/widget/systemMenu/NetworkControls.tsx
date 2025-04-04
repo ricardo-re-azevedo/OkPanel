@@ -544,6 +544,7 @@ export default function () {
         }
         revealedContent={
             <box
+                marginTop={10}
                 vertical={true}
                 spacing={12}>
                 {network.wifi && bind(network.wifi, "activeAccessPoint").as((activeAccessPoint) => {

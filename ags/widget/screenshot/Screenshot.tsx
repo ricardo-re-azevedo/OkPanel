@@ -358,6 +358,8 @@ function ScreenRecording() {
                             audioRevealed?.set(false)
                         }}>
                         <label
+                            marginStart={8}
+                            marginEnd={8}
                             halign={Gtk.Align.START}
                             cssClasses={["labelSmall"]}
                             ellipsize={Pango.EllipsizeMode.END}
@@ -373,6 +375,8 @@ function ScreenRecording() {
                                     audioRevealed?.set(false)
                                 }}>
                                 <label
+                                    marginStart={8}
+                                    marginEnd={8}
                                     halign={Gtk.Align.START}
                                     cssClasses={["labelSmall"]}
                                     ellipsize={Pango.EllipsizeMode.END}
@@ -412,6 +416,8 @@ function ScreenRecording() {
                                 codecRevealed?.set(false)
                             }}>
                             <label
+                                marginStart={8}
+                                marginEnd={8}
                                 halign={Gtk.Align.START}
                                 cssClasses={["labelSmall"]}
                                 ellipsize={Pango.EllipsizeMode.END}
@@ -452,6 +458,8 @@ function ScreenRecording() {
                                 encodingRevealed?.set(false)
                             }}>
                             <label
+                                marginStart={8}
+                                marginEnd={8}
                                 halign={Gtk.Align.START}
                                 cssClasses={["labelSmall"]}
                                 ellipsize={Pango.EllipsizeMode.END}
@@ -492,6 +500,8 @@ function ScreenRecording() {
                                 crfRevealed?.set(false)
                             }}>
                             <label
+                                marginStart={8}
+                                marginEnd={8}
                                 halign={Gtk.Align.START}
                                 cssClasses={["labelSmall"]}
                                 ellipsize={Pango.EllipsizeMode.END}
