@@ -121,7 +121,7 @@ export function BrightnessAlert() {
 export function ChargingAlertSound() {
     const battery = Battery.get_default()
     bind(battery, "charging").subscribe((charging) => {
-        if (battery.batteryLevel === 1) {
+        if (battery.percentage === 1) {
             return
         }
         if (charging) {
