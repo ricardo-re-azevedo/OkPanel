@@ -8,7 +8,7 @@
   border: none;
   min-height: 25px;
   min-width: 30px;
-  border-radius: 8px;
+  border-radius: vars.$borderRadius;
 }
 
 .iconButton:hover {
@@ -23,7 +23,7 @@
   border: none;
   min-height: 25px;
   min-width: 30px;
-  border-radius: 8px;
+  border-radius: vars.$borderRadius;
 }
 
 .activeIconButton:hover {
@@ -38,7 +38,7 @@
   border: none;
   min-height: 25px;
   min-width: 30px;
-  border-radius: 8px;
+  border-radius: vars.$borderRadius;
 }
 
 .warningIconButton:hover {
@@ -49,7 +49,7 @@
   all: unset;
   background-color: vars.$buttonPrimary;
   color: vars.$fg;
-  border-radius: 8px;
+  border-radius: vars.$borderRadius;
   padding: 4px 8px 4px 8px;
 }
 
@@ -65,7 +65,7 @@
   all: unset;
   background-color: transparent;
   color: vars.$fg;
-  border-radius: 8px;
+  border-radius: vars.$borderRadius;
   padding: 4px 8px 4px 8px;
 }
 
@@ -89,7 +89,7 @@
   border: none;
   min-height: 25px;
   min-width: 30px;
-  border-radius: 8px;
+  border-radius: vars.$borderRadius;
 }
 
 .closeButton:hover {

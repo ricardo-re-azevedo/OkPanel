@@ -8,7 +8,7 @@
   margin-top: 20px;
   background-color: vars.$bg;
   border: 2px solid vars.$bgHover;
-  border-radius: 8px;
+  border-radius: vars.$borderRadius;
   padding: 4px;
 
   .controlButton {
@@ -19,7 +19,7 @@
     border: none;
     min-height: 25px;
     min-width: 30px;
-    border-radius: 8px;
+    border-radius: vars.$borderRadius;
   }
 
   .controlButton:hover {

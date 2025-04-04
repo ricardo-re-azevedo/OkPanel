@@ -31,6 +31,9 @@ export type Config = {
         restart: string;
         shutdown: string;
     };
+    gaps: number;
+    windowBorderRadius: number;
+    borderRadius: number;
 };
 
 const defaultTheme: Theme = {
@@ -93,6 +96,9 @@ cat > "$TARGET_DIR/variables.scss" <<EOF
 \\$sliderTrough: ${theme.colors.sliderTrough};
 \\$bgHover: ${theme.colors.hover};
 \\$warning: ${theme.colors.warning};
+\\$gaps: ${config.gaps}px;
+\\$borderRadius: ${config.borderRadius}px;
+\\$windowBorderRadius: ${config.windowBorderRadius}px;
 EOF
 
 sass $TARGET_DIR/main.scss /tmp/OkPanel/style.css
@@ -168,7 +174,15 @@ function getConfig(): Config {
     const configStr = readFile(`${homePath}/.config/OkPanel/okpanel.json`) ?? "";
     const config: Config = JSON.parse(configStr)
 
-    const savedThemeName = readFile(`${homePath}/.cache/OkPanel/themeName`).trim()
+    return config
+}
+
+export function loadConfig(projectDirectory: string, homeDirectory: string) {
+    projectDir = projectDirectory
+    homeDir = homeDirectory
+    checkConfigIntegrity()
+
+    const savedThemeName = readFile(`${homeDir}/.cache/OkPanel/themeName`).trim()
 
     const savedTheme = config.themes.find((theme) => theme.name === savedThemeName)
     if (savedTheme !== undefined) {
@@ -177,13 +191,6 @@ function getConfig(): Config {
         selectedTheme.set(config.themes[0])
     }
 
-    return config
-}
-
-export function loadConfig(projectDirectory: string, homeDirectory: string) {
-    projectDir = projectDirectory
-    homeDir = homeDirectory
-    checkConfigIntegrity()
     initialSetTheme(selectedTheme.get())
     restoreBar()
 }
@@ -210,6 +217,9 @@ function checkConfigIntegrity() {
         if (!Gio.file_new_for_path(theme.wallpaperDir).query_exists(null)) {
             throw Error(`Config invalid.  Wallpaper directory for theme ${theme.name} does not exist.`)
         }
+        if (theme.pixelOffset >= 10 || theme.pixelOffset <= -10) {
+            throw Error(`Config invalid.  Problem with ${theme.name} theme.  Pixel offset must be between -10 and 10.`)
+        }
     })
     if (config.systemCommands === undefined
         || config.systemCommands.lock === undefined
@@ -228,5 +238,14 @@ function checkConfigIntegrity() {
         if (!Gio.file_new_for_path(config.themeUpdateScript).query_exists(null)) {
             throw Error(`Config invalid.  Theme update script does not exist.`)
         }
+    }
+    if (config.gaps === undefined) {
+        throw Error("Config invalid.  Missing gaps.")
+    }
+    if (config.borderRadius === undefined) {
+        throw Error("Config invalid.  Missing borderRadius.")
+    }
+    if (config.windowBorderRadius === undefined) {
+        throw Error("Config invalid.  Missing windowBorderRadius.")
     }
 }

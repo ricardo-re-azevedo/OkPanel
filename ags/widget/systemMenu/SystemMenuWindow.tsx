@@ -10,6 +10,7 @@ import NetworkControls from "./NetworkControls";
 import BluetoothControls from "./BluetoothControls";
 import LookAndFeelControls from "./LookAndFeelControls";
 import {Bar, MenuPosition, menuPosition, selectedBar} from "../bar/Bar";
+import {config} from "../utils/config/config";
 
 export const SystemMenuWindowName = "systemMenuWindow"
 
@@ -40,7 +41,7 @@ export default function () {
         cssClasses={["transparentBackground"]}
         name={SystemMenuWindowName}
         application={App}
-        margin={5}
+        margin={config.gaps}
         keymode={Astal.Keymode.ON_DEMAND}
         visible={false}
         onKeyPressed={function (self, key) {

@@ -1,6 +1,7 @@
 import {App, Astal, Gdk, Gtk} from "astal/gtk4"
 import {GLib, Variable} from "astal"
 import {Bar, clockPosition, ClockPosition, selectedBar} from "../bar/Bar";
+import {config} from "../utils/config/config";
 
 export const CalendarWindowName = "calendarWindow"
 
@@ -49,7 +50,7 @@ export default function () {
             }
         })}
         layer={Astal.Layer.TOP}
-        margin={5}
+        margin={config.gaps}
         visible={false}
         keymode={Astal.Keymode.ON_DEMAND}
         onKeyPressed={function (self, key) {

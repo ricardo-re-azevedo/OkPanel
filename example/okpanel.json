@@ -38,5 +38,8 @@
     "lock": "uwsm app -- hyprlock",
     "restart": "systemctl reboot",
     "shutdown": "systemctl poweroff"
-  }
+  },
+  "gaps": 5,
+  "borderRadius": 8,
+  "windowBorderRadius": 8
 }

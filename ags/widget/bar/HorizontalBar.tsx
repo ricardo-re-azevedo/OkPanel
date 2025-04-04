@@ -12,6 +12,7 @@ import {
     Workspaces
 } from "./BarWidgets";
 import {Bar, ClockPosition, clockPosition, menuPosition, MenuPosition, selectedBar} from "./Bar";
+import {config} from "../utils/config/config";
 
 export default function () {
     return <window
@@ -21,7 +22,7 @@ export default function () {
         cssClasses={["transparentBackground"]}
         monitor={0}
         exclusivity={Astal.Exclusivity.EXCLUSIVE}
-        margin={5}
+        margin={config.gaps}
         anchor={selectedBar((bar) => {
             if (bar === Bar.TOP) {
                 return Astal.WindowAnchor.TOP
