@@ -85,9 +85,7 @@ export default function () {
                         use MediaPlayers.  It uses a home-made mpris component that doesn't cause the jank.*/}
                         {/*<MediaPlayersAstal/>*/}
                         <MediaPlayers/>
-                        <box marginTop={10}/>
                         <PowerOptions/>
-                        <box marginTop={20}/>
                         <box
                             vertical={false}
                             marginStart={10}

@@ -8,7 +8,7 @@ export default function(
         onClicked,
     }:
     {
-        icon: Binding<string>,
+        icon: Binding<string> | string,
         offset: number,
         selected?: Binding<boolean>,
         onClicked: () => void
