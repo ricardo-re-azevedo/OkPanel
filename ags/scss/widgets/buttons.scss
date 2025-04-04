@@ -45,6 +45,28 @@
   background-color: vars.$bgHover;
 }
 
+.largeIconButton {
+  all: unset;
+  background-color: transparent;
+  font-size: 25px;
+  border-radius: vars.$largeButtonBorderRadius;
+  color: vars.$fg;
+  border: 0;
+}
+
+.largeIconButton:hover {
+  background-color: vars.$bgHover;
+}
+
+.largeIconButtonSelected {
+  all: unset;
+  background-color: vars.$primary;
+  font-size: 25px;
+  border-radius: vars.$largeButtonBorderRadius;
+  color: vars.$fg;
+  border: 0;
+}
+
 .primaryButton {
   all: unset;
   background-color: vars.$buttonPrimary;

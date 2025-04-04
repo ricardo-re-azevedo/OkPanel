@@ -530,7 +530,11 @@ export default function () {
             vertical={false}
             cssClasses={["row"]}>
             <label
-                cssClasses={["systemMenuIconButton"]}
+                marginTop={8}
+                marginBottom={8}
+                marginStart={18}
+                marginEnd={28}
+                cssClasses={["largeIconLabel"]}
                 label={getNetworkIconBinding()}/>
             <label
                 cssClasses={["labelMediumBold"]}
@@ -563,6 +567,7 @@ export default function () {
                 }}/>
         </box>
         <revealer
+            marginTop={10}
             cssClasses={["rowRevealer"]}
             revealChild={networkChooserRevealed()}
             transitionDuration={200}

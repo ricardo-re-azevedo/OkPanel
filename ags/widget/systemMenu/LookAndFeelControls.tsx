@@ -17,6 +17,7 @@ import {
 } from "../bar/Bar";
 import Divider from "../common/Divider";
 import {config, selectedTheme, setTheme, setWallpaper, Theme} from "../utils/config/config";
+import LargeIconButton from "../common/LargeIconButton";
 
 const files: Variable<string[][]> = Variable([])
 const numberOfColumns = 2
@@ -89,8 +90,8 @@ function updateFiles(theme: Theme) {
 
 function updateMargins(box: Gtk.Box, theme: Theme) {
     let pixelAdjustment = theme.pixelOffset
-    const leftPadding = 15 - pixelAdjustment
-    const rightPadding = 15 + pixelAdjustment
+    const leftPadding = 18 - pixelAdjustment
+    const rightPadding = 18 + pixelAdjustment
 
     box.marginStart = leftPadding
     box.marginEnd = rightPadding
@@ -108,9 +109,9 @@ function BarButton(
     return <button
         cssClasses={selectedBar((bar) => {
             if (bar === barType) {
-                return ["themeButtonSelected"]
+                return ["largeIconButtonSelected"]
             }
-            return ["themeButton"]
+            return ["largeIconButton"]
         })}
         onClicked={() => {
             setBarType(barType)
@@ -195,21 +196,13 @@ function ThemeButton(
         theme: Theme,
     }
 ) {
-    const leftPadding = 18 - theme.pixelOffset
-    const rightPadding = 18 + theme.pixelOffset
-    return <button
-        cssClasses={selectedTheme((selectedTheme) =>
-            selectedTheme === theme ? ["themeButtonSelected"] : ["themeButton"])}
+    return <LargeIconButton
+        icon={theme.icon}
+        offset={theme.pixelOffset}
+        selected={selectedTheme((t) => t === theme)}
         onClicked={() => {
             updateTheme(theme)
-        }}>
-        <label
-            marginTop={8}
-            marginBottom={8}
-            marginStart={leftPadding}
-            marginEnd={rightPadding}
-            label={theme.icon}/>
-    </button>
+        }}/>
 }
 
 function ThemeOptions() {
@@ -292,8 +285,6 @@ export default function () {
             vertical={false}
             cssClasses={["row"]}>
             <box
-                marginTop={10}
-                marginBottom={10}
                 setup={(self) => {
                     const currentTheme = selectedTheme.get()
                     if (currentTheme != null) {
@@ -307,7 +298,10 @@ export default function () {
                     })
                 }}>
                 <label
-                    cssClasses={["systemMenuIconLabel"]}
+                    marginTop={8}
+                    marginBottom={8}
+                    marginEnd={10}
+                    cssClasses={["largeIconLabel"]}
                     label={selectedTheme((theme) => {
                         return theme?.icon ?? ""
                     })}/>
@@ -332,6 +326,7 @@ export default function () {
                 }}/>
         </box>
         <revealer
+            marginTop={10}
             cssClasses={["rowRevealer"]}
             revealChild={wallpaperChooserRevealed()}
             transitionDuration={200}

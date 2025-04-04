@@ -2,36 +2,39 @@ import {App, Gtk} from "astal/gtk4"
 import {SystemMenuWindowName} from "./SystemMenuWindow";
 import {execAsync} from "astal/process"
 import {config} from "../utils/config/config";
+import LargeIconButton from "../common/LargeIconButton";
 
 export default function () {
     return <box
         vertical={false}
-        cssClasses={["row"]}
-        halign={Gtk.Align.CENTER}>
-        <button
-            cssClasses={["systemMenuIconButton"]}
-            label="󰍃"
+        marginBottom={20}
+        marginTop={20}
+        halign={Gtk.Align.CENTER}
+        spacing={12}>
+        <LargeIconButton
+            icon="󰍃"
+            offset={0}
             onClicked={() => {
                 App.toggle_window(SystemMenuWindowName)
                 execAsync(config.systemCommands.logout)
             }}/>
-        <button
-            cssClasses={["systemMenuIconButton"]}
-            label=""
+        <LargeIconButton
+            icon=""
+            offset={1}
             onClicked={() => {
                 App.toggle_window(SystemMenuWindowName)
                 execAsync(config.systemCommands.lock)
             }}/>
-        <button
-            cssClasses={["systemMenuIconButton"]}
-            label=""
+        <LargeIconButton
+            icon=""
+            offset={0}
             onClicked={() => {
                 App.toggle_window(SystemMenuWindowName)
                 execAsync(config.systemCommands.restart)
             }}/>
-        <button
-            cssClasses={["systemMenuIconButton"]}
-            label="⏻"
+        <LargeIconButton
+            icon="⏻"
+            offset={2}
             onClicked={() => {
                 App.toggle_window(SystemMenuWindowName)
                 execAsync(config.systemCommands.shutdown)

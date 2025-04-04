@@ -4,6 +4,7 @@ import {App, Gtk} from "astal/gtk4"
 import {SystemMenuWindowName} from "./SystemMenuWindow";
 import {toggleMuteEndpoint} from "../utils/audio";
 import Pango from "gi://Pango?version=1.0";
+import LargeIconButton from "../common/LargeIconButton";
 
 /**
  * An Endpoint is either a speaker or microphone
@@ -44,12 +45,13 @@ export default function (
         <box
             vertical={false}
             cssClasses={["row"]}>
-            <button
-                cssClasses={["systemMenuIconButton"]}
-                label={endpointLabelVar(() => getIcon(defaultEndpoint))}
+            <LargeIconButton
+                offset={0}
+                icon={endpointLabelVar(() => getIcon(defaultEndpoint))}
                 onClicked={() => {
                     toggleMuteEndpoint(defaultEndpoint)
                 }}/>
+            <box marginStart={10}/>
             <slider
                 cssClasses={["systemMenuVolumeProgress"]}
                 hexpand={true}
@@ -72,6 +74,7 @@ export default function (
                 }}/>
         </box>
         <revealer
+            marginTop={10}
             cssClasses={["rowRevealer"]}
             revealChild={endpointChooserRevealed()}
             transitionDuration={200}

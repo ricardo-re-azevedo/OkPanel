@@ -65,3 +65,12 @@
   min-width: 30px;
   border-radius: 8px;
 }
+
+.largeIconLabel {
+  all: unset;
+  background-color: transparent;
+  font-size: 25px;
+  border-radius: vars.$largeButtonBorderRadius;
+  color: vars.$fg;
+  border: 0;
+}

@@ -33,6 +33,7 @@ export type Config = {
     };
     gaps: number;
     windowBorderRadius: number;
+    largeButtonBorderRadius: number;
     borderRadius: number;
 };
 
@@ -99,6 +100,7 @@ cat > "$TARGET_DIR/variables.scss" <<EOF
 \\$gaps: ${config.gaps}px;
 \\$borderRadius: ${config.borderRadius}px;
 \\$windowBorderRadius: ${config.windowBorderRadius}px;
+\\$largeButtonBorderRadius: ${config.largeButtonBorderRadius}px;
 EOF
 
 sass $TARGET_DIR/main.scss /tmp/OkPanel/style.css
@@ -248,5 +250,8 @@ function checkConfigIntegrity(config: Config) {
     }
     if (config.windowBorderRadius === undefined) {
         config.windowBorderRadius = 8
+    }
+    if (config.largeButtonBorderRadius === undefined) {
+        config.largeButtonBorderRadius = 16
     }
 }
