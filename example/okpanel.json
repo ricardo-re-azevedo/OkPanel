@@ -41,5 +41,6 @@
   },
   "gaps": 5,
   "borderRadius": 8,
-  "windowBorderRadius": 8
+  "windowBorderRadius": 8,
+  "largeButtonBorderRadius": 16
 }
