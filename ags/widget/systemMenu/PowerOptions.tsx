@@ -7,8 +7,6 @@ import LargeIconButton from "../common/LargeIconButton";
 export default function () {
     return <box
         vertical={false}
-        marginBottom={20}
-        marginTop={20}
         halign={Gtk.Align.CENTER}
         spacing={12}>
         <LargeIconButton
