@@ -154,7 +154,8 @@ function ThemeOptions() {
         {themeRows.map((themeRow) => {
             return <box
                 vertical={false}
-                cssClasses={["row"]}
+                marginStart={20}
+                marginEnd={20}
                 halign={Gtk.Align.CENTER}
                 spacing={12}>
                 {themeRow.map((theme) => {
@@ -216,6 +217,7 @@ export default function () {
         iconOffset={selectedTheme((theme) => {
             return theme.pixelOffset
         })}
+        windowName={SystemMenuWindowName}
         content={
             <label
                 cssClasses={["labelMediumBold"]}

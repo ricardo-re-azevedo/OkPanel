@@ -525,6 +525,7 @@ export default function () {
     return <RevealerRow
         icon={getNetworkIconBinding()}
         iconOffset={2}
+        windowName={SystemMenuWindowName}
         content={
             <label
                 cssClasses={["labelMediumBold"]}

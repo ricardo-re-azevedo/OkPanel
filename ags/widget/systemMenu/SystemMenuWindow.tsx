@@ -80,8 +80,10 @@ export default function () {
                     propagateNaturalHeight={true}
                     widthRequest={400}>
                     <box
+                        marginTop={20}
+                        marginStart={20}
+                        marginEnd={20}
                         vertical={true}>
-                        <box marginTop={20}/>
                         <NetworkControls/>
                         <BluetoothControls/>
                         <EndpointControls
@@ -101,9 +103,7 @@ export default function () {
                         <PowerOptions/>
                         <box marginTop={20}/>
                         <box
-                            vertical={false}
-                            marginStart={10}
-                            marginEnd={10}>
+                            vertical={false}>
                             <NotificationHistory/>
                         </box>
                         <box marginTop={2}/>

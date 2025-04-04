@@ -4,6 +4,7 @@ import {bind, Variable, GLib} from "astal"
 import Divider from "../common/Divider";
 import Pango from "gi://Pango?version=1.0";
 import {playCameraShutter} from "../utils/audio";
+import RevealerRow from "../common/RevealerRow";
 
 export const isRecording = Variable(false)
 
@@ -294,10 +295,10 @@ function ScreenRecording() {
     const selectedEncodingPreset = Variable("medium")
     const selectedCrfQuality = Variable(20)
 
-    const audioRevealed = Variable(false)
-    const codecRevealed = Variable(false)
-    const encodingRevealed = Variable(false)
-    const crfRevealed = Variable(false)
+    let audioRevealed: Variable<boolean> | null = null
+    let codecRevealed: Variable<boolean> | null = null
+    let encodingRevealed: Variable<boolean> | null = null
+    let crfRevealed: Variable<boolean> | null = null
 
     setTimeout(() => {
         bind(App.get_window(ScreenshotWindowName)!, "visible").subscribe((visible) => {
@@ -306,16 +307,12 @@ function ScreenRecording() {
                 selectedCodec.set(codecs[0])
                 selectedEncodingPreset.set("medium")
                 selectedCrfQuality.set(20)
-
-                audioRevealed.set(false)
-                codecRevealed.set(false)
-                encodingRevealed.set(false)
-                crfRevealed.set(false)
             } else {
                 updateAudioOptions()
             }
         })
     }, 1_000)
+
 
     return <box
         vertical={true}>
@@ -323,243 +320,187 @@ function ScreenRecording() {
             cssClasses={["labelLargeBold"]}
             marginBottom={8}
             label="Screen Record"/>
-        <box
-            vertical={false}
-            cssClasses={["row"]}>
-            <label
-                cssClasses={["labelLargeBold"]}
-                marginEnd={20}
-                label={selectedAudio().as((value) => {
-                    if (value === null) {
-                        return "󰝟"
-                    } else {
-                        return value.isMonitor ? "󰕾" : ""
-                    }
-                })}/>
-            <label
-                cssClasses={["labelMediumBold"]}
-                halign={Gtk.Align.START}
-                hexpand={true}
-                ellipsize={Pango.EllipsizeMode.END}
-                label={selectedAudio().as((value) => {
-                    if (value === null) {
-                        return "No Audio"
-                    } else {
-                        return value.description
-                    }
-                })}/>
-            <button
-                cssClasses={["iconButton"]}
-                label={audioRevealed((revealed): string => {
-                    if (revealed) {
-                        return ""
-                    } else {
-                        return ""
-                    }
-                })}
-                onClicked={() => {
-                    audioRevealed.set(!audioRevealed.get())
-                }}/>
-        </box>
-        <revealer
-            cssClasses={["rowRevealer"]}
-            revealChild={audioRevealed()}
-            transitionDuration={200}
-            transitionType={Gtk.RevealerTransitionType.SLIDE_DOWN}>
-            <box
-                vertical={true}>
-                <button
+        <RevealerRow
+            icon={selectedAudio().as((value) => {
+                if (value === null) {
+                    return "󰝟"
+                } else {
+                    return value.isMonitor ? "󰕾" : ""
+                }
+            })}
+            iconOffset={0}
+            windowName={ScreenshotWindowName}
+            setup={(revealed) => {
+                audioRevealed = revealed
+            }}
+            content={
+                <label
+                    cssClasses={["labelMediumBold"]}
+                    halign={Gtk.Align.START}
                     hexpand={true}
-                    cssClasses={["iconButton"]}
-                    onClicked={() => {
-                        selectedAudio.set(null)
-                        audioRevealed.set(false)
-                    }}>
-                    <label
-                        halign={Gtk.Align.START}
-                        cssClasses={["labelSmall"]}
-                        ellipsize={Pango.EllipsizeMode.END}
-                        label={`󰝟  No Audio`}/>
-                </button>
-                {audioOptions().as((options) => {
-                    return options.map((option) => {
+                    ellipsize={Pango.EllipsizeMode.END}
+                    label={selectedAudio().as((value) => {
+                        if (value === null) {
+                            return "No Audio"
+                        } else {
+                            return value.description
+                        }
+                    })}/>
+            }
+            revealedContent={
+                <box
+                    vertical={true}>
+                    <button
+                        hexpand={true}
+                        cssClasses={["iconButton"]}
+                        onClicked={() => {
+                            selectedAudio.set(null)
+                            audioRevealed?.set(false)
+                        }}>
+                        <label
+                            halign={Gtk.Align.START}
+                            cssClasses={["labelSmall"]}
+                            ellipsize={Pango.EllipsizeMode.END}
+                            label={`󰝟  No Audio`}/>
+                    </button>
+                    {audioOptions().as((options) => {
+                        return options.map((option) => {
+                            return <button
+                                hexpand={true}
+                                cssClasses={["iconButton"]}
+                                onClicked={() => {
+                                    selectedAudio.set(option)
+                                    audioRevealed?.set(false)
+                                }}>
+                                <label
+                                    halign={Gtk.Align.START}
+                                    cssClasses={["labelSmall"]}
+                                    ellipsize={Pango.EllipsizeMode.END}
+                                    label={`${option.isMonitor ? "󰕾" : ""}  ${option.description}`}/>
+                            </button>
+                        })
+                    })}
+                </box>
+            }
+        />
+        <RevealerRow
+            icon="󰕧"
+            iconOffset={0}
+            windowName={ScreenshotWindowName}
+            setup={(revealed) => {
+                codecRevealed = revealed
+            }}
+            content={
+                <label
+                    cssClasses={["labelMediumBold"]}
+                    halign={Gtk.Align.START}
+                    hexpand={true}
+                    ellipsize={Pango.EllipsizeMode.END}
+                    label={selectedCodec().as((value) => {
+                        return `${value.display} codec`
+                    })}/>
+            }
+            revealedContent={
+                <box
+                    vertical={true}>
+                    {codecs.map((value) => {
                         return <button
                             hexpand={true}
                             cssClasses={["iconButton"]}
                             onClicked={() => {
-                                selectedAudio.set(option)
-                                audioRevealed.set(false)
+                                selectedCodec.set(value)
+                                codecRevealed?.set(false)
                             }}>
                             <label
                                 halign={Gtk.Align.START}
                                 cssClasses={["labelSmall"]}
                                 ellipsize={Pango.EllipsizeMode.END}
-                                label={`${option.isMonitor ? "󰕾" : ""}  ${option.description}`}/>
+                                label={`󰕧  ${value.display}`}/>
                         </button>
-                    })
-                })}
-            </box>
-        </revealer>
-        <box
-            vertical={false}
-            cssClasses={["row"]}>
-            <label
-                cssClasses={["labelLargeBold"]}
-                marginEnd={20}
-                label="󰕧"/>
-            <label
-                cssClasses={["labelMediumBold"]}
-                halign={Gtk.Align.START}
-                hexpand={true}
-                ellipsize={Pango.EllipsizeMode.END}
-                label={selectedCodec().as((value) => {
-                    return `${value.display} codec`
-                })}/>
-            <button
-                cssClasses={["iconButton"]}
-                label={codecRevealed((revealed): string => {
-                    if (revealed) {
-                        return ""
-                    } else {
-                        return ""
-                    }
-                })}
-                onClicked={() => {
-                    codecRevealed.set(!codecRevealed.get())
-                }}/>
-        </box>
-        <revealer
-            cssClasses={["rowRevealer"]}
-            revealChild={codecRevealed()}
-            transitionDuration={200}
-            transitionType={Gtk.RevealerTransitionType.SLIDE_DOWN}>
-            <box
-                vertical={true}>
-                {codecs.map((value) => {
-                    return <button
-                        hexpand={true}
-                        cssClasses={["iconButton"]}
-                        onClicked={() => {
-                            selectedCodec.set(value)
-                            codecRevealed.set(false)
-                        }}>
-                        <label
-                            halign={Gtk.Align.START}
-                            cssClasses={["labelSmall"]}
-                            ellipsize={Pango.EllipsizeMode.END}
-                            label={`󰕧  ${value.display}`}/>
-                    </button>
-                })}
-            </box>
-        </revealer>
-        <box
-            vertical={false}
-            cssClasses={["row"]}>
-            <label
-                cssClasses={["labelLargeBold"]}
-                marginEnd={20}
-                label={selectedEncodingPreset().as((value) => {
-                    return getEncodingPresetIcon(value)
-                })}/>
-            <label
-                cssClasses={["labelMediumBold"]}
-                halign={Gtk.Align.START}
-                hexpand={true}
-                ellipsize={Pango.EllipsizeMode.END}
-                label={selectedEncodingPreset().as((value) => {
-                    return `${value.charAt(0).toUpperCase() + value.slice(1)} encoding speed`
-                })}/>
-            <button
-                cssClasses={["iconButton"]}
-                label={encodingRevealed((revealed): string => {
-                    if (revealed) {
-                        return ""
-                    } else {
-                        return ""
-                    }
-                })}
-                onClicked={() => {
-                    encodingRevealed.set(!encodingRevealed.get())
-                }}/>
-        </box>
-        <revealer
-            cssClasses={["rowRevealer"]}
-            revealChild={encodingRevealed()}
-            transitionDuration={200}
-            transitionType={Gtk.RevealerTransitionType.SLIDE_DOWN}>
-            <box
-                vertical={true}>
-                {h264EncodingPresets.map((value) => {
-                    return <button
-                        hexpand={true}
-                        cssClasses={["iconButton"]}
-                        onClicked={() => {
-                            selectedEncodingPreset.set(value)
-                            encodingRevealed.set(false)
-                        }}>
-                        <label
-                            halign={Gtk.Align.START}
-                            cssClasses={["labelSmall"]}
-                            ellipsize={Pango.EllipsizeMode.END}
-                            label={`${getEncodingPresetIcon(value)}  ${value.charAt(0).toUpperCase() + value.slice(1)}`}/>
-                    </button>
-                })}
-            </box>
-        </revealer>
-        <box
-            vertical={false}
-            cssClasses={["row"]}>
-            <label
-                cssClasses={["labelLargeBold"]}
-                marginEnd={20}
-                label={selectedCrfQuality().as((value) => {
-                    return getCrfQualityIcon(value)
-                })}/>
-            <label
-                cssClasses={["labelMediumBold"]}
-                halign={Gtk.Align.START}
-                hexpand={true}
-                ellipsize={Pango.EllipsizeMode.END}
-                label={selectedCrfQuality().as((value) => {
-                    return `${value} CRF`
-                })}/>
-            <button
-                cssClasses={["iconButton"]}
-                label={crfRevealed((revealed): string => {
-                    if (revealed) {
-                        return ""
-                    } else {
-                        return ""
-                    }
-                })}
-                onClicked={() => {
-                    crfRevealed.set(!crfRevealed.get())
-                }}/>
-        </box>
-        <revealer
-            cssClasses={["rowRevealer"]}
-            revealChild={crfRevealed()}
-            transitionDuration={200}
-            transitionType={Gtk.RevealerTransitionType.SLIDE_DOWN}>
-            <box
-                vertical={true}>
-                {crfQualityValues.map((value) => {
-                    return <button
-                        hexpand={true}
-                        cssClasses={["iconButton"]}
-                        onClicked={() => {
-                            selectedCrfQuality.set(value)
-                            crfRevealed.set(false)
-                        }}>
-                        <label
-                            halign={Gtk.Align.START}
-                            cssClasses={["labelSmall"]}
-                            ellipsize={Pango.EllipsizeMode.END}
-                            label={`${getCrfQualityIcon(value)}  ${value}`}/>
-                    </button>
-                })}
-            </box>
-        </revealer>
+                    })}
+                </box>
+            }
+        />
+        <RevealerRow
+            icon={selectedEncodingPreset().as((value) => {
+                return getEncodingPresetIcon(value)
+            })}
+            iconOffset={0}
+            windowName={ScreenshotWindowName}
+            setup={(revealed) => {
+                encodingRevealed = revealed
+            }}
+            content={
+                <label
+                    cssClasses={["labelMediumBold"]}
+                    halign={Gtk.Align.START}
+                    hexpand={true}
+                    ellipsize={Pango.EllipsizeMode.END}
+                    label={selectedEncodingPreset().as((value) => {
+                        return `${value.charAt(0).toUpperCase() + value.slice(1)} encoding speed`
+                    })}/>
+            }
+            revealedContent={
+                <box
+                    vertical={true}>
+                    {h264EncodingPresets.map((value) => {
+                        return <button
+                            hexpand={true}
+                            cssClasses={["iconButton"]}
+                            onClicked={() => {
+                                selectedEncodingPreset.set(value)
+                                encodingRevealed?.set(false)
+                            }}>
+                            <label
+                                halign={Gtk.Align.START}
+                                cssClasses={["labelSmall"]}
+                                ellipsize={Pango.EllipsizeMode.END}
+                                label={`${getEncodingPresetIcon(value)}  ${value.charAt(0).toUpperCase() + value.slice(1)}`}/>
+                        </button>
+                    })}
+                </box>
+            }
+        />
+        <RevealerRow
+            icon={selectedCrfQuality().as((value) => {
+                return getCrfQualityIcon(value)
+            })}
+            iconOffset={0}
+            windowName={ScreenshotWindowName}
+            setup={(revealed) => {
+                crfRevealed = revealed
+            }}
+            content={
+                <label
+                    cssClasses={["labelMediumBold"]}
+                    halign={Gtk.Align.START}
+                    hexpand={true}
+                    ellipsize={Pango.EllipsizeMode.END}
+                    label={selectedCrfQuality().as((value) => {
+                        return `${value} CRF`
+                    })}/>
+            }
+            revealedContent={
+                <box
+                    vertical={true}>
+                    {crfQualityValues.map((value) => {
+                        return <button
+                            hexpand={true}
+                            cssClasses={["iconButton"]}
+                            onClicked={() => {
+                                selectedCrfQuality.set(value)
+                                crfRevealed?.set(false)
+                            }}>
+                            <label
+                                halign={Gtk.Align.START}
+                                cssClasses={["labelSmall"]}
+                                ellipsize={Pango.EllipsizeMode.END}
+                                label={`${getCrfQualityIcon(value)}  ${value}`}/>
+                        </button>
+                    })}
+                </box>
+            }
+        />
         <box
             vertical={false}
             marginTop={8}>

@@ -125,6 +125,7 @@ export default function () {
     return <RevealerRow
         icon={getBluetoothIcon()}
         iconOffset={0}
+        windowName={SystemMenuWindowName}
         content={
             <label
                 cssClasses={["labelMediumBold"]}

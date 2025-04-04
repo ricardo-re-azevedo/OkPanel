@@ -4,6 +4,7 @@ import {Gtk} from "astal/gtk4"
 import Pango from "gi://Pango?version=1.0";
 import RevealerRow from "../common/RevealerRow";
 import {toggleMuteEndpoint} from "../utils/audio";
+import {SystemMenuWindowName} from "./SystemMenuWindow";
 
 /**
  * An Endpoint is either a speaker or microphone
@@ -32,6 +33,7 @@ export default function (
     return <RevealerRow
         icon={endpointLabelVar(() => getIcon(defaultEndpoint))}
         iconOffset={0}
+        windowName={SystemMenuWindowName}
         onClick={() => {
             toggleMuteEndpoint(defaultEndpoint)
         }}

@@ -3,6 +3,7 @@ import {bind, Variable} from "astal"
 import Hyprland from "gi://AstalHyprland"
 import {execAsync} from "astal/process"
 import Pango from "gi://Pango?version=1.0";
+import RevealerRow from "../common/RevealerRow";
 
 export const ScreenshareWindowName = "screenshareWindow"
 
@@ -73,43 +74,19 @@ export function updateWindows(input: string) {
 
 function Monitors() {
     const hyprland = Hyprland.get_default()
-    const revealed = Variable(false)
 
-    setTimeout(() => {
-        bind(App.get_window(ScreenshareWindowName)!, "visible").subscribe((visible) => {
-            if (!visible) {
-                revealed.set(false)
-            }
-        })
-    }, 1_000)
-
-    return <box
-        vertical={true}>
-        <box
-            vertical={false}>
+    return <RevealerRow
+        icon={"󰍹"}
+        iconOffset={0}
+        windowName={ScreenshareWindowName}
+        content={
             <label
                 hexpand={true}
-                label="󰍹  Monitors"
+                label="Monitors"
                 halign={Gtk.Align.START}
                 cssClasses={["labelLargeBold"]}/>
-            <button
-                cssClasses={["iconButton"]}
-                label={revealed((revealed): string => {
-                    if (revealed) {
-                        return ""
-                    } else {
-                        return ""
-                    }
-                })}
-                onClicked={() => {
-                    revealed.set(!revealed.get())
-                }}/>
-        </box>
-        <revealer
-            cssClasses={["rowRevealer"]}
-            revealChild={revealed()}
-            transitionDuration={200}
-            transitionType={Gtk.RevealerTransitionType.SLIDE_DOWN}>
+        }
+        revealedContent={
             <box
                 vertical={true}>
                 {bind(hyprland, "monitors").as((monitors) => {
@@ -130,48 +107,23 @@ function Monitors() {
                     )
                 })}
             </box>
-        </revealer>
-    </box>
+        }
+    />
 }
 
 function Windows() {
-    const revealed = Variable(false)
-
-    setTimeout(() => {
-        bind(App.get_window(ScreenshareWindowName)!, "visible").subscribe((visible) => {
-            if (!visible) {
-                revealed.set(false)
-            }
-        })
-    }, 1_000)
-
-    return <box
-        vertical={true}>
-        <box
-            vertical={false}>
+    return <RevealerRow
+        icon={""}
+        iconOffset={0}
+        windowName={ScreenshareWindowName}
+        content={
             <label
                 hexpand={true}
-                label="  Windows"
+                label="Windows"
                 halign={Gtk.Align.START}
                 cssClasses={["labelLargeBold"]}/>
-            <button
-                cssClasses={["iconButton"]}
-                label={revealed((revealed): string => {
-                    if (revealed) {
-                        return ""
-                    } else {
-                        return ""
-                    }
-                })}
-                onClicked={() => {
-                    revealed.set(!revealed.get())
-                }}/>
-        </box>
-        <revealer
-            cssClasses={["rowRevealer"]}
-            revealChild={revealed()}
-            transitionDuration={200}
-            transitionType={Gtk.RevealerTransitionType.SLIDE_DOWN}>
+        }
+        revealedContent={
             <box
                 vertical={true}
                 spacing={12}>
@@ -223,49 +175,23 @@ function Windows() {
                         })
                 })}
             </box>
-        </revealer>
-    </box>
+        }
+    />
 }
 
 function Region() {
-    const revealed = Variable(false)
-
-    setTimeout(() => {
-        bind(App.get_window(ScreenshareWindowName)!, "visible").subscribe((visible) => {
-            if (!visible) {
-                revealed.set(false)
-            }
-        })
-    }, 1_000)
-
-    return <box
-        vertical={true}>
-        <box
-            vertical={false}>
+    return <RevealerRow
+        icon={""}
+        iconOffset={0}
+        windowName={ScreenshareWindowName}
+        content={
             <label
                 hexpand={true}
-                label="  Other"
+                label="Other"
                 halign={Gtk.Align.START}
                 cssClasses={["labelLargeBold"]}/>
-            <button
-                cssClasses={["iconButton"]}
-                label={revealed((revealed): string => {
-                    if (revealed) {
-                        return ""
-                    } else {
-                        return ""
-                    }
-                })}
-                onClicked={() => {
-                    revealed.set(!revealed.get())
-                }}/>
-        </box>
-
-        <revealer
-            cssClasses={["rowRevealer"]}
-            revealChild={revealed()}
-            transitionDuration={200}
-            transitionType={Gtk.RevealerTransitionType.SLIDE_DOWN}>
+        }
+        revealedContent={
             <button
                 hexpand={true}
                 cssClasses={["primaryButton", "screenshareButton"]}
@@ -292,8 +218,8 @@ function Region() {
                     cssClasses={["labelMediumBold"]}
                     label="Region"/>
             </button>
-        </revealer>
-    </box>
+        }
+    />
 }
 
 export default function () {
@@ -330,11 +256,10 @@ export default function () {
                     propagateNaturalHeight={true}>
                     <box
                         vertical={true}
-                        marginStart={20}
-                        marginBottom={20}
+                        marginStart={10}
+                        marginBottom={10}
                         marginTop={20}
-                        marginEnd={20}
-                        spacing={30}>
+                        marginEnd={10}>
                         <Monitors/>
                         <Windows/>
                         <Region/>

@@ -1,11 +1,12 @@
 import {bind, Binding, Variable} from "astal";
 import {App, Gtk} from "astal/gtk4";
-import {SystemMenuWindowName} from "../systemMenu/SystemMenuWindow";
 import LargeIconButton from "./LargeIconButton";
 
 type Params = {
     icon: string | Binding<string>;
     iconOffset: number | Binding<number>;
+    windowName: string;
+    setup?: (revealed: Variable<boolean>) => void;
     onClick?: () => void;
     content?: JSX.Element;
     revealedContent?: JSX.Element;
@@ -15,6 +16,8 @@ export default function (
     {
         icon,
         iconOffset,
+        windowName,
+        setup,
         onClick,
         content,
         revealedContent,
@@ -22,8 +25,12 @@ export default function (
 ) {
     const revealed = Variable(false)
 
+    if (setup) {
+        setup(revealed)
+    }
+
     setTimeout(() => {
-        bind(App.get_window(SystemMenuWindowName)!, "visible").subscribe((visible) => {
+        bind(App.get_window(windowName)!, "visible").subscribe((visible) => {
             if (!visible) {
                 revealed.set(false)
             }
@@ -33,8 +40,7 @@ export default function (
     return <box
         vertical={true}>
         <box
-            vertical={false}
-            cssClasses={["row"]}>
+            vertical={false}>
             {onClick !== undefined ?
                 <LargeIconButton
                     offset={iconOffset}
@@ -66,8 +72,8 @@ export default function (
                 }}/>
         </box>
         <revealer
-            marginTop={10}
-            cssClasses={["rowRevealer"]}
+            marginStart={10}
+            marginEnd={10}
             revealChild={revealed()}
             transitionDuration={200}
             transitionType={Gtk.RevealerTransitionType.SLIDE_DOWN}>
