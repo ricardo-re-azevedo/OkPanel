@@ -172,9 +172,7 @@ ${compileThemeBashScript(theme)}
 function getConfig(): Config {
     const homePath = exec('bash -c "echo $HOME"')
     const configStr = readFile(`${homePath}/.config/OkPanel/okpanel.json`) ?? "";
-    const config: Config = JSON.parse(configStr)
-
-    return config
+    return JSON.parse(configStr)
 }
 
 export function loadConfig(projectDirectory: string, homeDirectory: string) {
