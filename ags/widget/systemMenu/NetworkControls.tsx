@@ -532,8 +532,8 @@ export default function () {
             <label
                 marginTop={8}
                 marginBottom={8}
-                marginStart={18}
-                marginEnd={28}
+                marginStart={16}
+                marginEnd={30}
                 cssClasses={["largeIconLabel"]}
                 label={getNetworkIconBinding()}/>
             <label
