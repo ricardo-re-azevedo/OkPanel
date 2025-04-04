@@ -9,7 +9,6 @@ depends=(
   'gvfs'
   'sox'
   'wf-recorder'
-  'pipewire'
   'pipewire-pulse'
   'grim'
   'slurp'
