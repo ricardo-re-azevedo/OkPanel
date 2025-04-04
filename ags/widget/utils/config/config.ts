@@ -21,6 +21,31 @@ export type Theme = {
     };
 };
 
+export type VerticalBar = {
+    topWidgets: BarWidget[];
+    centerWidgets: BarWidget[];
+    bottomWidgets: BarWidget[];
+}
+
+export type HorizontalBar = {
+    leftWidgets: BarWidget[];
+    centerWidgets: BarWidget[];
+    rightWidgets: BarWidget[];
+}
+
+export enum BarWidget {
+    MENU = "menu",
+    WORKSPACES = "workspaces",
+    CLOCK =  "clock",
+    AUDIO_OUT = "audio_out",
+    AUDIO_IN = "audio_in",
+    BLUETOOTH = "bluetooth",
+    NETWORK = "network",
+    RECORDING_INDICATOR =  "recording_indicator",
+    VPN_INDICATOR = "vpn_indicator",
+    BATTERY = "battery",
+}
+
 export type Config = {
     themes: Theme[];
     themeUpdateScript: string;
@@ -35,6 +60,9 @@ export type Config = {
     windowBorderRadius: number;
     largeButtonBorderRadius: number;
     borderRadius: number;
+    verticalBar: VerticalBar;
+    horizontalBar: HorizontalBar;
+    notificationsPosition: string;
 };
 
 const defaultTheme: Theme = {
@@ -253,5 +281,90 @@ function checkConfigIntegrity(config: Config) {
     }
     if (config.largeButtonBorderRadius === undefined) {
         config.largeButtonBorderRadius = 16
+    }
+    if (config.horizontalBar === undefined) {
+        config.horizontalBar = {
+            leftWidgets: [
+                BarWidget.MENU,
+                BarWidget.WORKSPACES
+            ],
+            centerWidgets: [
+                BarWidget.CLOCK
+            ],
+            rightWidgets: [
+                BarWidget.RECORDING_INDICATOR,
+                BarWidget.AUDIO_OUT,
+                BarWidget.AUDIO_IN,
+                BarWidget.BLUETOOTH,
+                BarWidget.VPN_INDICATOR,
+                BarWidget.NETWORK,
+                BarWidget.BATTERY,
+            ]
+        }
+    }
+    if (config.horizontalBar.leftWidgets === undefined) {
+        config.horizontalBar.leftWidgets = []
+    }
+    if (config.horizontalBar.centerWidgets === undefined) {
+        config.horizontalBar.centerWidgets = []
+    }
+    if (config.horizontalBar.rightWidgets === undefined) {
+        config.horizontalBar.rightWidgets = []
+    }
+    if (!config.horizontalBar.leftWidgets.includes(BarWidget.MENU) &&
+            !config.horizontalBar.centerWidgets.includes(BarWidget.MENU) &&
+            !config.horizontalBar.rightWidgets.includes(BarWidget.MENU)) {
+        throw Error(`Config invalid.  Bar must contain the menu widget.`)
+    }
+    if (!config.horizontalBar.leftWidgets.includes(BarWidget.RECORDING_INDICATOR) &&
+        !config.horizontalBar.centerWidgets.includes(BarWidget.RECORDING_INDICATOR) &&
+        !config.horizontalBar.rightWidgets.includes(BarWidget.RECORDING_INDICATOR)) {
+        throw Error(`Config invalid.  Bar must contain the recording indicator widget.`)
+    }
+
+    if (config.verticalBar === undefined) {
+        config.verticalBar = {
+            topWidgets: [
+                BarWidget.MENU,
+                BarWidget.WORKSPACES
+            ],
+            centerWidgets: [],
+            bottomWidgets: [
+                BarWidget.RECORDING_INDICATOR,
+                BarWidget.AUDIO_OUT,
+                BarWidget.AUDIO_IN,
+                BarWidget.BLUETOOTH,
+                BarWidget.VPN_INDICATOR,
+                BarWidget.NETWORK,
+                BarWidget.BATTERY,
+                BarWidget.CLOCK,
+            ]
+        }
+    }
+    if (config.verticalBar.topWidgets === undefined) {
+        config.verticalBar.topWidgets = []
+    }
+    if (config.verticalBar.centerWidgets === undefined) {
+        config.verticalBar.centerWidgets = []
+    }
+    if (config.verticalBar.bottomWidgets === undefined) {
+        config.verticalBar.bottomWidgets = []
+    }
+    if (!config.verticalBar.topWidgets.includes(BarWidget.MENU) &&
+        !config.verticalBar.centerWidgets.includes(BarWidget.MENU) &&
+        !config.verticalBar.bottomWidgets.includes(BarWidget.MENU)) {
+        throw Error(`Config invalid.  Bar must contain the menu widget.`)
+    }
+    if (!config.verticalBar.topWidgets.includes(BarWidget.RECORDING_INDICATOR) &&
+        !config.verticalBar.centerWidgets.includes(BarWidget.RECORDING_INDICATOR) &&
+        !config.verticalBar.bottomWidgets.includes(BarWidget.RECORDING_INDICATOR)) {
+        throw Error(`Config invalid.  Bar must contain the recording indicator widget.`)
+    }
+
+    if (config.notificationsPosition === undefined) {
+        config.notificationsPosition = "right"
+    }
+    if (config.notificationsPosition !== "left" && config.notificationsPosition !== "right") {
+        throw Error(`Config invalid.  Notification position must be left or right.`)
     }
 }

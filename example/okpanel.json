@@ -42,5 +42,23 @@
   "gaps": 5,
   "borderRadius": 8,
   "windowBorderRadius": 8,
-  "largeButtonBorderRadius": 16
+  "largeButtonBorderRadius": 16,
+  "horizontalBar": {
+    "leftWidgets": [
+      "menu",
+      "workspaces"
+    ],
+    "centerWidgets": [
+      "clock"
+    ],
+    "rightWidgets": [
+      "recording_indicator",
+      "audio_out",
+      "audio_in",
+      "bluetooth",
+      "vpn_indicator",
+      "network",
+      "battery"
+    ]
+  }
 }

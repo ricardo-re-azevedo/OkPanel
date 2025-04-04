@@ -1,7 +1,7 @@
 import {App, Astal, Gdk, Gtk} from "astal/gtk4"
 import EndpointControls from "./EndpointControls";
 import Wp from "gi://AstalWp"
-import {bind, Variable} from "astal"
+import {bind} from "astal"
 import {getMicrophoneIcon, getVolumeIcon} from "../utils/audio";
 import PowerOptions from "./PowerOptions";
 import MediaPlayers from "./MediaPlayers";
@@ -9,32 +9,40 @@ import NotificationHistory from "./NotificationHistory";
 import NetworkControls from "./NetworkControls";
 import BluetoothControls from "./BluetoothControls";
 import LookAndFeelControls from "./LookAndFeelControls";
-import {Bar, MenuPosition, menuPosition, selectedBar} from "../bar/Bar";
-import {config} from "../utils/config/config";
+import {Bar, selectedBar} from "../bar/Bar";
+import {BarWidget, config} from "../utils/config/config";
 
 export const SystemMenuWindowName = "systemMenuWindow"
 
 export default function () {
     const {audio} = Wp.get_default()!
 
-    const barValues = Variable.derive([
-        selectedBar(),
-        menuPosition(),
-    ])
-
     return <window
         exclusivity={Astal.Exclusivity.NORMAL}
-        anchor={barValues((values) => {
-            const bar = values[0]
-            const menu = values[1]
-            if (bar === Bar.RIGHT || ((bar === Bar.TOP || bar === Bar.BOTTOM) && menu === MenuPosition.ALTERNATE)) {
-                return Astal.WindowAnchor.TOP
-                    | Astal.WindowAnchor.RIGHT
-                    | Astal.WindowAnchor.BOTTOM
-            } else {
-                return Astal.WindowAnchor.TOP
-                    | Astal.WindowAnchor.LEFT
-                    | Astal.WindowAnchor.BOTTOM
+        anchor={selectedBar((bar) => {
+            switch (bar) {
+                case Bar.TOP:
+                case Bar.BOTTOM:
+                    if (config.horizontalBar.leftWidgets.includes(BarWidget.MENU)) {
+                        return Astal.WindowAnchor.TOP
+                            | Astal.WindowAnchor.LEFT
+                            | Astal.WindowAnchor.BOTTOM
+                    } else if (config.horizontalBar.centerWidgets.includes(BarWidget.MENU)) {
+                        return Astal.WindowAnchor.TOP
+                            | Astal.WindowAnchor.BOTTOM
+                    } else {
+                        return Astal.WindowAnchor.TOP
+                            | Astal.WindowAnchor.RIGHT
+                            | Astal.WindowAnchor.BOTTOM
+                    }
+                case Bar.LEFT:
+                    return Astal.WindowAnchor.TOP
+                        | Astal.WindowAnchor.LEFT
+                        | Astal.WindowAnchor.BOTTOM
+                case Bar.RIGHT:
+                    return Astal.WindowAnchor.TOP
+                        | Astal.WindowAnchor.RIGHT
+                        | Astal.WindowAnchor.BOTTOM
             }
         })}
         layer={Astal.Layer.TOP}
@@ -52,12 +60,16 @@ export default function () {
         <box
             vertical={true}>
             <box
-                vexpand={barValues((values) => {
-                    const bar = values[0]
-                    const menu = values[1]
-                    return bar === Bar.BOTTOM
-                        || (bar === Bar.LEFT && menu === MenuPosition.ALTERNATE)
-                        || (bar === Bar.RIGHT && menu === MenuPosition.ALTERNATE)
+                vexpand={selectedBar((bar) => {
+                    switch (bar) {
+                        case Bar.BOTTOM:
+                            return true
+                        case Bar.LEFT:
+                        case Bar.RIGHT:
+                            return config.verticalBar.centerWidgets.includes(BarWidget.MENU)
+                                || config.verticalBar.bottomWidgets.includes(BarWidget.MENU)
+                        default: return false
+                    }
                 })}/>
             <box
                 vertical={true}
@@ -99,12 +111,16 @@ export default function () {
                 </Gtk.ScrolledWindow>
             </box>
             <box
-                vexpand={barValues((values) => {
-                    const bar = values[0]
-                    const menu = values[1]
-                    return bar === Bar.TOP
-                        || (bar === Bar.LEFT && menu === MenuPosition.DEFAULT)
-                        || (bar === Bar.RIGHT && menu === MenuPosition.DEFAULT)
+                vexpand={selectedBar((bar) => {
+                    switch (bar) {
+                        case Bar.TOP:
+                            return true
+                        case Bar.LEFT:
+                        case Bar.RIGHT:
+                            return config.verticalBar.centerWidgets.includes(BarWidget.MENU)
+                                || config.verticalBar.topWidgets.includes(BarWidget.MENU)
+                        default: return false
+                    }
                 })}/>
         </box>
     </window>

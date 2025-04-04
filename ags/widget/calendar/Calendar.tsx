@@ -1,7 +1,7 @@
 import {App, Astal, Gdk, Gtk} from "astal/gtk4"
 import {GLib, Variable} from "astal"
-import {Bar, clockPosition, ClockPosition, selectedBar} from "../bar/Bar";
-import {config} from "../utils/config/config";
+import {Bar, selectedBar} from "../bar/Bar";
+import {BarWidget, config} from "../utils/config/config";
 
 export const CalendarWindowName = "calendarWindow"
 
@@ -9,40 +9,41 @@ export default function () {
     const time = Variable<GLib.DateTime>(GLib.DateTime.new_now_local())
         .poll(1000, () => GLib.DateTime.new_now_local())
 
-    const barValues = Variable.derive([
-        selectedBar(),
-        clockPosition(),
-    ])
-
     return <window
         monitor={0}
         cssClasses={["focusedWindow"]}
         name={CalendarWindowName}
         application={App}
-        anchor={barValues((values) => {
-            const bar = values[0]
-            const menu = values[1]
+        anchor={selectedBar((bar) => {
             switch (bar) {
                 case Bar.TOP:
-                    if (menu === ClockPosition.DEFAULT) {
+                    if (config.horizontalBar.leftWidgets.includes(BarWidget.CLOCK)) {
+                        return Astal.WindowAnchor.TOP | Astal.WindowAnchor.LEFT
+                    } else if (config.horizontalBar.centerWidgets.includes(BarWidget.CLOCK)) {
                         return Astal.WindowAnchor.TOP
                     } else {
                         return Astal.WindowAnchor.TOP | Astal.WindowAnchor.RIGHT
                     }
                 case Bar.LEFT:
-                    if (menu === ClockPosition.DEFAULT) {
-                        return Astal.WindowAnchor.BOTTOM | Astal.WindowAnchor.LEFT
-                    } else {
+                    if (config.verticalBar.topWidgets.includes(BarWidget.CLOCK)) {
+                        return Astal.WindowAnchor.LEFT | Astal.WindowAnchor.TOP
+                    } else if (config.verticalBar.centerWidgets.includes(BarWidget.CLOCK)) {
                         return Astal.WindowAnchor.LEFT
+                    } else {
+                        return Astal.WindowAnchor.LEFT | Astal.WindowAnchor.BOTTOM
                     }
                 case Bar.RIGHT:
-                    if (menu === ClockPosition.DEFAULT) {
-                        return Astal.WindowAnchor.BOTTOM | Astal.WindowAnchor.RIGHT
-                    } else {
+                    if (config.verticalBar.topWidgets.includes(BarWidget.CLOCK)) {
+                        return Astal.WindowAnchor.RIGHT | Astal.WindowAnchor.TOP
+                    } else if (config.verticalBar.centerWidgets.includes(BarWidget.CLOCK)) {
                         return Astal.WindowAnchor.RIGHT
+                    } else {
+                        return Astal.WindowAnchor.RIGHT | Astal.WindowAnchor.BOTTOM
                     }
                 case Bar.BOTTOM:
-                    if (menu === ClockPosition.DEFAULT) {
+                    if (config.horizontalBar.leftWidgets.includes(BarWidget.CLOCK)) {
+                        return Astal.WindowAnchor.BOTTOM | Astal.WindowAnchor.LEFT
+                    } else if (config.horizontalBar.centerWidgets.includes(BarWidget.CLOCK)) {
                         return Astal.WindowAnchor.BOTTOM
                     } else {
                         return Astal.WindowAnchor.BOTTOM | Astal.WindowAnchor.RIGHT

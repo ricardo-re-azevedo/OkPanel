@@ -13,6 +13,7 @@ import Bluetooth from "gi://AstalBluetooth"
 import {activeVpnConnections} from "../systemMenu/NetworkControls";
 import {isRecording} from "../screenshot/Screenshot";
 import Divider from "../common/Divider";
+import {BarWidget} from "../utils/config/config";
 
 function groupByProperty(
     array: Hyprland.Workspace[],
@@ -35,7 +36,7 @@ function groupByProperty(
     });
 }
 
-export function Workspaces({vertical}: { vertical: boolean }) {
+function Workspaces({vertical}: { vertical: boolean }) {
     const hypr = Hyprland.get_default()
 
     return <box
@@ -67,7 +68,7 @@ export function Workspaces({vertical}: { vertical: boolean }) {
     </box>
 }
 
-export function ClockButton({cssClasses, singleLine}: { cssClasses: string[], singleLine: boolean }) {
+function Clock({singleLine}: { singleLine: boolean }) {
     let format: string
 
     if (singleLine) {
@@ -80,7 +81,7 @@ export function ClockButton({cssClasses, singleLine}: { cssClasses: string[], si
         GLib.DateTime.new_now_local().format(format)!)
 
     return <button
-        cssClasses={cssClasses.concat(["iconButton"])}
+        cssClasses={["iconButton"]}
         label={time()}
         onClicked={() => {
             App.toggle_window(CalendarWindowName)
@@ -89,7 +90,7 @@ export function ClockButton({cssClasses, singleLine}: { cssClasses: string[], si
     </button>
 }
 
-export function VpnButton() {
+function VpnIndicator() {
     return <label
         cssClasses={["iconLabel"]}
         label="󰯄"
@@ -98,7 +99,7 @@ export function VpnButton() {
         })}/>
 }
 
-export function ScreenRecordingButton() {
+function ScreenRecordingStopButton() {
     return <button
         cssClasses={["warningIconButton"]}
         label=""
@@ -108,7 +109,7 @@ export function ScreenRecordingButton() {
         }}/>
 }
 
-export function VolumeButton() {
+function AudioOut() {
     const defaultSpeaker = Wp.get_default()!.audio.default_speaker
 
     const speakerVar = Variable.derive([
@@ -122,7 +123,7 @@ export function VolumeButton() {
         label={speakerVar(() => getVolumeIcon(defaultSpeaker))}/>
 }
 
-export function MicrophoneButton() {
+function AudioIn() {
     const {defaultMicrophone} = Wp.get_default()!.audio
 
     const micVar = Variable.derive([
@@ -136,7 +137,7 @@ export function MicrophoneButton() {
         label={micVar(() => getMicrophoneIcon(defaultMicrophone))}/>
 }
 
-export function BluetoothButton() {
+function BluetoothIndicator() {
     const bluetooth = Bluetooth.get_default()
     return <label
         cssClasses={["iconLabel"]}
@@ -146,13 +147,13 @@ export function BluetoothButton() {
         })}/>
 }
 
-export function NetworkButton() {
+function NetworkIndicator() {
     return <label
         cssClasses={["iconLabel"]}
         label={getNetworkIconBinding()}/>
 }
 
-export function BatteryButton() {
+function BatteryIndicator() {
     const battery = Battery.get_default()
 
     let batteryWarningInterval: GLib.Source | null = null
@@ -184,11 +185,38 @@ export function BatteryButton() {
         visible={bind(battery, "isBattery")}/>
 }
 
-export function MenuButton({cssClasses}: { cssClasses: string[] }) {
+function MenuButton() {
     return <button
-        cssClasses={cssClasses.concat(["iconButton"])}
+        cssClasses={["iconButton"]}
         label=""
         onClicked={() => {
             App.toggle_window(SystemMenuWindowName)
         }}/>
+}
+
+export function addWidgets(widgets: BarWidget[], isVertical: boolean) {
+    return widgets.map((widget) => {
+        switch (widget) {
+            case BarWidget.MENU:
+                return <MenuButton/>
+            case BarWidget.WORKSPACES:
+                return <Workspaces vertical={isVertical}/>
+            case BarWidget.BATTERY:
+                return <BatteryIndicator/>
+            case BarWidget.AUDIO_IN:
+                return <AudioIn/>
+            case BarWidget.AUDIO_OUT:
+                return <AudioOut/>
+            case BarWidget.BLUETOOTH:
+                return <BluetoothIndicator/>
+            case BarWidget.CLOCK:
+                return <Clock singleLine={!isVertical}/>
+            case BarWidget.NETWORK:
+                return <NetworkIndicator/>
+            case BarWidget.RECORDING_INDICATOR:
+                return <ScreenRecordingStopButton/>
+            case BarWidget.VPN_INDICATOR:
+                return <VpnIndicator/>
+        }
+    })
 }

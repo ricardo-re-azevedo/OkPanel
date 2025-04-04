@@ -10,24 +10,13 @@ export enum Bar {
     BOTTOM = "bottom",
 }
 
-export enum MenuPosition {
-    DEFAULT = "default",
-    ALTERNATE = "alternate",
-}
-
-export enum ClockPosition {
-    DEFAULT= "default",
-    ALTERNATE = "alternate",
-}
-
 export function restoreBar() {
     const details = readFile(`${homeDir}/.cache/OkPanel/savedBar`).trim()
 
     if (details.trim() === "") {
         return
     }
-    const values = details.split(",")
-    switch (values[0]) {
+    switch (details) {
         case Bar.LEFT:
             selectedBar.set(Bar.LEFT)
             break;
@@ -41,49 +30,19 @@ export function restoreBar() {
             selectedBar.set(Bar.BOTTOM)
             break;
     }
-    switch (values[1]) {
-        case MenuPosition.DEFAULT:
-            menuPosition.set(MenuPosition.DEFAULT)
-            break;
-        case MenuPosition.ALTERNATE:
-            menuPosition.set(MenuPosition.ALTERNATE)
-            break;
-    }
-    switch (values[2]) {
-        case ClockPosition.DEFAULT:
-            clockPosition.set(ClockPosition.DEFAULT)
-            break;
-        case ClockPosition.ALTERNATE:
-            clockPosition.set(ClockPosition.ALTERNATE)
-            break;
-    }
 }
 
 export const selectedBar = Variable(Bar.LEFT)
-export const menuPosition = Variable(MenuPosition.DEFAULT)
-export const clockPosition = Variable(ClockPosition.DEFAULT)
 
 export function setBarType(bar: Bar) {
     selectedBar.set(bar)
     saveBar()
 }
 
-export function setMenuPosition(position: MenuPosition) {
-    print(`setting menu position to: ${position}`)
-    menuPosition.set(position)
-    saveBar()
-}
-
-export function setClockPosition(position: ClockPosition) {
-    print(`setting clock position to: ${position}`)
-    clockPosition.set(position)
-    saveBar()
-}
-
 function saveBar() {
     execAsync(`bash -c '
 mkdir -p ${homeDir}/.cache/OkPanel
-echo "${selectedBar.get()},${menuPosition.get()},${clockPosition.get()}" > ${homeDir}/.cache/OkPanel/savedBar
+echo "${selectedBar.get()}" > ${homeDir}/.cache/OkPanel/savedBar
     '`).catch((error) => {
         print(error)
     })

@@ -1,17 +1,6 @@
 import {App, Astal, Gtk} from "astal/gtk4"
-import {
-    BatteryButton,
-    BluetoothButton,
-    ClockButton,
-    MenuButton,
-    MicrophoneButton,
-    NetworkButton,
-    ScreenRecordingButton,
-    VolumeButton,
-    VpnButton,
-    Workspaces
-} from "./BarWidgets";
-import {Bar, ClockPosition, clockPosition, menuPosition, MenuPosition, selectedBar} from "./Bar";
+import {addWidgets} from "./BarWidgets";
+import {Bar, selectedBar} from "./Bar";
 import {config} from "../utils/config/config";
 
 export default function () {
@@ -39,46 +28,13 @@ export default function () {
             orientation={Gtk.Orientation.HORIZONTAL}
             cssClasses={["window", "topBar"]}>
             <box halign={Gtk.Align.START}>
-                {menuPosition((position) => {
-                    if (position === MenuPosition.DEFAULT) {
-                        return <MenuButton cssClasses={[]}/>
-                    } else {
-                        return <box/>
-                    }
-                })}
-                <Workspaces vertical={false}/>
+                {addWidgets(config.horizontalBar.leftWidgets, false)}
             </box>
             <box>
-                {clockPosition((position) => {
-                    if (position === ClockPosition.DEFAULT) {
-                        return <ClockButton cssClasses={[]} singleLine={true}/>
-                    } else {
-                        return <box/>
-                    }
-                })}
+                {addWidgets(config.horizontalBar.centerWidgets, false)}
             </box>
             <box halign={Gtk.Align.END}>
-                <ScreenRecordingButton/>
-                <VolumeButton/>
-                <MicrophoneButton/>
-                <BluetoothButton/>
-                <VpnButton/>
-                <NetworkButton/>
-                <BatteryButton/>
-                {clockPosition((position) => {
-                    if (position === ClockPosition.ALTERNATE) {
-                        return <ClockButton cssClasses={[]} singleLine={true}/>
-                    } else {
-                        return <box/>
-                    }
-                })}
-                {menuPosition((position) => {
-                    if (position === MenuPosition.ALTERNATE) {
-                        return <MenuButton cssClasses={[]}/>
-                    } else {
-                        return <box/>
-                    }
-                })}
+                {addWidgets(config.horizontalBar.rightWidgets, false)}
             </box>
         </centerbox>
     </window>

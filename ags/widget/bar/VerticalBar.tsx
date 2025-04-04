@@ -1,16 +1,6 @@
 import {App, Astal, Gtk} from "astal/gtk4"
-import {
-    BatteryButton,
-    BluetoothButton,
-    ClockButton,
-    MenuButton,
-    MicrophoneButton,
-    NetworkButton,
-    ScreenRecordingButton,
-    VolumeButton, VpnButton,
-    Workspaces
-} from "./BarWidgets";
-import {selectedBar, Bar, menuPosition, MenuPosition, clockPosition, ClockPosition} from "./Bar";
+import {addWidgets} from "./BarWidgets";
+import {selectedBar, Bar} from "./Bar";
 import {config} from "../utils/config/config";
 
 export default function () {
@@ -38,48 +28,15 @@ export default function () {
             orientation={Gtk.Orientation.VERTICAL}
             cssClasses={["window", "sideBar"]}>
             <box vertical={true}>
-                {menuPosition((position) => {
-                    if (position === MenuPosition.DEFAULT) {
-                        return <MenuButton cssClasses={["sideBarMenuButton"]}/>
-                    } else {
-                        return <box/>
-                    }
-                })}
-                <Workspaces vertical={true}/>
+                {addWidgets(config.verticalBar.topWidgets, true)}
             </box>
-            <box>
-                {clockPosition((position) => {
-                    if (position === ClockPosition.ALTERNATE) {
-                        return <ClockButton cssClasses={["sideBarClockButton"]} singleLine={false}/>
-                    } else {
-                        return <box/>
-                    }
-                })}
+            <box vertical={true}>
+                {addWidgets(config.verticalBar.centerWidgets, true)}
             </box>
             <box
                 vertical={true}
                 valign={Gtk.Align.END}>
-                <ScreenRecordingButton/>
-                <VolumeButton/>
-                <MicrophoneButton/>
-                <BluetoothButton/>
-                <VpnButton/>
-                <NetworkButton/>
-                <BatteryButton/>
-                {clockPosition((position) => {
-                    if (position === ClockPosition.DEFAULT) {
-                        return <ClockButton cssClasses={["sideBarClockButton"]} singleLine={false}/>
-                    } else {
-                        return <box/>
-                    }
-                })}
-                {menuPosition((position) => {
-                    if (position === MenuPosition.ALTERNATE) {
-                        return <MenuButton cssClasses={["sideBarMenuButton"]}/>
-                    } else {
-                        return <box/>
-                    }
-                })}
+                {addWidgets(config.verticalBar.bottomWidgets, true)}
             </box>
         </centerbox>
     </window>
