@@ -172,13 +172,16 @@ ${compileThemeBashScript(theme)}
 function getConfig(): Config {
     const homePath = exec('bash -c "echo $HOME"')
     const configStr = readFile(`${homePath}/.config/OkPanel/okpanel.json`) ?? "";
-    return JSON.parse(configStr)
+    const config: Config = JSON.parse(configStr)
+
+    checkConfigIntegrity(config)
+
+    return config
 }
 
 export function loadConfig(projectDirectory: string, homeDirectory: string) {
     projectDir = projectDirectory
     homeDir = homeDirectory
-    checkConfigIntegrity()
 
     const savedThemeName = readFile(`${homeDir}/.cache/OkPanel/themeName`).trim()
 
@@ -193,10 +196,10 @@ export function loadConfig(projectDirectory: string, homeDirectory: string) {
     restoreBar()
 }
 
-function checkConfigIntegrity() {
+function checkConfigIntegrity(config: Config) {
     config.themes.forEach((theme) => {
         if (theme.name === undefined) {
-            throw Error("Config invalid.  Problem with themes.")
+            throw Error("Config invalid.  Problem with themes.  Name undefined.")
         }
         if (theme.wallpaperDir === undefined
             || theme.icon === undefined
@@ -238,12 +241,12 @@ function checkConfigIntegrity() {
         }
     }
     if (config.gaps === undefined) {
-        throw Error("Config invalid.  Missing gaps.")
+        config.gaps = 30
     }
     if (config.borderRadius === undefined) {
-        throw Error("Config invalid.  Missing borderRadius.")
+        config.borderRadius = 8
     }
     if (config.windowBorderRadius === undefined) {
-        throw Error("Config invalid.  Missing windowBorderRadius.")
+        config.windowBorderRadius = 8
     }
 }
