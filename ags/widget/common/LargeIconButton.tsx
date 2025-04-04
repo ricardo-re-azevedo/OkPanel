@@ -23,7 +23,7 @@ export default function(
             marginTop={8}
             marginBottom={8}
             marginStart={typeof offset === 'number' ? 18 - offset : offset.as((value) => 18 - value)}
-            marginEnd={typeof offset === 'number' ? 18 - offset : offset.as((value) => 18 + value)}
+            marginEnd={typeof offset === 'number' ? 18 + offset : offset.as((value) => 18 + value)}
             label={icon}/>
     </button>
 }

@@ -18,7 +18,7 @@ export default function () {
             }}/>
         <LargeIconButton
             icon=""
-            offset={1}
+            offset={2}
             onClicked={() => {
                 App.toggle_window(SystemMenuWindowName)
                 execAsync(config.systemCommands.lock)
