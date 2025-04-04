@@ -122,44 +122,50 @@ function BluetoothDevices() {
 export default function () {
     const bluetooth = Bluetooth.get_default()
 
-    return <RevealerRow
-        icon={getBluetoothIcon()}
-        iconOffset={0}
-        windowName={SystemMenuWindowName}
-        content={
-            <label
-                cssClasses={["labelMediumBold"]}
-                halign={Gtk.Align.START}
-                hexpand={true}
-                label={getBluetoothName()}/>
-        }
-        revealedContent={
-            <box
-                vertical={true}>
-                <box
-                    vertical={false}>
+    return <box>
+        {bind(bluetooth, "isPowered").as((isPowered) => {
+            if (!isPowered) return <box/>
+    
+            return <RevealerRow
+                icon={getBluetoothIcon()}
+                iconOffset={0}
+                windowName={SystemMenuWindowName}
+                content={
                     <label
+                        cssClasses={["labelMediumBold"]}
                         halign={Gtk.Align.START}
                         hexpand={true}
-                        label="Devices"
-                        cssClasses={["labelLargeBold"]}/>
-                    <button
-                        cssClasses={["transparentButton"]}
-                        marginStart={8}
-                        marginEnd={8}
-                        label={bind(bluetooth.adapter, "discovering").as((discovering) => {
-                            return discovering ? "Stop scanning" : "Scan"
-                        })}
-                        onClicked={() => {
-                            if (bluetooth.adapter.discovering) {
-                                bluetooth.adapter.stop_discovery()
-                            } else {
-                                bluetooth.adapter.start_discovery()
-                            }
-                        }}/>
-                </box>
-                <BluetoothDevices/>
-            </box>
-        }
-    />
+                        label={getBluetoothName()}/>
+                }
+                revealedContent={
+                    <box
+                        vertical={true}>
+                        <box
+                            vertical={false}>
+                            <label
+                                halign={Gtk.Align.START}
+                                hexpand={true}
+                                label="Devices"
+                                cssClasses={["labelLargeBold"]}/>
+                            <button
+                                cssClasses={["transparentButton"]}
+                                marginStart={8}
+                                marginEnd={8}
+                                label={bind(bluetooth.adapter, "discovering").as((discovering) => {
+                                    return discovering ? "Stop scanning" : "Scan"
+                                })}
+                                onClicked={() => {
+                                    if (bluetooth.adapter.discovering) {
+                                        bluetooth.adapter.stop_discovery()
+                                    } else {
+                                        bluetooth.adapter.start_discovery()
+                                    }
+                                }}/>
+                        </box>
+                        <BluetoothDevices/>
+                    </box>
+                }
+            />
+        })}
+    </box>
 }
