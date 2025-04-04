@@ -1,8 +1,44 @@
 # OkPanel
 
 # 🚧 Work in progress 🚧
+# 🚧 Breaking changes likely coming 🚧
 
 # Docs and Features coming soon
+
+## Installation
+
+### Manual
+
+Install dependencies
+```
+yay -S aylurs-gtk-shell-git gvfs sox wf-recorder pipewire-pulse grim slurp networkmanager wireplumber bluez bluez-utils dart-sass upower brightnessctl ttf-jetbrains-mono-nerd
+```
+
+Then run the install.sh file
+```
+./install.sh
+```
+
+### AUR package coming soonish
+
+## Usage (better docs coming soonish)
+
+Create a config file and place it in ~/.config/OkPanel/okpanel.json
+
+See the [example](example/okpanel.json) config
+
+Start the panel with 
+
+```
+okpanel run
+```
+
+See --help for more
+```
+okpanel --help
+```
+
+## Feature Showcase
 
 ### Network management
 
