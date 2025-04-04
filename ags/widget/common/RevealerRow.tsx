@@ -5,7 +5,7 @@ import LargeIconButton from "./LargeIconButton";
 
 type Params = {
     icon: string | Binding<string>;
-    iconOffset: number;
+    iconOffset: number | Binding<number>;
     onClick?: () => void;
     content?: JSX.Element;
     revealedContent?: JSX.Element;
@@ -30,9 +30,6 @@ export default function (
         })
     }, 1_000)
 
-    const leftPadding = 18 - iconOffset
-    const rightPadding = 18 + iconOffset
-
     return <box
         vertical={true}>
         <box
@@ -48,11 +45,12 @@ export default function (
             : <label
                     marginTop={8}
                     marginBottom={8}
-                    marginStart={leftPadding}
-                    marginEnd={rightPadding + 10}
+                    marginStart={typeof iconOffset === 'number' ? 18 - iconOffset : iconOffset.as((value) => 18 - value)}
+                    marginEnd={typeof iconOffset === 'number' ? 18 - iconOffset : iconOffset.as((value) => 18 + value)}
                     cssClasses={["largeIconLabel"]}
                     label={icon}/>
             }
+            <box marginEnd={10}/>
             {content}
             <button
                 cssClasses={["iconButton"]}

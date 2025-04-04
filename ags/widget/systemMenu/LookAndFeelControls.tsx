@@ -8,6 +8,7 @@ import {Bar, selectedBar, setBarType} from "../bar/Bar";
 import Divider from "../common/Divider";
 import {config, selectedTheme, setTheme, setWallpaper, Theme} from "../utils/config/config";
 import LargeIconButton from "../common/LargeIconButton";
+import RevealerRow from "../common/RevealerRow";
 
 const files: Variable<string[][]> = Variable([])
 const numberOfColumns = 2
@@ -208,68 +209,22 @@ export default function () {
     })
     updateFiles(selectedTheme.get())
 
-    const wallpaperChooserRevealed = Variable(false)
-
-    setTimeout(() => {
-        bind(App.get_window(SystemMenuWindowName)!, "visible").subscribe((visible) => {
-            if (!visible) {
-                wallpaperChooserRevealed.set(false)
-            }
-        })
-    }, 1_000)
-
-    return <box
-        vertical={true}>
-        <box
-            vertical={false}
-            cssClasses={["row"]}>
-            <box
-                setup={(self) => {
-                    const currentTheme = selectedTheme.get()
-                    if (currentTheme != null) {
-                        updateMargins(self, currentTheme)
-                    }
-
-                    selectedTheme.subscribe((theme) => {
-                        if (theme != null) {
-                            updateMargins(self, theme)
-                        }
-                    })
-                }}>
-                <label
-                    marginTop={8}
-                    marginBottom={8}
-                    marginEnd={10}
-                    cssClasses={["largeIconLabel"]}
-                    label={selectedTheme((theme) => {
-                        return theme?.icon ?? ""
-                    })}/>
-            </box>
+    return <RevealerRow
+        icon={selectedTheme((theme) => {
+            return theme?.icon ?? ""
+        })}
+        iconOffset={selectedTheme((theme) => {
+            return theme.pixelOffset
+        })}
+        content={
             <label
                 cssClasses={["labelMediumBold"]}
                 halign={Gtk.Align.START}
                 hexpand={true}
                 ellipsize={Pango.EllipsizeMode.END}
                 label="Look and Feel"/>
-            <button
-                cssClasses={["iconButton"]}
-                label={wallpaperChooserRevealed((revealed): string => {
-                    if (revealed) {
-                        return ""
-                    } else {
-                        return ""
-                    }
-                })}
-                onClicked={() => {
-                    wallpaperChooserRevealed.set(!wallpaperChooserRevealed.get())
-                }}/>
-        </box>
-        <revealer
-            marginTop={10}
-            cssClasses={["rowRevealer"]}
-            revealChild={wallpaperChooserRevealed()}
-            transitionDuration={200}
-            transitionType={Gtk.RevealerTransitionType.SLIDE_DOWN}>
+        }
+        revealedContent={
             <box
                 vertical={true}>
                 {config.themes.length > 1 && <box
@@ -289,6 +244,6 @@ export default function () {
                     })}
                 </box>
             </box>
-        </revealer>
-    </box>
+        }
+    />
 }

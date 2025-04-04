@@ -5,6 +5,7 @@ import {Gtk, App} from "astal/gtk4"
 import {execAsync} from "astal/process"
 import {SystemMenuWindowName} from "./SystemMenuWindow";
 import Pango from "gi://Pango?version=1.0";
+import RevealerRow from "../common/RevealerRow";
 
 const wifiConnections = Variable<string[]>([])
 const activeWifiConnections = Variable<string[]>([])
@@ -505,15 +506,12 @@ function VpnConnections() {
 
 export default function () {
     const network = AstalNetwork.get_default()
-    const networkChooserRevealed = Variable(false)
 
     updateConnections()
 
     setTimeout(() => {
         bind(App.get_window(SystemMenuWindowName)!, "visible").subscribe((visible) => {
-            if (!visible) {
-                networkChooserRevealed.set(false)
-            } else {
+            if (visible) {
                 updateConnections()
             }
         })
@@ -524,18 +522,10 @@ export default function () {
         activeVpnConnections
     ])
 
-    return <box
-        vertical={true}>
-        <box
-            vertical={false}
-            cssClasses={["row"]}>
-            <label
-                marginTop={8}
-                marginBottom={8}
-                marginStart={16}
-                marginEnd={30}
-                cssClasses={["largeIconLabel"]}
-                label={getNetworkIconBinding()}/>
+    return <RevealerRow
+        icon={getNetworkIconBinding()}
+        iconOffset={2}
+        content={
             <label
                 cssClasses={["labelMediumBold"]}
                 halign={Gtk.Align.START}
@@ -550,28 +540,8 @@ export default function () {
                         return `${networkNameValue} (+VPN)`
                     }
                 })}/>
-            <button
-                cssClasses={["iconButton"]}
-                label={networkChooserRevealed((revealed): string => {
-                    if (revealed) {
-                        return ""
-                    } else {
-                        return ""
-                    }
-                })}
-                onClicked={() => {
-                    networkChooserRevealed.set(!networkChooserRevealed.get())
-                    if (networkChooserRevealed.get()) {
-                        network.wifi?.scan()
-                    }
-                }}/>
-        </box>
-        <revealer
-            marginTop={10}
-            cssClasses={["rowRevealer"]}
-            revealChild={networkChooserRevealed()}
-            transitionDuration={200}
-            transitionType={Gtk.RevealerTransitionType.SLIDE_DOWN}>
+        }
+        revealedContent={
             <box
                 vertical={true}
                 spacing={12}>
@@ -589,6 +559,6 @@ export default function () {
                 {network.wifi && <WifiConnections connections={wifiConnections}/>}
                 {network.wifi && <WifiScannedConnections/>}
             </box>
-        </revealer>
-    </box>
+        }
+    />
 }

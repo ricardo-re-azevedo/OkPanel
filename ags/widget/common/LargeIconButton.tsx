@@ -9,13 +9,11 @@ export default function(
     }:
     {
         icon: Binding<string> | string,
-        offset: number,
+        offset: number | Binding<number>,
         selected?: Binding<boolean>,
         onClicked: () => void
     }
 ) {
-    const leftPadding = 18 - offset
-    const rightPadding = 18 + offset
     return <button
         cssClasses={selected === undefined ?
             ["largeIconButton"] :
@@ -24,8 +22,8 @@ export default function(
         <label
             marginTop={8}
             marginBottom={8}
-            marginStart={leftPadding}
-            marginEnd={rightPadding}
+            marginStart={typeof offset === 'number' ? 18 - offset : offset.as((value) => 18 - value)}
+            marginEnd={typeof offset === 'number' ? 18 - offset : offset.as((value) => 18 + value)}
             label={icon}/>
     </button>
 }

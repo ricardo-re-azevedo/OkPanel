@@ -3,6 +3,7 @@ import {Gtk, App} from "astal/gtk4"
 import {SystemMenuWindowName} from "./SystemMenuWindow";
 import {getBluetoothIcon, getBluetoothName} from "../utils/bluetooth";
 import Bluetooth from "gi://AstalBluetooth";
+import RevealerRow from "../common/RevealerRow";
 
 function BluetoothDevices() {
     const bluetooth = Bluetooth.get_default()
@@ -120,83 +121,44 @@ function BluetoothDevices() {
 
 export default function () {
     const bluetooth = Bluetooth.get_default()
-    const bluetoothChooserRevealed = Variable(false)
 
-    setTimeout(() => {
-        bind(App.get_window(SystemMenuWindowName)!, "visible").subscribe((visible) => {
-            if (!visible) {
-                bluetoothChooserRevealed.set(false)
-            }
-        })
-    }, 1_000)
-
-    return <box>
-        {bind(bluetooth, "isPowered").as((isPowered) => {
-            if (!isPowered) return <box/>
-            return <box
+    return <RevealerRow
+        icon={getBluetoothIcon()}
+        iconOffset={0}
+        content={
+            <label
+                cssClasses={["labelMediumBold"]}
+                halign={Gtk.Align.START}
+                hexpand={true}
+                label={getBluetoothName()}/>
+        }
+        revealedContent={
+            <box
                 vertical={true}>
                 <box
-                    vertical={false}
-                    cssClasses={["row"]}>
+                    vertical={false}>
                     <label
-                        marginTop={8}
-                        marginBottom={8}
-                        marginStart={18}
-                        marginEnd={28}
-                        cssClasses={["largeIconLabel"]}
-                        label={getBluetoothIcon()}/>
-                    <label
-                        cssClasses={["labelMediumBold"]}
                         halign={Gtk.Align.START}
                         hexpand={true}
-                        label={getBluetoothName()}/>
+                        label="Devices"
+                        cssClasses={["labelLargeBold"]}/>
                     <button
-                        cssClasses={["iconButton"]}
-                        label={bluetoothChooserRevealed((revealed): string => {
-                            if (revealed) {
-                                return ""
-                            } else {
-                                return ""
-                            }
+                        cssClasses={["transparentButton"]}
+                        marginStart={8}
+                        marginEnd={8}
+                        label={bind(bluetooth.adapter, "discovering").as((discovering) => {
+                            return discovering ? "Stop scanning" : "Scan"
                         })}
                         onClicked={() => {
-                            bluetoothChooserRevealed.set(!bluetoothChooserRevealed.get())
+                            if (bluetooth.adapter.discovering) {
+                                bluetooth.adapter.stop_discovery()
+                            } else {
+                                bluetooth.adapter.start_discovery()
+                            }
                         }}/>
                 </box>
-                <revealer
-                    marginTop={10}
-                    cssClasses={["rowRevealer"]}
-                    revealChild={bluetoothChooserRevealed()}
-                    transitionDuration={200}
-                    transitionType={Gtk.RevealerTransitionType.SLIDE_DOWN}>
-                    <box
-                        vertical={true}>
-                        <box
-                            vertical={false}>
-                            <label
-                                halign={Gtk.Align.START}
-                                hexpand={true}
-                                label="Devices"
-                                cssClasses={["labelLargeBold"]}/>
-                            <button
-                                cssClasses={["transparentButton"]}
-                                marginStart={8}
-                                marginEnd={8}
-                                label={bind(bluetooth.adapter, "discovering").as((discovering) => {
-                                    return discovering ? "Stop scanning" : "Scan"
-                                })}
-                                onClicked={() => {
-                                    if (bluetooth.adapter.discovering) {
-                                        bluetooth.adapter.stop_discovery()
-                                    } else {
-                                        bluetooth.adapter.start_discovery()
-                                    }
-                                }}/>
-                        </box>
-                        <BluetoothDevices/>
-                    </box>
-                </revealer>
+                <BluetoothDevices/>
             </box>
-        })}
-    </box>
+        }
+    />
 }

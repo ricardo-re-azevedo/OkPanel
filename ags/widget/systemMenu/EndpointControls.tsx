@@ -1,10 +1,9 @@
 import Wp from "gi://AstalWp"
 import {bind, Binding, Variable} from "astal"
-import {App, Gtk} from "astal/gtk4"
-import {SystemMenuWindowName} from "./SystemMenuWindow";
-import {toggleMuteEndpoint} from "../utils/audio";
+import {Gtk} from "astal/gtk4"
 import Pango from "gi://Pango?version=1.0";
-import LargeIconButton from "../common/LargeIconButton";
+import RevealerRow from "../common/RevealerRow";
+import {toggleMuteEndpoint} from "../utils/audio";
 
 /**
  * An Endpoint is either a speaker or microphone
@@ -24,34 +23,19 @@ export default function (
         endpointsBinding: Binding<Wp.Endpoint[]>
     }
 ) {
-    const endpointChooserRevealed = Variable(false)
-
     const endpointLabelVar = Variable.derive([
         bind(defaultEndpoint, "description"),
         bind(defaultEndpoint, "volume"),
         bind(defaultEndpoint, "mute")
     ])
 
-    setTimeout(() => {
-        bind(App.get_window(SystemMenuWindowName)!, "visible").subscribe((visible) => {
-            if (!visible) {
-                endpointChooserRevealed.set(false)
-            }
-        })
-    }, 1_000)
-
-    return <box
-        vertical={true}>
-        <box
-            vertical={false}
-            cssClasses={["row"]}>
-            <LargeIconButton
-                offset={0}
-                icon={endpointLabelVar(() => getIcon(defaultEndpoint))}
-                onClicked={() => {
-                    toggleMuteEndpoint(defaultEndpoint)
-                }}/>
-            <box marginStart={10}/>
+    return <RevealerRow
+        icon={endpointLabelVar(() => getIcon(defaultEndpoint))}
+        iconOffset={0}
+        onClick={() => {
+            toggleMuteEndpoint(defaultEndpoint)
+        }}
+        content={
             <slider
                 cssClasses={["systemMenuVolumeProgress"]}
                 hexpand={true}
@@ -60,25 +44,8 @@ export default function (
                 }}
                 value={bind(defaultEndpoint, "volume")}
             />
-            <button
-                cssClasses={["iconButton"]}
-                label={endpointChooserRevealed((revealed): string => {
-                    if (revealed) {
-                        return ""
-                    } else {
-                        return ""
-                    }
-                })}
-                onClicked={() => {
-                    endpointChooserRevealed.set(!endpointChooserRevealed.get())
-                }}/>
-        </box>
-        <revealer
-            marginTop={10}
-            cssClasses={["rowRevealer"]}
-            revealChild={endpointChooserRevealed()}
-            transitionDuration={200}
-            transitionType={Gtk.RevealerTransitionType.SLIDE_DOWN}>
+        }
+        revealedContent={
             <box
                 vertical={true}>
                 {endpointsBinding.as((endpoints) => {
@@ -104,6 +71,6 @@ export default function (
                     })
                 })}
             </box>
-        </revealer>
-    </box>
+        }
+    />
 }
