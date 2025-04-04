@@ -2,6 +2,8 @@
 
 # 🚧 Work in progress 🚧
 
+# Docs and Features coming soon
+
 ### Network management
 
 ![screenshot](.screenshots/features/network.png)
