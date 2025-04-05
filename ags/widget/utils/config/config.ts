@@ -1,6 +1,6 @@
 import {readFile} from "astal/file";
 import {exec, execAsync} from "astal/process";
-import {Variable} from "astal";
+import {GLib, Variable} from "astal";
 import {App} from "astal/gtk4";
 import {restoreBar} from "../../bar/Bar";
 import Gio from "gi://Gio?version=2.0";
@@ -105,6 +105,26 @@ fi
     })
 }
 
+function cacheTheme(theme: Theme) {
+    const homeDir = GLib.get_home_dir()
+    const dirPath = `${homeDir}/.cache/OkPanel`
+    const filePath = `${dirPath}/theme`
+
+    // Ensure the directory exists
+    const dir = Gio.File.new_for_path(dirPath)
+    if (!dir.query_exists(null)) {
+        dir.make_directory_with_parents(null)
+    }
+
+    // Write the file
+    const file = Gio.File.new_for_path(filePath)
+    const outputStream = file.replace(null, false, Gio.FileCreateFlags.REPLACE_DESTINATION, null)
+
+    const data = JSON.stringify(theme, null, 2)
+    outputStream.write(data, null)
+    outputStream.close(null)
+}
+
 function compileThemeBashScript(theme: Theme) {
     return `
 SOURCE_DIR="${projectDir}/scss"
@@ -137,14 +157,11 @@ sass $TARGET_DIR/main.scss /tmp/OkPanel/style.css
 
 export function setTheme(theme: Theme, onFinished: () => void) {
     selectedTheme.set(theme)
+    cacheTheme(theme)
     execAsync(`bash -c '
 
 # compile the scss in /tmp
 ${compileThemeBashScript(theme)}
-
-# cache the selected theme name
-mkdir -p ${homeDir}/.cache/OkPanel
-echo "${theme.name}" > ${homeDir}/.cache/OkPanel/themeName
 
 # if the set theme script exists
 if [[ -f "${config.themeUpdateScript}" ]]; then
@@ -189,9 +206,10 @@ fi
 }
 
 /**
- * Sets the theme for ags, but does not cache the applied theme.  Does not call user's external scripts
+ * Sets the theme for ags.  Does not call user's external scripts
  */
 export function setThemeBasic(theme: Theme) {
+    cacheTheme(theme)
     execAsync(`bash -c '
 # compile the scss in /tmp
 ${compileThemeBashScript(theme)}
@@ -216,12 +234,33 @@ export function loadConfig(projectDirectory: string, homeDirectory: string) {
     projectDir = projectDirectory
     homeDir = homeDirectory
 
-    const savedThemeName = readFile(`${homeDir}/.cache/OkPanel/themeName`).trim()
+    const savedThemeString = readFile(`${homeDir}/.cache/OkPanel/theme`).trim()
 
-    const savedTheme = config.themes.find((theme) => theme.name === savedThemeName)
-    if (savedTheme !== undefined) {
-        selectedTheme.set(savedTheme)
+    let savedTheme: Theme | null = null
+    try {
+        if (savedThemeString !== "") {
+            savedTheme = JSON.parse(savedThemeString)
+        }
+    } catch (e) {
+        print(e)
+    }
+    if (savedTheme !== null) {
+        if (config.themes.length > 0) {
+            // we have a saved theme, and we have configured themes.
+            // if the saved theme is not in the configured themes, don't use it.
+            const matchingConfigTheme = config.themes.find((theme) => theme.name === savedTheme.name)
+            if (matchingConfigTheme !== undefined) {
+                selectedTheme.set(matchingConfigTheme)
+            } else if (config.themes.length > 0) {
+                selectedTheme.set(config.themes[0])
+            }
+        } else {
+            // we have a saved theme, and no configured themes
+            selectedTheme.set(savedTheme)
+        }
     } else if (config.themes.length > 0) {
+        // we have no saved themes, but we do have configured themes
+        // use the first configured theme
         selectedTheme.set(config.themes[0])
     }
 
@@ -230,6 +269,9 @@ export function loadConfig(projectDirectory: string, homeDirectory: string) {
 }
 
 function checkConfigIntegrity(config: Config) {
+    if (config.themes === undefined) {
+        config.themes = []
+    }
     config.themes.forEach((theme) => {
         if (theme.name === undefined) {
             throw Error("Config invalid.  Problem with themes.  Name undefined.")
