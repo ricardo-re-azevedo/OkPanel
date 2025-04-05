@@ -188,7 +188,10 @@ fi
     })
 }
 
-function initialSetTheme(theme: Theme) {
+/**
+ * Sets the theme for ags, but does not cache the applied theme.  Does not call user's external scripts
+ */
+export function setThemeBasic(theme: Theme) {
     execAsync(`bash -c '
 # compile the scss in /tmp
 ${compileThemeBashScript(theme)}
@@ -222,7 +225,7 @@ export function loadConfig(projectDirectory: string, homeDirectory: string) {
         selectedTheme.set(config.themes[0])
     }
 
-    initialSetTheme(selectedTheme.get())
+    setThemeBasic(selectedTheme.get())
     restoreBar()
 }
 

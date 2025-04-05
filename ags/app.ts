@@ -9,7 +9,8 @@ import Screenshare, {ScreenshareWindowName, updateResponse, updateWindows} from 
 import VerticalBar from "./widget/bar/VerticalBar";
 import HorizontalBar from "./widget/bar/HorizontalBar";
 import {decreaseVolume, increaseVolume, muteVolume} from "./widget/utils/audio";
-import {loadConfig} from "./widget/utils/config/config";
+import {loadConfig, setThemeBasic} from "./widget/utils/config/config";
+import {parseTheme} from "./widget/utils/config/themeParser";
 
 App.start({
     instanceName: "OkPanel",
@@ -30,10 +31,9 @@ App.start({
         Screenshare()
     },
     requestHandler(request: string, res: (response: any) => void) {
-        if (request === "theme") {
-            //TODO make this apply theme
-            // exec("sass ./scss/main.scss ./style.css")
-            // App.apply_css("./style.css")
+        if (request.startsWith("theme")) {
+            const theme = parseTheme(request)
+            setThemeBasic(theme)
             res("ags theme applied")
         } else if (request === "appLauncher") {
             App.toggle_window(AppLauncherWindowName)
