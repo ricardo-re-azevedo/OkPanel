@@ -14,6 +14,8 @@ import {activeVpnConnections} from "../systemMenu/NetworkControls";
 import {isRecording} from "../screenshot/Screenshot";
 import Divider from "../common/Divider";
 import {BarWidget} from "../utils/config/config";
+import {TrayWindowName} from "../tray/TrayWindow";
+import Tray from "gi://AstalTray"
 
 function groupByProperty(
     array: Hyprland.Workspace[],
@@ -194,6 +196,17 @@ function MenuButton() {
         }}/>
 }
 
+function TrayButton() {
+    const tray = Tray.get_default()
+    return <button
+        visible={bind(tray, "items").as((items) => items.length > 0)}
+        cssClasses={["iconButton"]}
+        label="󱊔"
+        onClicked={() => {
+            App.toggle_window(TrayWindowName)
+        }}/>
+}
+
 export function addWidgets(widgets: BarWidget[], isVertical: boolean) {
     return widgets.map((widget) => {
         switch (widget) {
@@ -217,6 +230,8 @@ export function addWidgets(widgets: BarWidget[], isVertical: boolean) {
                 return <ScreenRecordingStopButton/>
             case BarWidget.VPN_INDICATOR:
                 return <VpnIndicator/>
+            case BarWidget.TRAY:
+                return <TrayButton/>
         }
     })
 }

@@ -109,3 +109,20 @@
 .closeButton:hover {
   background-color: vars.$bgHover;
 }
+
+.trayMenuButton {
+  all: unset;
+  background-color: transparent;
+  color: vars.$fg;
+  border-radius: vars.$borderRadius;
+  padding: 4px 8px 4px 8px;
+
+  .toggle {
+    background-color: transparent;
+    box-shadow: none;
+  }
+
+  &:hover {
+    background-color: vars.$bgHover;
+  }
+}

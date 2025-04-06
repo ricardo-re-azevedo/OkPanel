@@ -44,6 +44,7 @@ export enum BarWidget {
     RECORDING_INDICATOR =  "recording_indicator",
     VPN_INDICATOR = "vpn_indicator",
     BATTERY = "battery",
+    TRAY = "tray",
 }
 
 export type Config = {
@@ -344,6 +345,7 @@ function checkConfigIntegrity(config: Config) {
                 BarWidget.VPN_INDICATOR,
                 BarWidget.NETWORK,
                 BarWidget.BATTERY,
+                BarWidget.TRAY,
             ]
         }
     }
@@ -382,6 +384,7 @@ function checkConfigIntegrity(config: Config) {
                 BarWidget.VPN_INDICATOR,
                 BarWidget.NETWORK,
                 BarWidget.BATTERY,
+                BarWidget.TRAY,
                 BarWidget.CLOCK,
             ]
         }

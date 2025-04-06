@@ -11,6 +11,7 @@ import HorizontalBar from "./widget/bar/HorizontalBar";
 import {decreaseVolume, increaseVolume, muteVolume} from "./widget/utils/audio";
 import {loadConfig, setThemeBasic} from "./widget/utils/config/config";
 import {parseTheme} from "./widget/utils/config/themeParser";
+import TrayWindow from "./widget/tray/TrayWindow";
 
 App.start({
     instanceName: "OkPanel",
@@ -29,6 +30,7 @@ App.start({
         AppLauncher()
         Screenshot()
         Screenshare()
+        TrayWindow()
     },
     requestHandler(request: string, res: (response: any) => void) {
         if (request.startsWith("theme")) {
