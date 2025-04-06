@@ -562,5 +562,12 @@ export default function () {
                 {network.wifi && <WifiScannedConnections/>}
             </box>
         }
+        setup={(revealed) => {
+            revealed.subscribe((r) => {
+                if (r) {
+                    network.wifi?.scan()
+                }
+            })
+        }}
     />
 }
