@@ -339,13 +339,13 @@ function checkConfigIntegrity(config: Config) {
             ],
             rightWidgets: [
                 BarWidget.RECORDING_INDICATOR,
+                BarWidget.TRAY,
                 BarWidget.AUDIO_OUT,
                 BarWidget.AUDIO_IN,
                 BarWidget.BLUETOOTH,
                 BarWidget.VPN_INDICATOR,
                 BarWidget.NETWORK,
                 BarWidget.BATTERY,
-                BarWidget.TRAY,
             ]
         }
     }
@@ -378,13 +378,13 @@ function checkConfigIntegrity(config: Config) {
             centerWidgets: [],
             bottomWidgets: [
                 BarWidget.RECORDING_INDICATOR,
+                BarWidget.TRAY,
                 BarWidget.AUDIO_OUT,
                 BarWidget.AUDIO_IN,
                 BarWidget.BLUETOOTH,
                 BarWidget.VPN_INDICATOR,
                 BarWidget.NETWORK,
                 BarWidget.BATTERY,
-                BarWidget.TRAY,
                 BarWidget.CLOCK,
             ]
         }
