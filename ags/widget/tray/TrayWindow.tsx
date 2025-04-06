@@ -1,4 +1,4 @@
-import {App, Astal, Gdk} from "astal/gtk4";
+import {App, Astal, Gdk, Gtk} from "astal/gtk4";
 import {BarWidget, config} from "../utils/config/config";
 import {Bar, selectedBar} from "../bar/Bar";
 import Tray from "gi://AstalTray"
@@ -6,6 +6,44 @@ import {bind} from "astal";
 
 export const TrayWindowName = "trayWindow"
 const tray = Tray.get_default()
+
+function Content() {
+    return <box
+        vertical={true}>
+        {bind(tray, "items").as((items) => {
+            return items.map((item) => {
+                let ag_handler: number;
+
+                return <box
+                    marginStart={8}
+                    marginEnd={8}
+                    marginTop={8}
+                    marginBottom={8}
+                    vertical={true}
+                    spacing={8}>
+                    <menubutton
+                        cssClasses={["trayMenuButton"]}
+                        tooltipMarkup={bind(item, "tooltipMarkup")}
+                        menuModel={bind(item, "menuModel")}
+                        onDestroy={() => item.disconnect(ag_handler)}
+                        setup={self => {
+                            ag_handler = item.connect("notify::action-group", () => {
+                                self.insert_action_group("dbusmenu", item.get_action_group())
+                            })
+                        }}>
+                        <label label={item.title}/>
+                    </menubutton>
+                </box>
+            })
+        })}
+    </box>
+}
+
+export function TrayPopover() {
+    return <popover>
+        <Content/>
+    </popover>
+}
 
 export default function () {
 
@@ -59,34 +97,6 @@ export default function () {
                 self.hide()
             }
         }}>
-        <box
-            vertical={true}>
-            {bind(tray, "items").as((items) => {
-                return items.map((item) => {
-                    let ag_handler: number;
-
-                    return <box
-                        marginStart={8}
-                        marginEnd={8}
-                        marginTop={8}
-                        marginBottom={8}
-                        vertical={true}
-                        spacing={8}>
-                        <menubutton
-                            cssClasses={["trayMenuButton"]}
-                            tooltipMarkup={bind(item, "tooltipMarkup")}
-                            menuModel={bind(item, "menuModel")}
-                            onDestroy={() => item.disconnect(ag_handler)}
-                            setup={self => {
-                                ag_handler = item.connect("notify::action-group", () => {
-                                    self.insert_action_group("dbusmenu", item.get_action_group())
-                                })
-                            }}>
-                            <label label={item.title}/>
-                        </menubutton>
-                    </box>
-                })
-            })}
-        </box>
+        <Content/>
     </window>
 }

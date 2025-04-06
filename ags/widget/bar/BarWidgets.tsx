@@ -14,7 +14,7 @@ import {activeVpnConnections} from "../systemMenu/NetworkControls";
 import {isRecording} from "../screenshot/Screenshot";
 import Divider from "../common/Divider";
 import {BarWidget} from "../utils/config/config";
-import {TrayWindowName} from "../tray/TrayWindow";
+import {TrayPopover, TrayWindowName} from "../tray/TrayWindow";
 import Tray from "gi://AstalTray"
 
 function groupByProperty(
