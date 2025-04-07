@@ -159,13 +159,11 @@ function PasswordEntry(
         isConnecting.set(true)
         execAsync(["bash", "-c", `echo '${text.get()}' | nmcli device wifi connect "${accessPoint.ssid}" --ask`])
             .catch((error) => {
-                print("===== connection error")
                 print(error)
                 errorRevealed.set(true)
                 deleteConnection(accessPoint.ssid)
             })
             .then((value) => {
-                print("===== connection success")
                 print(value)
             })
             .finally(() => {
