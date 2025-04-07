@@ -145,18 +145,35 @@ function PasswordEntry(
     }
 ) {
     const text = Variable("")
+    const errorRevealed = Variable(false)
+    const isConnecting = Variable(false)
+
+    passwordEntryRevealed.subscribe((r) => {
+        if (!r) {
+            errorRevealed.set(false)
+        }
+    })
 
     const connect = () => {
+        errorRevealed.set(false)
+        isConnecting.set(true)
         execAsync(["bash", "-c", `echo '${text.get()}' | nmcli device wifi connect "${accessPoint.ssid}" --ask`])
             .catch((error) => {
+                print("===== connection error")
                 print(error)
+                errorRevealed.set(true)
+                deleteConnection(accessPoint.ssid)
             })
             .then((value) => {
+                print("===== connection success")
                 print(value)
             })
             .finally(() => {
-                passwordEntryRevealed.set(false)
-                updateConnections()
+                if (!errorRevealed.get()) {
+                    passwordEntryRevealed.set(false)
+                    updateConnections()
+                }
+                isConnecting.set(false)
             })
     }
 
@@ -175,11 +192,30 @@ function PasswordEntry(
                 onChanged={self => text.set(self.text)}
                 onActivate={() => connect()}/>
         </box>}
+        <revealer
+            revealChild={errorRevealed()}
+            transitionDuration={200}
+            transitionType={Gtk.RevealerTransitionType.SLIDE_DOWN}>
+            <label
+                halign={Gtk.Align.START}
+                cssClasses={["labelSmallWarning"]}
+                label="Error Connecting"/>
+        </revealer>
         <button
             cssClasses={["primaryButton"]}
             hexpand={true}
-            label="Connect"
-            onClicked={() => connect()}/>
+            label={isConnecting((connecting) => {
+                if (connecting) {
+                    return "Connecting"
+                } else {
+                    return "Connect"
+                }
+            })}
+            onClicked={() => {
+                if (!isConnecting.get()) {
+                    connect()
+                }
+            }}/>
     </box>
 }
 

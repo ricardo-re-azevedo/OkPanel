@@ -15,6 +15,21 @@
   font-size: 18px;
 }
 
+.labelSmallWarning {
+  color: vars.$warning;
+  font-size: 14px;
+}
+
+.labelMediumWarning {
+  color: vars.$warning;
+  font-size: 16px;
+}
+
+.labelLargeWarning {
+  color: vars.$warning;
+  font-size: 18px;
+}
+
 .labelSmallBold {
   color: vars.$fg;
   font-size: 14px;
