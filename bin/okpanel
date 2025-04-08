@@ -9,7 +9,6 @@ Commands:
   quit          Exit or stop the application.
   launcher      Launch a specific component.
   screenshot    Take a screenshot.
-  share         Share something.
   theme         Apply a theme with color options.
   volume-up     Increase system volume.
   volume-down   Decrease system volume.
@@ -110,7 +109,6 @@ main() {
     quit)         ags quit -i "OkPanel";;
     launcher)     astal -i "OkPanel" "appLauncher";;
     screenshot)   astal -i "OkPanel" "screenshot";;
-    share)        astal -i "OkPanel" "screenshare$XDPH_WINDOW_SHARING_LIST}";;
     volume-up)    astal -i "OkPanel" "volume-up";;
     volume-down)  astal -i "OkPanel" "volume-down";;
     mute)         astal -i "OkPanel" "mute";;

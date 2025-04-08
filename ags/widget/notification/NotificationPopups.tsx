@@ -4,7 +4,7 @@ import Notification from "./Notification"
 import {type Subscribable} from "astal/binding"
 import {bind, GLib, Variable} from "astal"
 import {selectedBar} from "../bar/Bar";
-import {config} from "../utils/config/config";
+import {config, NotificationsPosition} from "../utils/config/config";
 
 // see comment below in constructor
 const TIMEOUT_DELAY = 7_000
@@ -122,7 +122,7 @@ export default function NotificationPopups(gdkmonitor: Gdk.Monitor) {
         gdkmonitor={gdkmonitor}
         exclusivity={Astal.Exclusivity.EXCLUSIVE}
         anchor={selectedBar((bar) => {
-            if (config.notificationsPosition === "left") {
+            if (config.notificationsPosition === NotificationsPosition.LEFT) {
                 return TOP | LEFT
             } else {
                 return TOP | RIGHT

@@ -1,4 +1,34 @@
 {
+  "gaps": 5,
+  "borderRadius": 8,
+  "windowBorderRadius": 8,
+  "largeButtonBorderRadius": 16,
+  "horizontalBar": {
+    "leftWidgets": [
+      "menu",
+      "workspaces"
+    ],
+    "centerWidgets": [
+      "clock"
+    ],
+    "rightWidgets": [
+      "recording_indicator",
+      "audio_out",
+      "audio_in",
+      "bluetooth",
+      "vpn_indicator",
+      "network",
+      "battery"
+    ]
+  },
+  "themeUpdateScript": "/home/john/workspace/scripts/setTheme.sh",
+  "wallpaperUpdateScript": "/home/john/workspace/scripts/setWallpaper.sh",
+  "systemCommands": {
+    "logout": "uwsm stop",
+    "lock": "uwsm app -- hyprlock",
+    "restart": "systemctl reboot",
+    "shutdown": "systemctl poweroff"
+  },
   "themes": [
     {
       "name": "everforest",
@@ -30,35 +60,5 @@
         "warning": "#BF616A"
       }
     }
-  ],
-  "themeUpdateScript": "/home/john/workspace/scripts/setTheme.sh",
-  "wallpaperUpdateScript": "/home/john/workspace/scripts/setWallpaper.sh",
-  "systemCommands": {
-    "logout": "uwsm stop",
-    "lock": "uwsm app -- hyprlock",
-    "restart": "systemctl reboot",
-    "shutdown": "systemctl poweroff"
-  },
-  "gaps": 5,
-  "borderRadius": 8,
-  "windowBorderRadius": 8,
-  "largeButtonBorderRadius": 16,
-  "horizontalBar": {
-    "leftWidgets": [
-      "menu",
-      "workspaces"
-    ],
-    "centerWidgets": [
-      "clock"
-    ],
-    "rightWidgets": [
-      "recording_indicator",
-      "audio_out",
-      "audio_in",
-      "bluetooth",
-      "vpn_indicator",
-      "network",
-      "battery"
-    ]
-  }
+  ]
 }

@@ -1,0 +1,15 @@
+site_name: OkPanel
+theme:
+  name: material
+  palette:
+    - scheme: slate
+      primary: red
+      accent: red
+extra_css:
+  - styles/custom.css
+
+nav:
+  - Home: index.md
+  - Installation: installation.md
+  - Configuration: config.md
+  - Usage: usage.md

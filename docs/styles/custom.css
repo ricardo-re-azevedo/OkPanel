@@ -1,0 +1,5 @@
+/* Round all Material buttons */
+.md-button {
+    border-radius: 999px !important; /* Fully rounded */
+    padding: 0.4em 1.2em; /* Optional: tweak padding for better shape */
+}

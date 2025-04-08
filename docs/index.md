@@ -1,0 +1,27 @@
+<h1 style="font-size: 3rem; font-weight: 700; margin-bottom: 0.5rem;">OkPanel</h1>
+
+# A desktop panel for Hyprland, built on Ags/Astal.  It's okay.
+
+<div class="md-button-group">
+    <a href="installation" class="md-button md-button--primary" style="margin-right: 1rem;">
+        Quick Start
+    </a>
+    <a href="https://github.com/your-username/my-linux-panel" class="md-button" style="margin-right: 1rem;">
+        GitHub
+    </a>
+    <a href="https://hyprland.org/" class="md-button" style="margin-right: 1rem;">
+        Hyprland
+    </a>
+</div>
+
+---
+
+![screenshot](screenshots/features/network.png)
+
+---
+
+![screenshot](screenshots/features/theme2.png)
+
+---
+
+![screenshot](screenshots/features/theme3.png)

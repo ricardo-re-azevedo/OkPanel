@@ -47,23 +47,30 @@ export enum BarWidget {
     TRAY = "tray",
 }
 
+export enum NotificationsPosition {
+    LEFT = "left",
+    RIGHT = "right"
+}
+
+export type SystemCommands = {
+    logout: string;
+    lock: string;
+    restart: string;
+    shutdown: string;
+}
+
 export type Config = {
-    themes: Theme[];
-    themeUpdateScript: string;
-    wallpaperUpdateScript: string;
-    systemCommands: {
-        logout: string;
-        lock: string;
-        restart: string;
-        shutdown: string;
-    };
     gaps: number;
+    borderRadius: number;
     windowBorderRadius: number;
     largeButtonBorderRadius: number;
-    borderRadius: number;
+    themeUpdateScript: string;
+    wallpaperUpdateScript: string;
+    notificationsPosition: NotificationsPosition;
     verticalBar: VerticalBar;
     horizontalBar: HorizontalBar;
-    notificationsPosition: string;
+    systemCommands: SystemCommands;
+    themes: Theme[];
 };
 
 const defaultTheme: Theme = {
@@ -410,7 +417,7 @@ function checkConfigIntegrity(config: Config) {
     }
 
     if (config.notificationsPosition === undefined) {
-        config.notificationsPosition = "right"
+        config.notificationsPosition = NotificationsPosition.RIGHT
     }
     if (config.notificationsPosition !== "left" && config.notificationsPosition !== "right") {
         throw Error(`Config invalid.  Notification position must be left or right.`)
