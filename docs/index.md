@@ -6,7 +6,7 @@
     <a href="installation" class="md-button md-button--primary" style="margin-right: 1rem;">
         Quick Start
     </a>
-    <a href="https://github.com/your-username/my-linux-panel" class="md-button" style="margin-right: 1rem;">
+    <a href="https://github.com/JohnOberhauser/OkPanel" class="md-button" style="margin-right: 1rem;">
         GitHub
     </a>
     <a href="https://hyprland.org/" class="md-button" style="margin-right: 1rem;">
