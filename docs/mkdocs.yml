@@ -1,4 +1,5 @@
 site_name: OkPanel
+site_url: https://johnoberhauser.github.io/OkPanel/
 theme:
   name: material
   palette:
