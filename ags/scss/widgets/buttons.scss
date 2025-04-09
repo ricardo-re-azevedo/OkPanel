@@ -110,6 +110,26 @@
   background-color: vars.$bgHover;
 }
 
+.trayIconButton {
+  all: unset;
+  background-color: vars.$bg;
+  color: vars.$fg;
+  padding: 4px 4px 4px 2px;
+  border: none;
+  min-height: 25px;
+  min-width: 30px;
+  border-radius: vars.$borderRadius;
+
+  .toggle {
+    background-color: transparent;
+    box-shadow: none;
+  }
+
+  &:hover {
+    background-color: vars.$bgHover;
+  }
+}
+
 .trayMenuButton {
   all: unset;
   background-color: transparent;

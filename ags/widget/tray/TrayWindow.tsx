@@ -40,7 +40,8 @@ function Content() {
 }
 
 export function TrayPopover() {
-    return <popover>
+    return <popover
+        position={Gtk.PositionType.RIGHT}>
         <Content/>
     </popover>
 }

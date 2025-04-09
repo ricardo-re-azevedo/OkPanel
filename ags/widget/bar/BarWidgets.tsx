@@ -198,13 +198,20 @@ function MenuButton() {
 
 function TrayButton() {
     const tray = Tray.get_default()
-    return <button
+    // Old button that uses the tray window.  Remove after using the menu button and popover for a while
+    // return <button
+    //     visible={bind(tray, "items").as((items) => items.length > 0)}
+    //     cssClasses={["iconButton"]}
+    //     label="󱊔"
+    //     onClicked={() => {
+    //         App.toggle_window(TrayWindowName)
+    //     }}/>
+    return <menubutton
         visible={bind(tray, "items").as((items) => items.length > 0)}
-        cssClasses={["iconButton"]}
-        label="󱊔"
-        onClicked={() => {
-            App.toggle_window(TrayWindowName)
-        }}/>
+        cssClasses={["trayIconButton"]}>
+        <label label="󱊔"/>
+        <TrayPopover/>
+    </menubutton>
 }
 
 export function addWidgets(widgets: BarWidget[], isVertical: boolean) {
