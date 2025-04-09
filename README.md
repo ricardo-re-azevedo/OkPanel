@@ -2,6 +2,6 @@
 
 A panel for Hyprland, built on AGS/Astal
 
-![screenshot](.screenshots/features/network.png)
+## [Check out the docs to get started](https://johnoberhauser.github.io/OkPanel/)
 
-## [Check out the docs](https://johnoberhauser.github.io/OkPanel/)
+![screenshot](docs/screenshots/preview.png)
