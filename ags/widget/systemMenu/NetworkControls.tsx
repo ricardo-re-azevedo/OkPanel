@@ -638,7 +638,6 @@ export default function () {
                         return <button
                             visible={activeAccessPoint !== null}
                             cssClasses={["primaryButton"]}
-                            marginBottom={12}
                             label="Disconnect"
                             onClicked={() => {
                                 disconnect(activeAccessPoint.ssid)
@@ -646,7 +645,6 @@ export default function () {
                     })}
                     <button
                         cssClasses={["primaryButton"]}
-                        marginBottom={12}
                         label="Add Wireguard VPN"
                         onClicked={() => {
                             addWireguardConnection()
