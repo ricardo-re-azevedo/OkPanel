@@ -118,6 +118,36 @@ function deleteConnection(ssid: string) {
         })
 }
 
+function addWireguardConnection() {
+    const dialog = new Gtk.FileChooserNative({
+        title: 'Select WireGuard Config',
+        action: Gtk.FileChooserAction.OPEN,
+        accept_label: 'Open',
+        cancel_label: 'Cancel',
+    });
+
+    // Filter for .conf files
+    const filter = new Gtk.FileFilter();
+    filter.set_name('WireGuard Config (*.conf)');
+    filter.add_pattern('*.conf');
+    dialog.add_filter(filter);
+
+    dialog.connect('response', (dlg, response) => {
+        if (response === Gtk.ResponseType.ACCEPT) {
+            const file = dlg.get_file();
+            if (file !== null) {
+                execAsync(["bash", "-c", `nmcli connection import type wireguard file "${file.get_path()}"`])
+                    .finally(() => {
+                        updateConnections()
+                    })
+            }
+        }
+        dlg.destroy();
+    });
+
+    dialog.show();
+}
+
 function connectVpn(name: string) {
     // first disconnect any existing vpn connections
     activeVpnConnections.get().forEach((vpnName) => {
@@ -585,11 +615,18 @@ export default function () {
                     return <button
                         cssClasses={["primaryButton"]}
                         marginBottom={12}
-                        label="Forget"
+                        label="Disconnect and Forget"
                         onClicked={() => {
                             deleteConnection(activeAccessPoint.ssid)
                         }}/>
                 })}
+                <button
+                    cssClasses={["primaryButton"]}
+                    marginBottom={12}
+                    label="Add Wireguard VPN"
+                    onClicked={() => {
+                        addWireguardConnection()
+                    }}/>
                 <VpnActiveConnections/>
                 <VpnConnections/>
                 {network.wifi && <WifiConnections connections={wifiConnections}/>}

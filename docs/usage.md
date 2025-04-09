@@ -60,7 +60,7 @@ okpanel theme --background 000000 --foreground FFFFFF --primary 99AA00 --button 
 
 ### Using the Hyprland share picker for [XDPH](https://wiki.hyprland.org/Hypr-Ecosystem/xdg-desktop-portal-hyprland/)
 
-Create a file `xdph` in your `~/.config/hypr/` directory and apply this config
+Create the file `xdph.conf` in your `~/.config/hypr/` directory and apply this config
 
 ```
 screencopy {
