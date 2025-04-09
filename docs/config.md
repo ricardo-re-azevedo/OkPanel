@@ -12,7 +12,7 @@ Create a config file and place it in the config directory like so
 
 ### Main
 
-| Path                    | Description                                      | Required | Type                       | Default                            |
+| Name                    | Description                                      | Required | Type                       | Default                            |
 |:------------------------|:-------------------------------------------------|:---------|:---------------------------|------------------------------------|
 | gaps                    | Gap size in pixels between elements.             | False    | number                     | 5                                  |
 | borderRadius            | General border radius for panel elements.        | False    | number                     | 8                                  |
@@ -29,39 +29,39 @@ Create a config file and place it in the config directory like so
 
 ### Horizontal Bar
 
-| Path              | Description                                         | Required  | Type                                  | Default                                                                                                       |
-|:------------------|:----------------------------------------------------|:----------|:--------------------------------------|---------------------------------------------------------------------------------------------------------------|
-| leftWidgets       | Widgets to display on the left side of the panel.   | False     | array[string : see bar widget values] | ["menu", "workspaces"]                                                                                        |
-| centerWidgets     | Widgets to display in the center of the panel.      | False     | array[string : see bar widget values] | ["clock"]                                                                                                     |
-| rightWidgets      | Widgets to display on the right side of the panel.  | False     | array[string : see bar widget values] | ["recording_indicator", "tray", "audio_out", "audio_in", "bluetooth", "vpn_indicator", "network", "battery"]  |
+| Name          | Description                                         | Required  | Type                                  | Default                                                                                                       |
+|:--------------|:----------------------------------------------------|:----------|:--------------------------------------|---------------------------------------------------------------------------------------------------------------|
+| leftWidgets   | Widgets to display on the left side of the panel.   | False     | array[string : see bar widget values] | ["menu", "workspaces"]                                                                                        |
+| centerWidgets | Widgets to display in the center of the panel.      | False     | array[string : see bar widget values] | ["clock"]                                                                                                     |
+| rightWidgets  | Widgets to display on the right side of the panel.  | False     | array[string : see bar widget values] | ["recording_indicator", "tray", "audio_out", "audio_in", "bluetooth", "vpn_indicator", "network", "battery"]  |
 
 ### Vertical Bar
 
-| Path                | Description                                         | Required   | Type                                  | Default                                                                                                                |
-|:--------------------|:----------------------------------------------------|:-----------|:--------------------------------------|------------------------------------------------------------------------------------------------------------------------|
-| topWidgets          | Widgets to display on the top side of the panel.    | False      | array[string : see bar widget values] | ["menu", "workspaces"]                                                                                                 |
-| centerWidgets       | Widgets to display in the center of the panel.      | False      | array[string : see bar widget values] | []                                                                                                                     |
-| bottomWidgets       | Widgets to display on the bottom side of the panel. | False      | array[string : see bar widget values] | ["recording_indicator", "tray", "audio_out", "audio_in", "bluetooth", "vpn_indicator", "network", "battery", "clock"]  |
+| Name          | Description                                         | Required   | Type                                  | Default                                                                                                                |
+|:--------------|:----------------------------------------------------|:-----------|:--------------------------------------|------------------------------------------------------------------------------------------------------------------------|
+| topWidgets    | Widgets to display on the top side of the panel.    | False      | array[string : see bar widget values] | ["menu", "workspaces"]                                                                                                 |
+| centerWidgets | Widgets to display in the center of the panel.      | False      | array[string : see bar widget values] | []                                                                                                                     |
+| bottomWidgets | Widgets to display on the bottom side of the panel. | False      | array[string : see bar widget values] | ["recording_indicator", "tray", "audio_out", "audio_in", "bluetooth", "vpn_indicator", "network", "battery", "clock"]  |
 
 ### System Menu
 
-| Path              | Description                                | Required   | Type    | Default |
+| Name              | Description                                | Required   | Type    | Default |
 |:------------------|:-------------------------------------------|:-----------|:--------|---------|
 | enableMprisWidget | Show the Mpris music widget when available | False      | boolean | true    |
 
 
 ### System Commands
 
-| Path            | Description                                         | Required   | Type       |
-|:----------------|:----------------------------------------------------|:-----------|:-----------|
-| logout          | Command to log out the session.                     | True       | string     |
-| lock            | Command to lock the screen.                         | True       | string     |
-| restart         | Command to restart the system.                      | True       | string     |
-| shutdown        | Command to shut down the system.                    | True       | string     |
+| Name     | Description                                         | Required   | Type       |
+|:---------|:----------------------------------------------------|:-----------|:-----------|
+| logout   | Command to log out the session.                     | True       | string     |
+| lock     | Command to lock the screen.                         | True       | string     |
+| restart  | Command to restart the system.                      | True       | string     |
+| shutdown | Command to shut down the system.                    | True       | string     |
 
 ### Theme
 
-| Path         | Description                                     | Required  | Type                        |
+| Name         | Description                                     | Required  | Type                        |
 |:-------------|:------------------------------------------------|:----------|:----------------------------|
 | name         | Name of the theme.                              | True      | string                      |
 | icon         | Nerd font character to represent the theme.     | True      | char                        |
@@ -71,15 +71,15 @@ Create a config file and place it in the config directory like so
 
 ### Color
 
-| Path             | Description                                         | Required  | Type       |
-|:-----------------|:----------------------------------------------------|:----------|:-----------|
-| background       | Background color.                                   | True      | string     |
-| foreground       | Foreground/text color.                              | True      | string     |
-| primary          | Primary color used for highlights.                  | True      | string     |
-| buttonPrimary    | Primary button color.                               | True      | string     |
-| sliderTrough     | Color for slider troughs.                           | True      | string     |
-| hover            | Hover state color.                                  | True      | string     |
-| warning          | Color for warning or alert states.                  | True      | string     |
+| Name          | Description                                         | Required  | Type       |
+|:--------------|:----------------------------------------------------|:----------|:-----------|
+| background    | Background color.                                   | True      | string     |
+| foreground    | Foreground/text color.                              | True      | string     |
+| primary       | Primary color used for highlights.                  | True      | string     |
+| buttonPrimary | Primary button color.                               | True      | string     |
+| sliderTrough  | Color for slider troughs.                           | True      | string     |
+| hover         | Hover state color.                                  | True      | string     |
+| warning       | Color for warning or alert states.                  | True      | string     |
 
 ### Bar widget values
 
