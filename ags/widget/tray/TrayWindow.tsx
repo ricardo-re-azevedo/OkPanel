@@ -46,6 +46,12 @@ export function TrayPopover() {
 }
 
 export default function () {
+    let window: Astal.Window | null = null
+    bind(tray, "items").subscribe((items) => {
+        if (items.length === 0) {
+            window?.hide()
+        }
+    })
 
     return <window
         monitor={0}
@@ -96,6 +102,9 @@ export default function () {
             if (key === Gdk.KEY_Escape) {
                 self.hide()
             }
+        }}
+        setup={(self) => {
+            window = self
         }}>
         <Content/>
     </window>
