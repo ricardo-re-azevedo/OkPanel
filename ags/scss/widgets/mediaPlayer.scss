@@ -1,7 +1,7 @@
 @use "../variables" as vars;
 
 .mediaPlayersContainer {
-  margin: 0 20px 0 20px;
+  margin: 0 0 0 0;
 }
 
 .mediaPlayer {
@@ -9,7 +9,7 @@
   background-color: vars.$bg;
   border: 2px solid vars.$bgHover;
   border-radius: vars.$borderRadius;
-  padding: 4px;
+  padding: 4px 12px 4px 12px;
 
   .controlButton {
     all: unset;
@@ -31,11 +31,11 @@
   }
 
   .seek {
-    margin: 0 20px 0 20px;
+    margin: 0 8px 0 8px;
 
     trough {
       background: vars.$sliderTrough;
-      min-height: 4px;
+      min-height: 8px;
       border-radius: 8px;
 
       slider {

@@ -101,7 +101,7 @@ export default function () {
                         {/*MediaPlayersAstal uses the astal mpris component.  It causes UI jank.  Until it gets fix
                         use MediaPlayers.  It uses a home-made mpris component that doesn't cause the jank.*/}
                         {/*<MediaPlayersAstal/>*/}
-                        <MediaPlayers/>
+                        {config.systemMenu.enableMprisWidget && <MediaPlayers/>}
                         <PowerOptions/>
                         <box
                             marginTop={10}

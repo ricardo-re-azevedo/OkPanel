@@ -23,6 +23,7 @@ Create a config file and place it in the config directory like so
 | notificationsPosition   | Where to display notifications.  Left or right   | False    | string : "left", "right"   | "right"                            |
 | horizontalBar           | Horizontal bar configuration                     | False    | HorizontalBar : see below  | see below                          |
 | verticalBar             | Vertical bar configuration                       | False    | VerticalBar : see below    | see below                          |
+| systemMenu              | System menu configuration                        | False    | SystemMenu : see below     | see below                          |
 | systemCommands          | System commands configuration                    | True     | SystemCommands : see below | required                           |
 | themes                  | A list of predefined themes                      | False    | array[Theme : see below]   | defaults to a single premade theme |
 
@@ -41,6 +42,13 @@ Create a config file and place it in the config directory like so
 | topWidgets          | Widgets to display on the top side of the panel.    | False      | array[string : see bar widget values] | ["menu", "workspaces"]                                                                                                 |
 | centerWidgets       | Widgets to display in the center of the panel.      | False      | array[string : see bar widget values] | []                                                                                                                     |
 | bottomWidgets       | Widgets to display on the bottom side of the panel. | False      | array[string : see bar widget values] | ["recording_indicator", "tray", "audio_out", "audio_in", "bluetooth", "vpn_indicator", "network", "battery", "clock"]  |
+
+### System Menu
+
+| Path              | Description                                | Required   | Type    | Default |
+|:------------------|:-------------------------------------------|:-----------|:--------|---------|
+| enableMprisWidget | Show the Mpris music widget when available | False      | boolean | true    |
+
 
 ### System Commands
 

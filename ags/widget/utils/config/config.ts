@@ -59,6 +59,10 @@ export type SystemCommands = {
     shutdown: string;
 }
 
+export type SystemMenu = {
+    enableMprisWidget: boolean;
+}
+
 export type Config = {
     gaps: number;
     borderRadius: number;
@@ -69,6 +73,7 @@ export type Config = {
     notificationsPosition: NotificationsPosition;
     verticalBar: VerticalBar;
     horizontalBar: HorizontalBar;
+    systemMenu: SystemMenu;
     systemCommands: SystemCommands;
     themes: Theme[];
 };
@@ -421,5 +426,13 @@ function checkConfigIntegrity(config: Config) {
     }
     if (config.notificationsPosition !== "left" && config.notificationsPosition !== "right") {
         throw Error(`Config invalid.  Notification position must be left or right.`)
+    }
+    if (config.systemMenu === undefined) {
+        config.systemMenu = {
+            enableMprisWidget: true
+        }
+    }
+    if (config.systemMenu.enableMprisWidget === undefined) {
+        config.systemMenu.enableMprisWidget = true
     }
 }
