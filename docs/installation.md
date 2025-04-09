@@ -42,7 +42,6 @@ git checkout git@github.com:JohnOberhauser/OkPanel.git
 
 Then run the install.sh file
 ```
-cd OkPanel/bin
 ./install.sh
 ```
 
