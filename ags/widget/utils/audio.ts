@@ -66,6 +66,7 @@ export function toggleMuteEndpoint(endpoint?: Wp.Endpoint) {
 export function muteVolume() {
     const defaultSpeaker = Wp.get_default()!.audio.default_speaker
     defaultSpeaker?.set_mute(!defaultSpeaker?.mute)
+    playVolumeTick()
 }
 
 export function increaseVolume() {

@@ -15,12 +15,14 @@ export function AlertWindow(
         iconLabel,
         label,
         sliderValue,
-        windowName
+        windowName,
+        showVariable
     }: {
         iconLabel: Binding<string>,
         label: string,
         sliderValue: Binding<number>,
-        windowName: string
+        windowName: string,
+        showVariable: Variable<any>
     }
 ) {
     let windowVisibilityTimeout: GLib.Source | null = null
@@ -40,7 +42,7 @@ export function AlertWindow(
             setTimeout(() => {
                 canShow = true
             }, 3_000)
-            sliderValue.subscribe(() => {
+            showVariable.subscribe(() => {
                 if (!canShow) {
                     return
                 }
@@ -99,15 +101,25 @@ export function VolumeAlert() {
         bind(defaultSpeaker, "mute")
     ])
 
+    const showVariable = Variable.derive([
+        bind(defaultSpeaker, "volume"),
+        bind(defaultSpeaker, "mute")
+    ])
+
     return <AlertWindow
         iconLabel={speakerVar(() => getVolumeIcon(defaultSpeaker))}
         label="Volume"
         sliderValue={bind(defaultSpeaker, "volume")}
-        windowName={VolumeAlertName}/>
+        windowName={VolumeAlertName}
+        showVariable={showVariable}/>
 }
 
 export function BrightnessAlert() {
     const brightness = Brightness.get_default()
+
+    const showVariable = Variable.derive([
+        bind(brightness, "screen")
+    ])
     
     return <AlertWindow
         iconLabel={bind(brightness, "screen").as(() => {
@@ -115,7 +127,8 @@ export function BrightnessAlert() {
         })}
         label="Brightness"
         sliderValue={bind(brightness, "screen")}
-        windowName={BrightnessAlertName}/>
+        windowName={BrightnessAlertName}
+        showVariable={showVariable}/>
 }
 
 export function ChargingAlertSound() {
