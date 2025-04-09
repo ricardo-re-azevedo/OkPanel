@@ -631,23 +631,27 @@ export default function () {
                 marginTop={10}
                 vertical={true}
                 spacing={12}>
-                {network.wifi && bind(network.wifi, "activeAccessPoint").as((activeAccessPoint) => {
-                    return <button
-                        visible={activeAccessPoint !== null}
+                <box
+                    vertical={true}
+                    spacing={4}>
+                    {network.wifi && bind(network.wifi, "activeAccessPoint").as((activeAccessPoint) => {
+                        return <button
+                            visible={activeAccessPoint !== null}
+                            cssClasses={["primaryButton"]}
+                            marginBottom={12}
+                            label="Disconnect"
+                            onClicked={() => {
+                                disconnect(activeAccessPoint.ssid)
+                            }}/>
+                    })}
+                    <button
                         cssClasses={["primaryButton"]}
                         marginBottom={12}
-                        label="Disconnect"
+                        label="Add Wireguard VPN"
                         onClicked={() => {
-                            disconnect(activeAccessPoint.ssid)
+                            addWireguardConnection()
                         }}/>
-                })}
-                <button
-                    cssClasses={["primaryButton"]}
-                    marginBottom={12}
-                    label="Add Wireguard VPN"
-                    onClicked={() => {
-                        addWireguardConnection()
-                    }}/>
+                </box>
                 <VpnActiveConnections/>
                 <VpnConnections/>
                 {network.wifi && <WifiConnections connections={inactiveWifiConnections}/>}
