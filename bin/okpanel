@@ -89,8 +89,8 @@ run_theme_command() {
 }
 
 run_run_command() {
-  if [ -d "/usr/share/OkPanel" ]; then
-      dir="/usr/share/OkPanel"
+  if [ -d "/usr/share/okpanel" ]; then
+      dir="/usr/share/okpanel"
   else
       dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/../ags
   fi

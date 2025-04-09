@@ -47,7 +47,7 @@ export function parseTheme(input: string): Theme {
 
     return {
         name: "okpanel-shell",
-        icon: "",
+        icon: "",
         pixelOffset: 0,
         wallpaperDir: "",
         colors: completeColors,

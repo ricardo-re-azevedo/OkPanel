@@ -14,14 +14,6 @@
     </a>
 </div>
 
----
+<br>
 
-![screenshot](screenshots/features/network.png)
-
----
-
-![screenshot](screenshots/features/theme2.png)
-
----
-
-![screenshot](screenshots/features/theme3.png)
+![screenshot](screenshots/preview.png)

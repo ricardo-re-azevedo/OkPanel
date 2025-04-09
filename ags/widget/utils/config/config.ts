@@ -74,18 +74,18 @@ export type Config = {
 };
 
 const defaultTheme: Theme = {
-    name: "Everforest",
-    icon: "󰌪",
-    pixelOffset: 0,
+    name: "Bloodrust",
+    icon: "",
+    pixelOffset: 2,
     wallpaperDir: "",
     colors: {
-        background: "#1E2326",
-        foreground: "#D3C6AA",
-        primary: "#7A8478",
-        buttonPrimary: "#384B55",
-        sliderTrough: "#2E383C",
-        hover: "#2E383C",
-        warning: "#E67E80",
+        background: "#1F2932",
+        foreground: "#AFB3BD",
+        primary: "#7C545F",
+        buttonPrimary: "#7C545F",
+        sliderTrough: "#293642",
+        hover: "#293642",
+        warning: "#7C7C54",
     },
 }
 
@@ -324,7 +324,7 @@ function checkConfigIntegrity(config: Config) {
         }
     }
     if (config.gaps === undefined) {
-        config.gaps = 30
+        config.gaps = 5
     }
     if (config.borderRadius === undefined) {
         config.borderRadius = 8

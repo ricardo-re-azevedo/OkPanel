@@ -12,66 +12,66 @@ Create a config file and place it in the config directory like so
 
 ### Main
 
-| Path                    | Required | Type                         | Description                                      |
-|:------------------------|:---------|:-----------------------------|:-------------------------------------------------|
-| gaps                    | False    | number                       | Gap size in pixels between elements.             |
-| borderRadius            | False    | number                       | General border radius for panel elements.        |
-| windowBorderRadius      | False    | number                       | Border radius for popup or window-like elements. |
-| largeButtonBorderRadius | False    | number                       | Optional radius for large buttons.               |
-| themeUpdateScript       | False    | string                       | Script to execute when changing the theme.       |
-| wallpaperUpdateScript   | False    | string                       | Script to execute when changing the wallpaper.   |
-| notificationsPosition   | False    | string - "left", "right"     | Where to display notifications.  Left or right   |
-| horizontalBar           | False    | HorizontalBar - see below    | Horizontal bar configuration                     |
-| verticalBar             | False    | VerticalBar - see below      | Vertical bar configuration                       |
-| systemCommands          | True     | SystemCommands - see below   | System commands configuration                    |
-| themes                  | False    | array[Theme - see below]     | A list of predefined themes                      |
+| Path                    | Description                                      | Required | Type                       | Default                            |
+|:------------------------|:-------------------------------------------------|:---------|:---------------------------|------------------------------------|
+| gaps                    | Gap size in pixels between elements.             | False    | number                     | 5                                  |
+| borderRadius            | General border radius for panel elements.        | False    | number                     | 8                                  |
+| windowBorderRadius      | Border radius for popup or window-like elements. | False    | number                     | 8                                  |
+| largeButtonBorderRadius | Optional radius for large buttons.               | False    | number                     | 16                                 |
+| themeUpdateScript       | Script to execute when changing the theme.       | False    | string                     | undefined                          |
+| wallpaperUpdateScript   | Script to execute when changing the wallpaper.   | False    | string                     | undefined                          |
+| notificationsPosition   | Where to display notifications.  Left or right   | False    | string : "left", "right"   | "right"                            |
+| horizontalBar           | Horizontal bar configuration                     | False    | HorizontalBar : see below  | see below                          |
+| verticalBar             | Vertical bar configuration                       | False    | VerticalBar : see below    | see below                          |
+| systemCommands          | System commands configuration                    | True     | SystemCommands : see below | required                           |
+| themes                  | A list of predefined themes                      | False    | array[Theme : see below]   | defaults to a single premade theme |
 
 ### Horizontal Bar
 
-| Path              | Required  | Type                                    | Description                                         |
-|:------------------|:----------|:----------------------------------------|:----------------------------------------------------|
-| leftWidgets       | False     | array[string - see bar widget values]   | Widgets to display on the left side of the panel.   |
-| centerWidgets     | False     | array[string - see bar widget values]   | Widgets to display in the center of the panel.      |
-| rightWidgets      | False     | array[string - see bar widget values]   | Widgets to display on the right side of the panel.  |
+| Path              | Description                                         | Required  | Type                                  | Default                                                                                                       |
+|:------------------|:----------------------------------------------------|:----------|:--------------------------------------|---------------------------------------------------------------------------------------------------------------|
+| leftWidgets       | Widgets to display on the left side of the panel.   | False     | array[string : see bar widget values] | ["menu", "workspaces"]                                                                                        |
+| centerWidgets     | Widgets to display in the center of the panel.      | False     | array[string : see bar widget values] | ["clock"]                                                                                                     |
+| rightWidgets      | Widgets to display on the right side of the panel.  | False     | array[string : see bar widget values] | ["recording_indicator", "tray", "audio_out", "audio_in", "bluetooth", "vpn_indicator", "network", "battery"]  |
 
 ### Vertical Bar
 
-| Path                | Required   | Type                                    | Description                                         |
-|:--------------------|:-----------|:----------------------------------------|:----------------------------------------------------|
-| topWidgets          | False      | array[string - see bar widget values]   | Widgets to display on the top side of the panel.    |
-| centerWidgets       | False      | array[string - see bar widget values]   | Widgets to display in the center of the panel.      |
-| bottomWidgets       | False      | array[string - see bar widget values]   | Widgets to display on the bottom side of the panel. |
+| Path                | Description                                         | Required   | Type                                  | Default                                                                                                                |
+|:--------------------|:----------------------------------------------------|:-----------|:--------------------------------------|------------------------------------------------------------------------------------------------------------------------|
+| topWidgets          | Widgets to display on the top side of the panel.    | False      | array[string : see bar widget values] | ["menu", "workspaces"]                                                                                                 |
+| centerWidgets       | Widgets to display in the center of the panel.      | False      | array[string : see bar widget values] | []                                                                                                                     |
+| bottomWidgets       | Widgets to display on the bottom side of the panel. | False      | array[string : see bar widget values] | ["recording_indicator", "tray", "audio_out", "audio_in", "bluetooth", "vpn_indicator", "network", "battery", "clock"]  |
 
 ### System Commands
 
-| Path            | Required   | Type       | Description                                         |
-|:----------------|:-----------|:-----------|:----------------------------------------------------|
-| logout          | True       | string     | Command to log out the session.                     |
-| lock            | True       | string     | Command to lock the screen.                         |
-| restart         | True       | string     | Command to restart the system.                      |
-| shutdown        | True       | string     | Command to shut down the system.                    |
+| Path            | Description                                         | Required   | Type       |
+|:----------------|:----------------------------------------------------|:-----------|:-----------|
+| logout          | Command to log out the session.                     | True       | string     |
+| lock            | Command to lock the screen.                         | True       | string     |
+| restart         | Command to restart the system.                      | True       | string     |
+| shutdown        | Command to shut down the system.                    | True       | string     |
 
 ### Theme
 
-| Path         | Required  | Type                        | Description                                     |
-|:-------------|:----------|:----------------------------|:------------------------------------------------|
-| name         | True      | string                      | Name of the theme.                              |
-| icon         | True      | char                        | Nerd font character to represent the theme.     |
-| pixelOffset  | True      | number - between -10 and 10 | Pixel offset adjustment for the theme icon.     |
-| wallpaperDir | True      | string                      | Directory containing wallpapers for this theme. |
-| colors       | True      | Colors - see below          | Color palette for this theme.                   |
+| Path         | Description                                     | Required  | Type                        |
+|:-------------|:------------------------------------------------|:----------|:----------------------------|
+| name         | Name of the theme.                              | True      | string                      |
+| icon         | Nerd font character to represent the theme.     | True      | char                        |
+| pixelOffset  | Pixel offset adjustment for the theme icon.     | True      | number : between -10 and 10 |
+| wallpaperDir | Directory containing wallpapers for this theme. | True      | string                      |
+| colors       | Color palette for this theme.                   | True      | [Color : see below]         |
 
 ### Color
 
-| Path             | Required  | Type       | Description                                         |
-|:-----------------|:----------|:-----------|:----------------------------------------------------|
-| background       | True      | string     | Background color.                                   |
-| foreground       | True      | string     | Foreground/text color.                              |
-| primary          | True      | string     | Primary color used for highlights.                  |
-| buttonPrimary    | True      | string     | Primary button color.                               |
-| sliderTrough     | True      | string     | Color for slider troughs.                           |
-| hover            | True      | string     | Hover state color.                                  |
-| warning          | True      | string     | Color for warning or alert states.                  |
+| Path             | Description                                         | Required  | Type       |
+|:-----------------|:----------------------------------------------------|:----------|:-----------|
+| background       | Background color.                                   | True      | string     |
+| foreground       | Foreground/text color.                              | True      | string     |
+| primary          | Primary color used for highlights.                  | True      | string     |
+| buttonPrimary    | Primary button color.                               | True      | string     |
+| sliderTrough     | Color for slider troughs.                           | True      | string     |
+| hover            | Hover state color.                                  | True      | string     |
+| warning          | Color for warning or alert states.                  | True      | string     |
 
 ### Bar widget values
 
@@ -178,11 +178,3 @@ Create a config file and place it in the config directory like so
   ]
 }
 ```
-
----
-
-## Next up: Using the panel
-
-<a href="../usage" class="md-button md-button--primary" style="margin-right: 1rem;">
-    Usage
-</a>

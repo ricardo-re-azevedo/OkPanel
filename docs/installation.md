@@ -4,15 +4,43 @@
 
 ---
 
+### AUR package
+
+Coming soonish
+
+---
+
 ### Manual
 
-Install dependencies
+Install dependencies    
+Hyprland is assumed to already be installed
 ```
-yay -S aylurs-gtk-shell-git gvfs sox wf-recorder pipewire-pulse grim slurp networkmanager wireplumber bluez bluez-utils dart-sass upower brightnessctl ttf-jetbrains-mono-nerd
+yay -S aylurs-gtk-shell-git \
+gvfs \
+sox \
+wf-recorder \
+pipewire-pulse \
+grim \
+slurp \
+networkmanager \
+wireplumber \
+bluez \
+bluez-utils \
+dart-sass \
+upower \
+brightnessctl \
+ttf-jetbrains-mono-nerd
+```
+
+Checkout the git repository
+
+```
+git checkout git@github.com:JohnOberhauser/OkPanel.git
 ```
 
 Then run the install.sh file
 ```
+cd OkPanel/bin
 ./install.sh
 ```
 
@@ -21,17 +49,3 @@ To uninstall, run the uninstall.sh file
 ```
 ./uninstall.sh
 ```
-
----
-
-### AUR package
-
-Coming soonish
-
----
-
-## Next up: Configure
-
-<a href="../config" class="md-button md-button--primary" style="margin-right: 1rem;">
-    Configure
-</a>

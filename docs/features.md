@@ -23,11 +23,15 @@ it must be added to network manager.  Wireguard and OpenVPN connections will sho
 
 ![screenshot](screenshots/features/network.png)
 
+---
+
 ### Bluetooth device management
 
 Scan and connect to bluetooth devices.
 
 ![screenshot](screenshots/features/bluetooth.png)
+
+---
 
 ### Audio controls
 
@@ -35,6 +39,8 @@ In the audio section you can adjust the volume sliders or click the icon button 
 You can swap the default input/output.
 
 ![screenshot](screenshots/features/audio.png)
+
+---
 
 ### Look and Feel controls for theme, bar position, and wallpaper
 
@@ -54,11 +60,15 @@ switching themes, the `wallpaperUpdateScript` will be called as well.
 
 ![screenshot](screenshots/features/lookandfeel.png)
 
+---
+
 ### Mpris media controls
 
 Mpris controls will show up when available.
 
 ![screenshot](screenshots/features/media.png)
+
+---
 
 ### Notification popups and history
 
@@ -66,7 +76,9 @@ To enter "Do not disturb" mode, click the notification bell icon.
 
 ![screenshot](screenshots/features/notifications.png)
 
-### Screenshot and screen recording tool
+---
+
+## Screenshot and screen recording tool
 
 The `okpanel screenshot` command must be key-bound for this to show up.
 
@@ -76,25 +88,33 @@ quality and smaller file size.
 
 ![screenshot](screenshots/features/screenshot.png)
 
-### App launcher
+---
+
+## App launcher
 
 The `okpanel launcher` command must be key-bound for this to show up.
 
 ![screenshot](screenshots/features/appLauncher.png)
 
-### Calendar
+---
+
+## Calendar
 
 Click the Clock widget in the bar to show the calendar.
 
 ![screenshot](screenshots/features/calendar.png)
 
-### Volume and brightness alerts
+---
+
+## Volume and brightness alerts
 
 These alerts will show automatically when changing volume or brightness.
 
 ![screenshot](screenshots/features/alerts.png)
 
-### Screen share portal
+---
+
+## Screen share portal
 
 The screen share portal only works with Hyprland's XDPH.  See the usage page for more info.
 

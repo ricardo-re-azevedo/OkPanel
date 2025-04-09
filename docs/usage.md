@@ -64,6 +64,6 @@ Create a file `xdph` in your `~/.config/hypr/` directory and apply this config
 
 ```
 screencopy {
-    custom_picker_binary = okpanelShare
+    custom_picker_binary = okpanel-share
 }
 ```
