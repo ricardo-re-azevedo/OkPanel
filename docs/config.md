@@ -45,9 +45,10 @@ Create a config file and place it in the config directory like so
 
 ### System Menu
 
-| Name              | Description                                | Required   | Type    | Default |
-|:------------------|:-------------------------------------------|:-----------|:--------|---------|
-| enableMprisWidget | Show the Mpris music widget when available | False      | boolean | true    |
+| Name              | Description                                | Required | Type    | Default |
+|:------------------|:-------------------------------------------|:---------|:--------|---------|
+| enableMprisWidget | Show the Mpris music widget when available | False    | boolean | true    |
+| enableVpnControls | Show VPN controls in the network section   | False    | boolean | true    |
 
 
 ### System Commands

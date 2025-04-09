@@ -61,6 +61,7 @@ export type SystemCommands = {
 
 export type SystemMenu = {
     enableMprisWidget: boolean;
+    enableVpnControls: boolean;
 }
 
 export type Config = {
@@ -429,10 +430,14 @@ function checkConfigIntegrity(config: Config) {
     }
     if (config.systemMenu === undefined) {
         config.systemMenu = {
-            enableMprisWidget: true
+            enableMprisWidget: true,
+            enableVpnControls: true,
         }
     }
     if (config.systemMenu.enableMprisWidget === undefined) {
         config.systemMenu.enableMprisWidget = true
+    }
+    if (config.systemMenu.enableVpnControls === undefined) {
+        config.systemMenu.enableVpnControls = true
     }
 }
