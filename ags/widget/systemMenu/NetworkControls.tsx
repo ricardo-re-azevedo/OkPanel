@@ -499,84 +499,81 @@ function VpnActiveConnections() {
 
 function VpnConnections() {
     return <box
-        visible={vpnConnections((connections) => {
-            return connections.length !== 0
-        })}
-        vertical={true}>
+        vertical={true}
+        spacing={4}>
+        <label
+            halign={Gtk.Align.START}
+            cssClasses={["labelLargeBold"]}
+            label="VPN Connections"/>
         {vpnConnections((connectionsValue) => {
-            if (connectionsValue.length === 0) {
-                return <box/>
-            }
+            return connectionsValue.map((connection) => {
+                const buttonsRevealed = Variable(false)
+                const isConnecting = Variable(false)
 
-            return <box
-                vertical={true}>
-                <label
-                    halign={Gtk.Align.START}
-                    cssClasses={["labelLargeBold"]}
-                    label="VPN Connections"/>
-                {connectionsValue.map((connection) => {
-                    const buttonsRevealed = Variable(false)
-                    const isConnecting = Variable(false)
+                setTimeout(() => {
+                    bind(App.get_window(SystemMenuWindowName)!, "visible").subscribe((visible) => {
+                        if (!visible) {
+                            buttonsRevealed.set(false)
+                        }
+                    })
+                }, 1_000)
 
-                    setTimeout(() => {
-                        bind(App.get_window(SystemMenuWindowName)!, "visible").subscribe((visible) => {
-                            if (!visible) {
-                                buttonsRevealed.set(false)
-                            }
-                        })
-                    }, 1_000)
-
-                    return <box
-                        vertical={true}>
-                        <button
-                            hexpand={true}
-                            cssClasses={["transparentButton"]}
-                            onClicked={() => {
-                                buttonsRevealed.set(!buttonsRevealed.get())
-                            }}>
-                            <label
-                                halign={Gtk.Align.START}
-                                cssClasses={["labelSmall"]}
-                                label={`󰯄  ${connection}`}/>
-                        </button>
-                        <revealer
-                            revealChild={buttonsRevealed()}
-                            transitionDuration={200}
-                            transitionType={Gtk.RevealerTransitionType.SLIDE_DOWN}>
-                            <box
-                                marginTop={4}
-                                marginBottom={4}
-                                vertical={true}
-                                spacing={4}>
-                                <button
-                                    hexpand={true}
-                                    cssClasses={["primaryButton"]}
-                                    label={isConnecting().as((connecting) => {
-                                        if (connecting) {
-                                            return "Connecting"
-                                        } else {
-                                            return "Connect"
-                                        }
-                                    })}
-                                    onClicked={() => {
-                                        if (!isConnecting.get()) {
-                                            isConnecting.set(true)
-                                            connectVpn(connection)
-                                        }
-                                    }}/>
-                                <button
-                                    hexpand={true}
-                                    cssClasses={["primaryButton"]}
-                                    label="Forget"
-                                    onClicked={() => {
-                                        deleteConnection(connection)
-                                    }}/>
-                            </box>
-                        </revealer>
-                    </box>
-                })}
-            </box>
+                return <box
+                    vertical={true}>
+                    <button
+                        hexpand={true}
+                        cssClasses={["transparentButton"]}
+                        onClicked={() => {
+                            buttonsRevealed.set(!buttonsRevealed.get())
+                        }}>
+                        <label
+                            halign={Gtk.Align.START}
+                            cssClasses={["labelSmall"]}
+                            label={`󰯄  ${connection}`}/>
+                    </button>
+                    <revealer
+                        revealChild={buttonsRevealed()}
+                        transitionDuration={200}
+                        transitionType={Gtk.RevealerTransitionType.SLIDE_DOWN}>
+                        <box
+                            marginTop={4}
+                            marginBottom={4}
+                            vertical={true}
+                            spacing={4}>
+                            <button
+                                hexpand={true}
+                                cssClasses={["primaryButton"]}
+                                label={isConnecting().as((connecting) => {
+                                    if (connecting) {
+                                        return "Connecting"
+                                    } else {
+                                        return "Connect"
+                                    }
+                                })}
+                                onClicked={() => {
+                                    if (!isConnecting.get()) {
+                                        isConnecting.set(true)
+                                        connectVpn(connection)
+                                    }
+                                }}/>
+                            <button
+                                hexpand={true}
+                                cssClasses={["primaryButton"]}
+                                label="Forget"
+                                onClicked={() => {
+                                    deleteConnection(connection)
+                                }}/>
+                        </box>
+                    </revealer>
+                </box>
+            })
         })}
+        <button
+            cssClasses={["primaryButton"]}
+            label="Add Wireguard VPN"
+            onClicked={() => {
+                addWireguardConnection()
+            }}/>
     </box>
 }
 
@@ -631,25 +628,16 @@ export default function () {
                 marginTop={10}
                 vertical={true}
                 spacing={12}>
-                <box
-                    vertical={true}
-                    spacing={4}>
-                    {network.wifi && bind(network.wifi, "activeAccessPoint").as((activeAccessPoint) => {
-                        return <button
-                            visible={activeAccessPoint !== null}
-                            cssClasses={["primaryButton"]}
-                            label="Disconnect"
-                            onClicked={() => {
-                                disconnect(activeAccessPoint.ssid)
-                            }}/>
-                    })}
-                    <button
+                {network.wifi && bind(network.wifi, "activeAccessPoint").as((activeAccessPoint) => {
+                    return <button
+                        visible={activeAccessPoint !== null}
+                        marginBottom={8}
                         cssClasses={["primaryButton"]}
-                        label="Add Wireguard VPN"
+                        label="Disconnect"
                         onClicked={() => {
-                            addWireguardConnection()
+                            disconnect(activeAccessPoint.ssid)
                         }}/>
-                </box>
+                })}
                 <VpnActiveConnections/>
                 <VpnConnections/>
                 {network.wifi && <WifiConnections connections={inactiveWifiConnections}/>}
