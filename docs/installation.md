@@ -6,7 +6,9 @@
 
 ### AUR package
 
-Coming soonish
+```
+yay -S okpanel-git
+```
 
 ---
 

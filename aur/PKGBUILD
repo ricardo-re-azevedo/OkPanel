@@ -3,6 +3,7 @@ pkgname=okpanel-git
 pkgver=0.1.0
 pkgrel=1
 pkgdesc="A custom AGS panel for hyprland"
+license=('GPL3')
 arch=('any')
 url="https://github.com/JohnOberhauser/OkPanel"
 depends=(
