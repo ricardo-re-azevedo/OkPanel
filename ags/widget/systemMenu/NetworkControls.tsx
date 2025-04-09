@@ -1,5 +1,5 @@
 import AstalNetwork from "gi://AstalNetwork"
-import {getAccessPointIcon, getNetworkIconBinding, getNetworkNameBinding} from "../utils/network";
+import {getAccessPointIcon, getNetworkIconBinding} from "../utils/network";
 import {bind, Variable} from "astal"
 import {Gtk, App} from "astal/gtk4"
 import {execAsync} from "astal/process"
@@ -8,6 +8,7 @@ import Pango from "gi://Pango?version=1.0";
 import RevealerRow from "../common/RevealerRow";
 
 const wifiConnections = Variable<string[]>([])
+const inactiveWifiConnections = Variable<string[]>([])
 const activeWifiConnections = Variable<string[]>([])
 const vpnConnections = Variable<string[]>([])
 export const activeVpnConnections = Variable<string[]>([])
@@ -78,7 +79,6 @@ function updateConnections() {
                         .split("\n")
                         .filter((line) => line.includes("802-11-wireless"))
                         .map((line) => line.split(":")[0].trim())
-                        .filter((line) => !activeWifiConnections.get().includes(line))
                         .sort((a, b) => {
                             const aInRange = ssidInRange(a)
                             const bInRange = ssidInRange(b)
@@ -92,6 +92,10 @@ function updateConnections() {
                         });
 
                     wifiConnections.set(wifiNames)
+                    inactiveWifiConnections.set(
+                        wifiNames
+                            .filter((line) => !activeWifiConnections.get().includes(line))
+                    )
 
                     const vpnNames = value
                         .split("\n")
@@ -113,6 +117,13 @@ function updateConnections() {
 
 function deleteConnection(ssid: string) {
     execAsync(["bash", "-c", `nmcli connection delete "${ssid}"`])
+        .finally(() => {
+            updateConnections()
+        })
+}
+
+function disconnect(ssid: string) {
+    execAsync(["bash", "-c", `nmcli connection down "${ssid}"`])
         .finally(() => {
             updateConnections()
         })
@@ -226,7 +237,7 @@ function WifiConnections() {
             halign={Gtk.Align.START}
             cssClasses={["labelLargeBold"]}
             label="Saved networks"/>
-        {wifiConnections((connectionsValue) => {
+        {inactiveWifiConnections((connectionsValue) => {
             return connectionsValue.map((connection) => {
                 const buttonsRevealed = Variable(false)
 
@@ -245,7 +256,7 @@ function WifiConnections() {
                 })
                 if (accessPoint != null) {
                     label = `${getAccessPointIcon(accessPoint)}  ${connection}`
-                    canConnect = network.wifi.activeAccessPoint.ssid !== connection;
+                    canConnect = network.wifi.activeAccessPoint?.ssid !== connection;
                 } else {
                     label = `󰤮  ${connection}`
                     canConnect = false
@@ -552,7 +563,7 @@ export default function () {
     }, 1_000)
 
     const networkName = Variable.derive([
-        getNetworkNameBinding(),
+        bind(network.client, "primaryConnection"),
         activeVpnConnections
     ])
 
@@ -567,12 +578,20 @@ export default function () {
                 hexpand={true}
                 ellipsize={Pango.EllipsizeMode.END}
                 label={networkName().as((value) => {
-                    const networkNameValue = value[0]
+                    const primaryConnection = value[0]
                     const activeVpnConnectionsValue = value[1]
-                    if (activeVpnConnectionsValue.length === 0) {
-                        return networkNameValue
+                    let name: string
+                    if (primaryConnection === null) {
+                        name = "Not Connected"
+                    } else if (primaryConnection.id.toLowerCase().startsWith("wired")) {
+                        name = "Wired"
                     } else {
-                        return `${networkNameValue} (+VPN)`
+                        name = primaryConnection.id
+                    }
+                    if (activeVpnConnectionsValue.length === 0) {
+                        return name
+                    } else {
+                        return `${name} (+VPN)`
                     }
                 })}/>
         }
@@ -583,16 +602,17 @@ export default function () {
                 spacing={12}>
                 {network.wifi && bind(network.wifi, "activeAccessPoint").as((activeAccessPoint) => {
                     return <button
+                        visible={activeAccessPoint !== null}
                         cssClasses={["primaryButton"]}
                         marginBottom={12}
-                        label="Forget"
+                        label="Disconnect"
                         onClicked={() => {
-                            deleteConnection(activeAccessPoint.ssid)
+                            disconnect(activeAccessPoint.ssid)
                         }}/>
                 })}
                 <VpnActiveConnections/>
                 <VpnConnections/>
-                {network.wifi && <WifiConnections connections={wifiConnections}/>}
+                {network.wifi && <WifiConnections connections={inactiveWifiConnections}/>}
                 {network.wifi && <WifiScannedConnections/>}
             </box>
         }
