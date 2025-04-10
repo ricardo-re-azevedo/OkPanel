@@ -19,7 +19,8 @@ Bars can be configured with varius widgets.  The position of the bar can be chan
 ### Network management
 
 In the network section you can connect and disconnect from Wi-Fi and VPNs.  For a VPN connection to show up
-it must be added to network manager.  Wireguard and OpenVPN connections will show.
+it must be added to network manager.  Wireguard and OpenVPN connections will show.  You can add wireguard
+connections by clicking the "Add Wireguard VPN" button and selecting your wireguard conf file.
 
 ![screenshot](screenshots/features/network.png)
 
