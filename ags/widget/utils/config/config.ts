@@ -25,12 +25,18 @@ export type VerticalBar = {
     topWidgets: BarWidget[];
     centerWidgets: BarWidget[];
     bottomWidgets: BarWidget[];
+    expanded: boolean;
+    splitSections: boolean;
+    minimumHeight: number;
 }
 
 export type HorizontalBar = {
     leftWidgets: BarWidget[];
     centerWidgets: BarWidget[];
     rightWidgets: BarWidget[];
+    expanded: boolean;
+    splitSections: boolean;
+    minimumWidth: number;
 }
 
 export enum BarWidget {
@@ -163,6 +169,8 @@ cat > "$TARGET_DIR/variables.scss" <<EOF
 \\$borderRadius: ${config.borderRadius}px;
 \\$windowBorderRadius: ${config.windowBorderRadius}px;
 \\$largeButtonBorderRadius: ${config.largeButtonBorderRadius}px;
+\\$verticalBarMinHeight: ${config.verticalBar.minimumHeight}px;
+\\$horizontalBarMinWidth: ${config.horizontalBar.minimumWidth}px;
 EOF
 
 sass $TARGET_DIR/main.scss /tmp/OkPanel/style.css
@@ -345,10 +353,10 @@ function checkConfigIntegrity(config: Config) {
         config.horizontalBar = {
             leftWidgets: [
                 BarWidget.MENU,
-                BarWidget.WORKSPACES
+                BarWidget.WORKSPACES,
             ],
             centerWidgets: [
-                BarWidget.CLOCK
+                BarWidget.CLOCK,
             ],
             rightWidgets: [
                 BarWidget.RECORDING_INDICATOR,
@@ -359,17 +367,34 @@ function checkConfigIntegrity(config: Config) {
                 BarWidget.VPN_INDICATOR,
                 BarWidget.NETWORK,
                 BarWidget.BATTERY,
-            ]
+            ],
+            expanded: true,
+            splitSections: false,
+            minimumWidth: 800
         }
     }
     if (config.horizontalBar.leftWidgets === undefined) {
-        config.horizontalBar.leftWidgets = []
+        config.horizontalBar.leftWidgets = [
+            BarWidget.MENU,
+            BarWidget.WORKSPACES,
+        ]
     }
     if (config.horizontalBar.centerWidgets === undefined) {
-        config.horizontalBar.centerWidgets = []
+        config.horizontalBar.centerWidgets = [
+            BarWidget.CLOCK,
+        ]
     }
     if (config.horizontalBar.rightWidgets === undefined) {
-        config.horizontalBar.rightWidgets = []
+        config.horizontalBar.rightWidgets = [
+            BarWidget.RECORDING_INDICATOR,
+            BarWidget.TRAY,
+            BarWidget.AUDIO_OUT,
+            BarWidget.AUDIO_IN,
+            BarWidget.BLUETOOTH,
+            BarWidget.VPN_INDICATOR,
+            BarWidget.NETWORK,
+            BarWidget.BATTERY,
+        ]
     }
     if (!config.horizontalBar.leftWidgets.includes(BarWidget.MENU) &&
             !config.horizontalBar.centerWidgets.includes(BarWidget.MENU) &&
@@ -381,12 +406,21 @@ function checkConfigIntegrity(config: Config) {
         !config.horizontalBar.rightWidgets.includes(BarWidget.RECORDING_INDICATOR)) {
         throw Error(`Config invalid.  Bar must contain the recording indicator widget.`)
     }
+    if (config.horizontalBar.expanded === undefined) {
+        config.horizontalBar.expanded = true
+    }
+    if (config.horizontalBar.splitSections === undefined) {
+        config.horizontalBar.splitSections = false
+    }
+    if (config.horizontalBar.minimumWidth === undefined) {
+        config.horizontalBar.minimumWidth = 800
+    }
 
     if (config.verticalBar === undefined) {
         config.verticalBar = {
             topWidgets: [
                 BarWidget.MENU,
-                BarWidget.WORKSPACES
+                BarWidget.WORKSPACES,
             ],
             centerWidgets: [],
             bottomWidgets: [
@@ -399,17 +433,33 @@ function checkConfigIntegrity(config: Config) {
                 BarWidget.NETWORK,
                 BarWidget.BATTERY,
                 BarWidget.CLOCK,
-            ]
+            ],
+            expanded: true,
+            splitSections: false,
+            minimumHeight: 600
         }
     }
     if (config.verticalBar.topWidgets === undefined) {
-        config.verticalBar.topWidgets = []
+        config.verticalBar.topWidgets = [
+            BarWidget.MENU,
+            BarWidget.WORKSPACES,
+        ]
     }
     if (config.verticalBar.centerWidgets === undefined) {
         config.verticalBar.centerWidgets = []
     }
     if (config.verticalBar.bottomWidgets === undefined) {
-        config.verticalBar.bottomWidgets = []
+        config.verticalBar.bottomWidgets = [
+            BarWidget.RECORDING_INDICATOR,
+            BarWidget.TRAY,
+            BarWidget.AUDIO_OUT,
+            BarWidget.AUDIO_IN,
+            BarWidget.BLUETOOTH,
+            BarWidget.VPN_INDICATOR,
+            BarWidget.NETWORK,
+            BarWidget.BATTERY,
+            BarWidget.CLOCK,
+        ]
     }
     if (!config.verticalBar.topWidgets.includes(BarWidget.MENU) &&
         !config.verticalBar.centerWidgets.includes(BarWidget.MENU) &&
@@ -420,6 +470,15 @@ function checkConfigIntegrity(config: Config) {
         !config.verticalBar.centerWidgets.includes(BarWidget.RECORDING_INDICATOR) &&
         !config.verticalBar.bottomWidgets.includes(BarWidget.RECORDING_INDICATOR)) {
         throw Error(`Config invalid.  Bar must contain the recording indicator widget.`)
+    }
+    if (config.verticalBar.expanded === undefined) {
+        config.verticalBar.expanded = true
+    }
+    if (config.verticalBar.splitSections === undefined) {
+        config.verticalBar.splitSections = false
+    }
+    if (config.verticalBar.minimumHeight === undefined) {
+        config.verticalBar.minimumHeight = 600
     }
 
     if (config.notificationsPosition === undefined) {

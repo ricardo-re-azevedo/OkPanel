@@ -14,10 +14,16 @@ export default function () {
         margin={config.gaps}
         anchor={selectedBar((bar) => {
             if (bar === Bar.LEFT) {
+                if (!config.verticalBar.expanded) {
+                    return Astal.WindowAnchor.LEFT
+                }
                 return Astal.WindowAnchor.TOP
                     | Astal.WindowAnchor.LEFT
                     | Astal.WindowAnchor.BOTTOM
             } else {
+                if (!config.verticalBar.expanded) {
+                    return Astal.WindowAnchor.RIGHT
+                }
                 return Astal.WindowAnchor.TOP
                     | Astal.WindowAnchor.RIGHT
                     | Astal.WindowAnchor.BOTTOM
@@ -26,16 +32,24 @@ export default function () {
         application={App}>
         <centerbox
             orientation={Gtk.Orientation.VERTICAL}
-            cssClasses={["window", "sideBar"]}>
-            <box vertical={true}>
+            cssClasses={config.verticalBar.splitSections ? ["sideBar"] : ["window", "sidebar"]}>
+            <box
+                visible={config.verticalBar.topWidgets.length > 0}
+                vertical={true}
+                cssClasses={config.verticalBar.splitSections ? ["window"] : []}>
                 {addWidgets(config.verticalBar.topWidgets, true)}
             </box>
-            <box vertical={true}>
+            <box
+                visible={config.verticalBar.centerWidgets.length > 0}
+                vertical={true}
+                cssClasses={config.verticalBar.splitSections ? ["window"] : []}>
                 {addWidgets(config.verticalBar.centerWidgets, true)}
             </box>
             <box
+                visible={config.verticalBar.bottomWidgets.length > 0}
                 vertical={true}
-                valign={Gtk.Align.END}>
+                valign={Gtk.Align.END}
+                cssClasses={config.verticalBar.splitSections ? ["window"] : []}>
                 {addWidgets(config.verticalBar.bottomWidgets, true)}
             </box>
         </centerbox>
