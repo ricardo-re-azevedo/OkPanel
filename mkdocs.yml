@@ -8,6 +8,8 @@ theme:
     repo: fontawesome/brands/github
   logo:
     assets/logo.png
+  favicon:
+    assets/favicon.ico
   font:
     text: JetBrains Mono
     code: JetBrains Mono
