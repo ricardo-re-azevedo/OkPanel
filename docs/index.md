@@ -16,4 +16,4 @@
 
 <br>
 
-![screenshot](screenshots/preview.png)
+![screenshot](screenshots/features/network.png)
