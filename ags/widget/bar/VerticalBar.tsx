@@ -1,4 +1,4 @@
-import {App, Astal, Gtk} from "astal/gtk4"
+import {App, Astal, Gdk, Gtk} from "astal/gtk4"
 import {addWidgets} from "./BarWidgets";
 import {selectedBar, Bar} from "./Bar";
 import {config} from "../utils/config/config";
@@ -6,7 +6,7 @@ import {config} from "../utils/config/config";
 export default function () {
     return <window
         cssClasses={["transparentBackground"]}
-        monitor={0}
+        monitor={config.mainMonitor}
         visible={selectedBar((bar) => {
             return bar === Bar.LEFT || bar === Bar.RIGHT
         })}

@@ -604,7 +604,6 @@ export default function () {
     updateAudioOptions()
 
     return <window
-        monitor={0}
         cssClasses={["transparentBackground"]}
         name={ScreenshotWindowName}
         application={App}

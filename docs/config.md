@@ -21,6 +21,7 @@ Create a config file and place it in the config directory like so
 | themeUpdateScript       | Script to execute when changing the theme.       | False    | string                     | undefined                          |
 | wallpaperUpdateScript   | Script to execute when changing the wallpaper.   | False    | string                     | undefined                          |
 | notificationsPosition   | Where to display notifications.  Left or right   | False    | string : "left", "right"   | "right"                            |
+| mainMonitor             | The monitor that displays the bar                | False    | number                     | 0                                  |
 | horizontalBar           | Horizontal bar configuration                     | False    | HorizontalBar : see below  | see below                          |
 | verticalBar             | Vertical bar configuration                       | False    | VerticalBar : see below    | see below                          |
 | systemMenu              | System menu configuration                        | False    | SystemMenu : see below     | see below                          |

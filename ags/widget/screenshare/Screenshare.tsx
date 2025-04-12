@@ -224,7 +224,6 @@ function Region() {
 
 export default function () {
     return <window
-        monitor={0}
         name={ScreenshareWindowName}
         anchor={Astal.WindowAnchor.TOP | Astal.WindowAnchor.BOTTOM}
         application={App}

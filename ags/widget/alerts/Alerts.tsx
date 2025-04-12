@@ -1,11 +1,10 @@
-import {App, Astal, Gtk} from "astal/gtk4"
+import {App, Astal, Gdk, Gtk} from "astal/gtk4"
 import Wp from "gi://AstalWp"
 import {bind, Variable, Binding, GLib} from "astal"
 import {getVolumeIcon, playPowerPlug, playPowerUnplug} from "../utils/audio";
 import Brightness from "../utils/connectables/brightness";
 import {getBrightnessIcon} from "../utils/brightness";
 import Battery from "gi://AstalBattery"
-import {execAsync} from "astal/process"
 
 const VolumeAlertName = "volumeAlert"
 const BrightnessAlertName = "brightnessAlert"
@@ -16,19 +15,21 @@ export function AlertWindow(
         label,
         sliderValue,
         windowName,
-        showVariable
+        showVariable,
+        gdkmonitor
     }: {
         iconLabel: Binding<string>,
         label: string,
         sliderValue: Binding<number>,
         windowName: string,
         showVariable: Variable<any>
+        gdkmonitor: Gdk.Monitor
     }
 ) {
     let windowVisibilityTimeout: GLib.Source | null = null
 
     return <window
-        monitor={0}
+        gdkmonitor={gdkmonitor}
         name={windowName}
         application={App}
         anchor={Astal.WindowAnchor.BOTTOM}
@@ -92,7 +93,7 @@ export function AlertWindow(
     </window>
 }
 
-export function VolumeAlert() {
+export function VolumeAlert(gdkmonitor: Gdk.Monitor) {
     const defaultSpeaker = Wp.get_default()!.audio.default_speaker
 
     const speakerVar = Variable.derive([
@@ -111,10 +112,11 @@ export function VolumeAlert() {
         label="Volume"
         sliderValue={bind(defaultSpeaker, "volume")}
         windowName={VolumeAlertName}
-        showVariable={showVariable}/>
+        showVariable={showVariable}
+        gdkmonitor={gdkmonitor}/>
 }
 
-export function BrightnessAlert() {
+export function BrightnessAlert(gdkmonitor: Gdk.Monitor) {
     const brightness = Brightness.get_default()
 
     const showVariable = Variable.derive([
@@ -128,7 +130,8 @@ export function BrightnessAlert() {
         label="Brightness"
         sliderValue={bind(brightness, "screen")}
         windowName={BrightnessAlertName}
-        showVariable={showVariable}/>
+        showVariable={showVariable}
+        gdkmonitor={gdkmonitor}/>
 }
 
 export function ChargingAlertSound() {

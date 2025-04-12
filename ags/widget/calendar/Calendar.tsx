@@ -10,7 +10,7 @@ export default function () {
         .poll(1000, () => GLib.DateTime.new_now_local())
 
     return <window
-        monitor={0}
+        monitor={config.mainMonitor}
         cssClasses={["focusedWindow"]}
         name={CalendarWindowName}
         application={App}

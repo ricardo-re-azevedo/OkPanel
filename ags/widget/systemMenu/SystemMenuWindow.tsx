@@ -11,15 +11,14 @@ import BluetoothControls from "./BluetoothControls";
 import LookAndFeelControls from "./LookAndFeelControls";
 import {Bar, selectedBar} from "../bar/Bar";
 import {BarWidget, config} from "../utils/config/config";
-import Bluetooth from "gi://AstalBluetooth";
 
 export const SystemMenuWindowName = "systemMenuWindow"
 
 export default function () {
     const {audio} = Wp.get_default()!
-    const bluetooth = Bluetooth.get_default()
 
     return <window
+        monitor={config.mainMonitor}
         exclusivity={Astal.Exclusivity.NORMAL}
         anchor={selectedBar((bar) => {
             switch (bar) {

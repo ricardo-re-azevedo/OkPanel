@@ -77,6 +77,7 @@ export type Config = {
     largeButtonBorderRadius: number;
     themeUpdateScript: string;
     wallpaperUpdateScript: string;
+    mainMonitor: number;
     notificationsPosition: NotificationsPosition;
     verticalBar: VerticalBar;
     horizontalBar: HorizontalBar;
@@ -348,6 +349,9 @@ function checkConfigIntegrity(config: Config) {
     }
     if (config.largeButtonBorderRadius === undefined) {
         config.largeButtonBorderRadius = 16
+    }
+    if (config.mainMonitor === undefined) {
+        config.mainMonitor = 0
     }
     if (config.horizontalBar === undefined) {
         config.horizontalBar = {

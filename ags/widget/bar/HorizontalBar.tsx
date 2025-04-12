@@ -1,4 +1,4 @@
-import {App, Astal, Gtk} from "astal/gtk4"
+import {App, Astal, Gdk, Gtk} from "astal/gtk4"
 import {addWidgets} from "./BarWidgets";
 import {Bar, selectedBar} from "./Bar";
 import {config} from "../utils/config/config";
@@ -9,7 +9,7 @@ export default function () {
             return bar === Bar.TOP || bar === Bar.BOTTOM
         })}
         cssClasses={["transparentBackground"]}
-        monitor={0}
+        monitor={config.mainMonitor}
         exclusivity={Astal.Exclusivity.EXCLUSIVE}
         margin={config.gaps}
         anchor={selectedBar((bar) => {

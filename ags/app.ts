@@ -1,4 +1,4 @@
-import { App } from "astal/gtk4"
+import {App} from "astal/gtk4"
 import Calendar from "./widget/calendar/Calendar"
 import SystemMenuWindow from "./widget/systemMenu/SystemMenuWindow";
 import {BrightnessAlert, ChargingAlertSound, VolumeAlert} from "./widget/alerts/Alerts";
@@ -23,8 +23,8 @@ App.start({
         HorizontalBar()
         Calendar()
         SystemMenuWindow()
-        VolumeAlert()
-        BrightnessAlert()
+        App.get_monitors().map(VolumeAlert)
+        App.get_monitors().map(BrightnessAlert)
         ChargingAlertSound()
         App.get_monitors().map(NotificationPopups)
         AppLauncher()

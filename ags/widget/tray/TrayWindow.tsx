@@ -55,7 +55,7 @@ export default function () {
     })
 
     return <window
-        monitor={0}
+        monitor={config.mainMonitor}
         cssClasses={["focusedWindow"]}
         name={TrayWindowName}
         application={App}
