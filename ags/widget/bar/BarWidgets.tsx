@@ -16,7 +16,7 @@ import Divider from "../common/Divider";
 import {BarWidget} from "../utils/config/config";
 import {TrayPopover, TrayWindowName} from "../tray/TrayWindow";
 import Tray from "gi://AstalTray"
-import {showWindow} from "../utils/windows";
+import {toggleWindow} from "../utils/windows";
 
 function groupByProperty(
     array: Hyprland.Workspace[],
@@ -87,7 +87,7 @@ function Clock({singleLine}: { singleLine: boolean }) {
         cssClasses={["iconButton"]}
         label={time()}
         onClicked={() => {
-            showWindow(CalendarWindowName)
+            toggleWindow(CalendarWindowName)
         }}>
 
     </button>
@@ -196,7 +196,7 @@ function MenuButton() {
         cssClasses={["iconButton"]}
         label=""
         onClicked={() => {
-            showWindow(SystemMenuWindowName)
+            toggleWindow(SystemMenuWindowName)
         }}/>
 }
 

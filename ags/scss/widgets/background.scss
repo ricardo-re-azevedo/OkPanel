@@ -1,9 +1,11 @@
+@use "../variables" as vars;
+
 .transparentBackground {
   background-color: transparent;
 }
 
 .scrimBackground {
-  background-color: #00000020;
+  background-color: vars.$scrimColor;
 }
 
 .testBackground {

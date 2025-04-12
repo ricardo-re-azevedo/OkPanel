@@ -13,7 +13,7 @@ import {loadConfig, setThemeBasic} from "./widget/utils/config/config";
 import {parseTheme} from "./widget/utils/config/themeParser";
 import TrayWindow from "./widget/tray/TrayWindow";
 import Scrim from "./widget/common/Scrim";
-import {showWindow} from "./widget/utils/windows";
+import {toggleWindow} from "./widget/utils/windows";
 
 App.start({
     instanceName: "OkPanel",
@@ -41,16 +41,16 @@ App.start({
             setThemeBasic(theme)
             res("ags theme applied")
         } else if (request === "appLauncher") {
-            showWindow(AppLauncherWindowName)
+            toggleWindow(AppLauncherWindowName)
             res("app launcher toggled")
         } else if (request === "screenshot") {
-            showWindow(ScreenshotWindowName)
+            toggleWindow(ScreenshotWindowName)
             res("screenshot toggled")
         } else if (request.startsWith("screenshare")) {
             print(request.startsWith("screenshare"))
             updateWindows(request)
             updateResponse(res)
-            showWindow(ScreenshareWindowName)
+            toggleWindow(ScreenshareWindowName)
         } else if (request.startsWith("volume-up")) {
             increaseVolume()
             res("volume up")

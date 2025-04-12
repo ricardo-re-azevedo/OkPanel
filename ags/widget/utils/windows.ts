@@ -6,11 +6,13 @@ import {AppLauncherWindowName} from "../appLauncher/AppLauncher";
 import {ScreenshareWindowName} from "../screenshare/Screenshare";
 import {ScreenshotWindowName} from "../screenshot/Screenshot";
 
-export function showWindow(windowName: string) {
+export function toggleWindow(windowName: string) {
     const window = App.get_windows().find((window) => window.name === windowName)
-    if (window !== undefined) {
+    if (window !== undefined && !window.visible) {
         scrimsVisible.set(true)
         window.show()
+    } else if (window?.visible) {
+        window?.hide()
     }
 }
 

@@ -78,6 +78,7 @@ export type Config = {
     themeUpdateScript: string;
     wallpaperUpdateScript: string;
     mainMonitor: number;
+    scrimColor: string;
     notificationsPosition: NotificationsPosition;
     verticalBar: VerticalBar;
     horizontalBar: HorizontalBar;
@@ -172,6 +173,7 @@ cat > "$TARGET_DIR/variables.scss" <<EOF
 \\$largeButtonBorderRadius: ${config.largeButtonBorderRadius}px;
 \\$verticalBarMinHeight: ${config.verticalBar.minimumHeight}px;
 \\$horizontalBarMinWidth: ${config.horizontalBar.minimumWidth}px;
+\\$scrimColor: ${config.scrimColor};
 EOF
 
 sass $TARGET_DIR/main.scss /tmp/OkPanel/style.css
@@ -502,5 +504,9 @@ function checkConfigIntegrity(config: Config) {
     }
     if (config.systemMenu.enableVpnControls === undefined) {
         config.systemMenu.enableVpnControls = true
+    }
+
+    if (config.scrimColor === undefined) {
+        config.scrimColor = "#00000001"
     }
 }

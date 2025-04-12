@@ -12,21 +12,22 @@ Create a config file and place it in the config directory like so
 
 ### Main
 
-| Name                    | Description                                      | Required | Type                       | Default                            |
-|:------------------------|:-------------------------------------------------|:---------|:---------------------------|------------------------------------|
-| gaps                    | Gap size in pixels between elements.             | False    | number                     | 5                                  |
-| borderRadius            | General border radius for panel elements.        | False    | number                     | 8                                  |
-| windowBorderRadius      | Border radius for popup or window-like elements. | False    | number                     | 8                                  |
-| largeButtonBorderRadius | Optional radius for large buttons.               | False    | number                     | 16                                 |
-| themeUpdateScript       | Script to execute when changing the theme.       | False    | string                     | undefined                          |
-| wallpaperUpdateScript   | Script to execute when changing the wallpaper.   | False    | string                     | undefined                          |
-| notificationsPosition   | Where to display notifications.  Left or right   | False    | string : "left", "right"   | "right"                            |
-| mainMonitor             | The monitor that displays the bar                | False    | number                     | 0                                  |
-| horizontalBar           | Horizontal bar configuration                     | False    | HorizontalBar : see below  | see below                          |
-| verticalBar             | Vertical bar configuration                       | False    | VerticalBar : see below    | see below                          |
-| systemMenu              | System menu configuration                        | False    | SystemMenu : see below     | see below                          |
-| systemCommands          | System commands configuration                    | True     | SystemCommands : see below | required                           |
-| themes                  | A list of predefined themes                      | False    | array[Theme : see below]   | defaults to a single premade theme |
+| Name                    | Description                                                                                                                                                                                                   | Required | Type                       | Default                            |
+|:------------------------|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:---------|:---------------------------|------------------------------------|
+| gaps                    | Gap size in pixels between elements.                                                                                                                                                                          | False    | number                     | 5                                  |
+| borderRadius            | General border radius for panel elements.                                                                                                                                                                     | False    | number                     | 8                                  |
+| windowBorderRadius      | Border radius for popup or window-like elements.                                                                                                                                                              | False    | number                     | 8                                  |
+| largeButtonBorderRadius | Optional radius for large buttons.                                                                                                                                                                            | False    | number                     | 16                                 |
+| themeUpdateScript       | Script to execute when changing the theme.                                                                                                                                                                    | False    | string                     | undefined                          |
+| wallpaperUpdateScript   | Script to execute when changing the wallpaper.                                                                                                                                                                | False    | string                     | undefined                          |
+| notificationsPosition   | Where to display notifications.  Left or right                                                                                                                                                                | False    | string : "left", "right"   | "right"                            |
+| mainMonitor             | The monitor that displays the bar                                                                                                                                                                             | False    | number                     | 0                                  |
+| scrimColor              | The color of a full screen window that displays behind OkPanel windows that is used to detect clicks to close windows.  Recommend using the alpha color channel.  If set to #00000000 scrim will be disabled. | False    | string                     | #00000001                          |
+| horizontalBar           | Horizontal bar configuration                                                                                                                                                                                  | False    | HorizontalBar : see below  | see below                          |
+| verticalBar             | Vertical bar configuration                                                                                                                                                                                    | False    | VerticalBar : see below    | see below                          |
+| systemMenu              | System menu configuration                                                                                                                                                                                     | False    | SystemMenu : see below     | see below                          |
+| systemCommands          | System commands configuration                                                                                                                                                                                 | True     | SystemCommands : see below | required                           |
+| themes                  | A list of predefined themes                                                                                                                                                                                   | False    | array[Theme : see below]   | defaults to a single premade theme |
 
 ### Horizontal Bar
 
