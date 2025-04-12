@@ -5,6 +5,7 @@ import Divider from "../common/Divider";
 import Pango from "gi://Pango?version=1.0";
 import {playCameraShutter} from "../utils/audio";
 import RevealerRow from "../common/RevealerRow";
+import {hideAllWindows} from "../utils/windows";
 
 export const isRecording = Variable(false)
 
@@ -614,7 +615,7 @@ export default function () {
         visible={false}
         onKeyPressed={function (self, key) {
             if (key === Gdk.KEY_Escape) {
-                self.hide()
+                hideAllWindows()
             }
         }}>
         <box

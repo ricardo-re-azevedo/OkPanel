@@ -2,6 +2,7 @@ import {App, Astal, Gdk, Gtk} from "astal/gtk4"
 import {GLib, Variable} from "astal"
 import {Bar, selectedBar} from "../bar/Bar";
 import {BarWidget, config} from "../utils/config/config";
+import {hideAllWindows} from "../utils/windows";
 
 export const CalendarWindowName = "calendarWindow"
 
@@ -56,7 +57,7 @@ export default function () {
         keymode={Astal.Keymode.ON_DEMAND}
         onKeyPressed={function (self, key) {
             if (key === Gdk.KEY_Escape) {
-                self.hide()
+                hideAllWindows()
             }
         }}>
         <box

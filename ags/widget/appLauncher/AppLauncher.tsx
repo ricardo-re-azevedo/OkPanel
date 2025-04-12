@@ -3,6 +3,7 @@ import { App, Astal, Gdk, Gtk } from "astal/gtk4"
 import { Variable } from "astal"
 import {execAsync} from "astal/process"
 import Pango from "gi://Pango?version=1.0";
+import {hideAllWindows} from "../utils/windows";
 
 export const AppLauncherWindowName = "appLauncher"
 
@@ -116,7 +117,7 @@ export default function () {
         }}
         onKeyPressed={function (self, key) {
             if (key === Gdk.KEY_Escape) {
-                self.hide()
+                hideAllWindows()
             } else if (key === Gdk.KEY_Down && list.get().length >= selectedIndex.get()) {
                 selectedIndex.set(selectedIndex.get() + 1)
             } else if (key === Gdk.KEY_Up && selectedIndex.get() != 0) {

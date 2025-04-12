@@ -11,15 +11,16 @@ import BluetoothControls from "./BluetoothControls";
 import LookAndFeelControls from "./LookAndFeelControls";
 import {Bar, selectedBar} from "../bar/Bar";
 import {BarWidget, config} from "../utils/config/config";
+import ScrimScrollWindow from "../common/ScrimScrollWindow";
 
 export const SystemMenuWindowName = "systemMenuWindow"
 
 export default function () {
     const {audio} = Wp.get_default()!
 
-    return <window
+    return <ScrimScrollWindow
         monitor={config.mainMonitor}
-        exclusivity={Astal.Exclusivity.NORMAL}
+        windowName={SystemMenuWindowName}
         anchor={selectedBar((bar) => {
             switch (bar) {
                 case Bar.TOP:
@@ -46,83 +47,59 @@ export default function () {
                         | Astal.WindowAnchor.BOTTOM
             }
         })}
-        layer={Astal.Layer.TOP}
-        cssClasses={["transparentBackground"]}
-        name={SystemMenuWindowName}
-        application={App}
-        margin={config.gaps}
-        keymode={Astal.Keymode.ON_DEMAND}
-        visible={false}
-        onKeyPressed={function (self, key) {
-            if (key === Gdk.KEY_Escape) {
-                self.hide()
+        topExpand={selectedBar((bar) => {
+            switch (bar) {
+                case Bar.BOTTOM:
+                    return true
+                case Bar.LEFT:
+                case Bar.RIGHT:
+                    return config.verticalBar.centerWidgets.includes(BarWidget.MENU)
+                        || config.verticalBar.bottomWidgets.includes(BarWidget.MENU)
+                default: return false
             }
-        }}>
-        <box
-            vertical={true}>
+        })}
+        bottomExpand={selectedBar((bar) => {
+            switch (bar) {
+                case Bar.TOP:
+                    return true
+                case Bar.LEFT:
+                case Bar.RIGHT:
+                    return config.verticalBar.centerWidgets.includes(BarWidget.MENU)
+                        || config.verticalBar.topWidgets.includes(BarWidget.MENU)
+                default: return false
+            }
+        })}
+        width={400}
+        content={
             <box
-                vexpand={selectedBar((bar) => {
-                    switch (bar) {
-                        case Bar.BOTTOM:
-                            return true
-                        case Bar.LEFT:
-                        case Bar.RIGHT:
-                            return config.verticalBar.centerWidgets.includes(BarWidget.MENU)
-                                || config.verticalBar.bottomWidgets.includes(BarWidget.MENU)
-                        default: return false
-                    }
-                })}/>
-            <box
+                marginTop={20}
+                marginStart={20}
+                marginEnd={20}
                 vertical={true}
-                cssClasses={["focusedWindow"]}>
-                <Gtk.ScrolledWindow
-                    cssClasses={["scrollWindow"]}
-                    vscrollbarPolicy={Gtk.PolicyType.AUTOMATIC}
-                    propagateNaturalHeight={true}
-                    widthRequest={400}>
-                    <box
-                        marginTop={20}
-                        marginStart={20}
-                        marginEnd={20}
-                        vertical={true}
-                        spacing={10}>
-                        <NetworkControls/>
-                        <BluetoothControls/>
-                        <EndpointControls
-                            defaultEndpoint={audio.default_speaker}
-                            endpointsBinding={bind(audio, "speakers")}
-                            getIcon={getVolumeIcon}/>
-                        <EndpointControls
-                            defaultEndpoint={audio.default_microphone}
-                            endpointsBinding={bind(audio, "microphones")}
-                            getIcon={getMicrophoneIcon}/>
-                        <LookAndFeelControls/>
-                        {/*MediaPlayersAstal uses the astal mpris component.  It causes UI jank.  Until it gets fix
+                spacing={10}>
+                <NetworkControls/>
+                <BluetoothControls/>
+                <EndpointControls
+                    defaultEndpoint={audio.default_speaker}
+                    endpointsBinding={bind(audio, "speakers")}
+                    getIcon={getVolumeIcon}/>
+                <EndpointControls
+                    defaultEndpoint={audio.default_microphone}
+                    endpointsBinding={bind(audio, "microphones")}
+                    getIcon={getMicrophoneIcon}/>
+                <LookAndFeelControls/>
+                {/*MediaPlayersAstal uses the astal mpris component.  It causes UI jank.  Until it gets fix
                         use MediaPlayers.  It uses a home-made mpris component that doesn't cause the jank.*/}
-                        {/*<MediaPlayersAstal/>*/}
-                        {config.systemMenu.enableMprisWidget && <MediaPlayers/>}
-                        <PowerOptions/>
-                        <box
-                            marginTop={10}
-                            vertical={false}>
-                            <NotificationHistory/>
-                        </box>
-                        <box marginTop={2}/>
-                    </box>
-                </Gtk.ScrolledWindow>
+                {/*<MediaPlayersAstal/>*/}
+                {config.systemMenu.enableMprisWidget && <MediaPlayers/>}
+                <PowerOptions/>
+                <box
+                    marginTop={10}
+                    vertical={false}>
+                    <NotificationHistory/>
+                </box>
+                <box marginTop={2}/>
             </box>
-            <box
-                vexpand={selectedBar((bar) => {
-                    switch (bar) {
-                        case Bar.TOP:
-                            return true
-                        case Bar.LEFT:
-                        case Bar.RIGHT:
-                            return config.verticalBar.centerWidgets.includes(BarWidget.MENU)
-                                || config.verticalBar.topWidgets.includes(BarWidget.MENU)
-                        default: return false
-                    }
-                })}/>
-        </box>
-    </window>
+        }
+    />
 }

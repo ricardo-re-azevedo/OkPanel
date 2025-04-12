@@ -4,6 +4,7 @@ import Hyprland from "gi://AstalHyprland"
 import {execAsync} from "astal/process"
 import Pango from "gi://Pango?version=1.0";
 import RevealerRow from "../common/RevealerRow";
+import {hideAllWindows} from "../utils/windows";
 
 export const ScreenshareWindowName = "screenshareWindow"
 
@@ -234,7 +235,7 @@ export default function () {
         visible={false}
         onKeyPressed={function (self, key) {
             if (key === Gdk.KEY_Escape) {
-                self.hide()
+                hideAllWindows()
                 response(`[SELECTION]/`)
             }
         }}>
