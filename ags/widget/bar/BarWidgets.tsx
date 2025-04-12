@@ -108,6 +108,9 @@ function ScreenRecordingStopButton() {
         visible={isRecording()}
         onClicked={() => {
             execAsync("pkill wf-recorder")
+                .catch((error) => {
+                    print(error)
+                })
         }}/>
 }
 
