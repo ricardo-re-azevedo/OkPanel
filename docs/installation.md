@@ -31,7 +31,8 @@ bluez-utils \
 dart-sass \
 upower \
 brightnessctl \
-ttf-jetbrains-mono-nerd
+ttf-jetbrains-mono-nerd \
+libnotify
 ```
 
 Checkout the git repository
