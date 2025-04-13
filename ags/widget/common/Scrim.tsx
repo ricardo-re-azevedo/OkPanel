@@ -16,7 +16,6 @@ export default function (gdkMonitor: Gdk.Monitor) {
         setup={(self) => {
             const gesture = new Gtk.GestureClick()
             gesture.connect('pressed', (_gesture, n_press, x, y) => {
-                print(`Box clicked at (${x}, ${y}) with ${n_press} presses`)
                 hideAllWindows()
             });
             self.add_controller(gesture)

@@ -56,7 +56,7 @@ function Workspaces({vertical}: { vertical: boolean }) {
                         return <button
                             label={
                                 bind(workspace.monitor, "activeWorkspace").as((activeWorkspace) =>
-                                    activeWorkspace.id == workspace.id ? "" : ""
+                                    activeWorkspace?.id === workspace.id ? "" : ""
                                 )
                             }
                             cssClasses={["iconButton"]}
