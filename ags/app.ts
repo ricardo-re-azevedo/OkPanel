@@ -14,6 +14,9 @@ import {parseTheme} from "./widget/utils/config/themeParser";
 import TrayWindow from "./widget/tray/TrayWindow";
 import Scrim from "./widget/common/Scrim";
 import {toggleWindow} from "./widget/utils/windows";
+import Hyprland from "gi://AstalHyprland"
+
+const hyprland = Hyprland.get_default()
 
 App.start({
     instanceName: "OkPanel",
@@ -25,15 +28,25 @@ App.start({
         HorizontalBar()
         Calendar()
         SystemMenuWindow()
-        App.get_monitors().map(VolumeAlert)
-        App.get_monitors().map(BrightnessAlert)
         ChargingAlertSound()
-        App.get_monitors().map(NotificationPopups)
         AppLauncher()
         Screenshot()
         Screenshare()
         TrayWindow()
-        App.get_monitors().map(Scrim)
+
+        hyprland.monitors.map((monitor) => {
+            VolumeAlert(monitor)
+            BrightnessAlert(monitor)
+            NotificationPopups(monitor)
+            Scrim(monitor)
+        })
+
+        hyprland.connect("monitor-added", (_, monitor) => {
+            App.add_window(VolumeAlert(monitor))
+            App.add_window(BrightnessAlert(monitor))
+            App.add_window(NotificationPopups(monitor))
+            App.add_window(Scrim(monitor))
+        })
     },
     requestHandler(request: string, res: (response: any) => void) {
         if (request.startsWith("theme")) {

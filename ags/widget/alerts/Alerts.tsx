@@ -5,6 +5,7 @@ import {getVolumeIcon, playPowerPlug, playPowerUnplug} from "../utils/audio";
 import Brightness from "../utils/connectables/brightness";
 import {getBrightnessIcon} from "../utils/brightness";
 import Battery from "gi://AstalBattery"
+import Hyprland from "gi://AstalHyprland"
 
 const VolumeAlertName = "volumeAlert"
 const BrightnessAlertName = "brightnessAlert"
@@ -16,20 +17,20 @@ export function AlertWindow(
         sliderValue,
         windowName,
         showVariable,
-        gdkmonitor
+        monitor
     }: {
         iconLabel: Binding<string>,
         label: string,
         sliderValue: Binding<number>,
         windowName: string,
         showVariable: Variable<any>
-        gdkmonitor: Gdk.Monitor
+        monitor: Hyprland.Monitor
     }
 ) {
     let windowVisibilityTimeout: GLib.Source | null = null
 
     return <window
-        gdkmonitor={gdkmonitor}
+        monitor={monitor.id}
         name={windowName}
         application={App}
         anchor={Astal.WindowAnchor.BOTTOM}
@@ -93,7 +94,7 @@ export function AlertWindow(
     </window>
 }
 
-export function VolumeAlert(gdkmonitor: Gdk.Monitor) {
+export function VolumeAlert(monitor: Hyprland.Monitor) {
     const defaultSpeaker = Wp.get_default()!.audio.default_speaker
 
     const speakerVar = Variable.derive([
@@ -113,10 +114,10 @@ export function VolumeAlert(gdkmonitor: Gdk.Monitor) {
         sliderValue={bind(defaultSpeaker, "volume")}
         windowName={VolumeAlertName}
         showVariable={showVariable}
-        gdkmonitor={gdkmonitor}/>
+        monitor={monitor}/>
 }
 
-export function BrightnessAlert(gdkmonitor: Gdk.Monitor) {
+export function BrightnessAlert(monitor: Hyprland.Monitor) {
     const brightness = Brightness.get_default()
 
     const showVariable = Variable.derive([
@@ -131,7 +132,7 @@ export function BrightnessAlert(gdkmonitor: Gdk.Monitor) {
         sliderValue={bind(brightness, "screen")}
         windowName={BrightnessAlertName}
         showVariable={showVariable}
-        gdkmonitor={gdkmonitor}/>
+        monitor={monitor}/>
 }
 
 export function ChargingAlertSound() {

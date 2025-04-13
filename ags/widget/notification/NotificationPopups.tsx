@@ -5,6 +5,7 @@ import {type Subscribable} from "astal/binding"
 import {bind, GLib, Variable} from "astal"
 import {selectedBar} from "../bar/Bar";
 import {config, NotificationsPosition} from "../utils/config/config";
+import Hyprland from "gi://AstalHyprland"
 
 // see comment below in constructor
 const TIMEOUT_DELAY = 7_000
@@ -110,7 +111,7 @@ class NotifiationMap implements Subscribable {
     }
 }
 
-export default function NotificationPopups(gdkmonitor: Gdk.Monitor) {
+export default function NotificationPopups(monitor: Hyprland.Monitor) {
     const { TOP, RIGHT, LEFT } = Astal.WindowAnchor
     const notifs = new NotifiationMap()
 
@@ -119,7 +120,7 @@ export default function NotificationPopups(gdkmonitor: Gdk.Monitor) {
             return values.length !== 0
         })}
         cssClasses={["NotificationPopups"]}
-        gdkmonitor={gdkmonitor}
+        monitor={monitor.id}
         exclusivity={Astal.Exclusivity.EXCLUSIVE}
         anchor={selectedBar((bar) => {
             if (config.notificationsPosition === NotificationsPosition.LEFT) {

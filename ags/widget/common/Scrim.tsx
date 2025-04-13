@@ -1,12 +1,13 @@
 import {App, Astal, Gdk, Gtk} from "astal/gtk4";
 import {Variable} from "astal";
 import {hideAllWindows} from "../utils/windows";
+import Hyprland from "gi://AstalHyprland"
 
 export const scrimsVisible = Variable(false)
 
-export default function (gdkMonitor: Gdk.Monitor) {
+export default function (monitor: Hyprland.Monitor) {
     return <window
-        gdkmonitor={gdkMonitor}
+        monitor={monitor.id}
         anchor={Astal.WindowAnchor.BOTTOM | Astal.WindowAnchor.LEFT | Astal.WindowAnchor.RIGHT | Astal.WindowAnchor.TOP}
         exclusivity={Astal.Exclusivity.IGNORE}
         layer={Astal.Layer.TOP}

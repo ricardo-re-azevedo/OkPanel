@@ -1,5 +1,4 @@
 import {bind, GLib, Variable} from "astal"
-import {App} from "astal/gtk4"
 import Hyprland from "gi://AstalHyprland"
 import {CalendarWindowName} from "../calendar/Calendar"
 import Wp from "gi://AstalWp"
