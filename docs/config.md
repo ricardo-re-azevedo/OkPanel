@@ -31,25 +31,29 @@ Create a config file and place it in the config directory like so
 
 ### Horizontal Bar
 
-| Name          | Description                                       | Required | Type                                  | Default                                                                                                      |
-|:--------------|:--------------------------------------------------|:---------|:--------------------------------------|--------------------------------------------------------------------------------------------------------------|
-| leftWidgets   | Widgets to display on the left side of the panel  | False    | array[string : see bar widget values] | ["menu", "workspaces"]                                                                                       |
-| centerWidgets | Widgets to display in the center of the panel     | False    | array[string : see bar widget values] | ["clock"]                                                                                                    |
-| rightWidgets  | Widgets to display on the right side of the panel | False    | array[string : see bar widget values] | ["recording_indicator", "tray", "audio_out", "audio_in", "bluetooth", "vpn_indicator", "network", "battery"] |
-| expanded      | Expand the bar to the edges of the screen         | False    | boolean                               | true                                                                                                         |
-| splitSections | Split each section visually                       | False    | boolean                               | false                                                                                                        |
-| minimumWidth  | The minimum width of the bar if not expanded      | False    | number                                | 800                                                                                                          |
+| Name           | Description                                       | Required | Type                                  | Default                                                                                                      |
+|:---------------|:--------------------------------------------------|:---------|:--------------------------------------|--------------------------------------------------------------------------------------------------------------|
+| leftWidgets    | Widgets to display on the left side of the panel  | False    | array[string : see bar widget values] | ["menu", "workspaces"]                                                                                       |
+| centerWidgets  | Widgets to display in the center of the panel     | False    | array[string : see bar widget values] | ["clock"]                                                                                                    |
+| rightWidgets   | Widgets to display on the right side of the panel | False    | array[string : see bar widget values] | ["recording_indicator", "tray", "audio_out", "audio_in", "bluetooth", "vpn_indicator", "network", "battery"] |
+| expanded       | Expand the bar to the edges of the screen         | False    | boolean                               | true                                                                                                         |
+| splitSections  | Split each section visually                       | False    | boolean                               | false                                                                                                        |
+| sectionPadding | Left and right padding for each section           | False    | number                                | 0                                                                                                            |
+| minimumWidth   | The minimum width of the bar if not expanded      | False    | number                                | 800                                                                                                          |
+| widgetSpacing  | Spacing between each bar widget                   | False    | number                                | 0                                                                                                            |
 
 ### Vertical Bar
 
-| Name          | Description                                         | Required  | Type                                  | Default                                                                                                               |
-|:--------------|:----------------------------------------------------|:----------|:--------------------------------------|-----------------------------------------------------------------------------------------------------------------------|
-| topWidgets    | Widgets to display on the top side of the panel.    | False     | array[string : see bar widget values] | ["menu", "workspaces"]                                                                                                |
-| centerWidgets | Widgets to display in the center of the panel.      | False     | array[string : see bar widget values] | []                                                                                                                    |
-| bottomWidgets | Widgets to display on the bottom side of the panel. | False     | array[string : see bar widget values] | ["recording_indicator", "tray", "audio_out", "audio_in", "bluetooth", "vpn_indicator", "network", "battery", "clock"] |
-| expanded      | Expand the bar to the edges of the screen           | False     | boolean                               | true                                                                                                                  |
-| splitSections | Split each section visually                         | False     | boolean                               | false                                                                                                                 |
-| minimumHeight | The minimum height of the bar if not expanded       | False     | number                                | 600                                                                                                                   |
+| Name           | Description                                         | Required | Type                                  | Default                                                                                                               |
+|:---------------|:----------------------------------------------------|:---------|:--------------------------------------|-----------------------------------------------------------------------------------------------------------------------|
+| topWidgets     | Widgets to display on the top side of the panel.    | False    | array[string : see bar widget values] | ["menu", "workspaces"]                                                                                                |
+| centerWidgets  | Widgets to display in the center of the panel.      | False    | array[string : see bar widget values] | []                                                                                                                    |
+| bottomWidgets  | Widgets to display on the bottom side of the panel. | False    | array[string : see bar widget values] | ["recording_indicator", "tray", "audio_out", "audio_in", "bluetooth", "vpn_indicator", "network", "battery", "clock"] |
+| expanded       | Expand the bar to the edges of the screen           | False    | boolean                               | true                                                                                                                  |
+| splitSections  | Split each section visually                         | False    | boolean                               | false                                                                                                                 |
+| sectionPadding | Top and bottom padding for each section             | False    | number                                | 0                                                                                                                     |
+| minimumHeight  | The minimum height of the bar if not expanded       | False    | number                                | 600                                                                                                                   |
+| widgetSpacing  | Spacing between each bar widget                     | False    | number                                | 0                                                                                                                     |
 
 ### System Menu
 

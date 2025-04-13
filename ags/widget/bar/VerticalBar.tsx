@@ -1,4 +1,4 @@
-import {App, Astal, Gdk, Gtk} from "astal/gtk4"
+import {App, Astal, Gtk} from "astal/gtk4"
 import {addWidgets} from "./BarWidgets";
 import {selectedBar, Bar} from "./Bar";
 import {config} from "../utils/config/config";
@@ -37,20 +37,38 @@ export default function () {
                 visible={config.verticalBar.topWidgets.length > 0}
                 vertical={true}
                 cssClasses={config.verticalBar.splitSections ? ["barWindow"] : []}>
-                {addWidgets(config.verticalBar.topWidgets, true)}
+                <box
+                    vertical={true}
+                    marginTop={config.verticalBar.sectionPadding}
+                    marginBottom={config.verticalBar.sectionPadding}
+                    spacing={config.verticalBar.widgetSpacing}>
+                    {addWidgets(config.verticalBar.topWidgets, true)}
+                </box>
             </box>
             <box
                 visible={config.verticalBar.centerWidgets.length > 0}
                 vertical={true}
                 cssClasses={config.verticalBar.splitSections ? ["barWindow"] : []}>
-                {addWidgets(config.verticalBar.centerWidgets, true)}
+                <box
+                    vertical={true}
+                    marginTop={config.verticalBar.sectionPadding}
+                    marginBottom={config.verticalBar.sectionPadding}
+                    spacing={config.verticalBar.widgetSpacing}>
+                    {addWidgets(config.verticalBar.centerWidgets, true)}
+                </box>
             </box>
             <box
                 visible={config.verticalBar.bottomWidgets.length > 0}
                 vertical={true}
                 valign={Gtk.Align.END}
                 cssClasses={config.verticalBar.splitSections ? ["barWindow"] : []}>
-                {addWidgets(config.verticalBar.bottomWidgets, true)}
+                <box
+                    vertical={true}
+                    marginTop={config.verticalBar.sectionPadding}
+                    marginBottom={config.verticalBar.sectionPadding}
+                    spacing={config.verticalBar.widgetSpacing}>
+                    {addWidgets(config.verticalBar.bottomWidgets, true)}
+                </box>
             </box>
         </centerbox>
     </window>

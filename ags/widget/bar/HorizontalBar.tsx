@@ -1,4 +1,4 @@
-import {App, Astal, Gdk, Gtk} from "astal/gtk4"
+import {App, Astal, Gtk} from "astal/gtk4"
 import {addWidgets} from "./BarWidgets";
 import {Bar, selectedBar} from "./Bar";
 import {config} from "../utils/config/config";
@@ -37,18 +37,36 @@ export default function () {
                 visible={config.horizontalBar.leftWidgets.length > 0}
                 halign={Gtk.Align.START}
                 cssClasses={config.horizontalBar.splitSections ? ["barWindow"] : []}>
-                {addWidgets(config.horizontalBar.leftWidgets, false)}
+                <box
+                    vertical={false}
+                    marginStart={config.horizontalBar.sectionPadding}
+                    marginEnd={config.horizontalBar.sectionPadding}
+                    spacing={config.horizontalBar.widgetSpacing}>
+                    {addWidgets(config.horizontalBar.leftWidgets, false)}
+                </box>
             </box>
             <box
                 visible={config.horizontalBar.centerWidgets.length > 0}
                 cssClasses={config.horizontalBar.splitSections ? ["barWindow"] : []}>
-                {addWidgets(config.horizontalBar.centerWidgets, false)}
+                <box
+                    vertical={false}
+                    marginStart={config.horizontalBar.sectionPadding}
+                    marginEnd={config.horizontalBar.sectionPadding}
+                    spacing={config.horizontalBar.widgetSpacing}>
+                    {addWidgets(config.horizontalBar.centerWidgets, false)}
+                </box>
             </box>
             <box
                 visible={config.horizontalBar.rightWidgets.length > 0}
                 halign={Gtk.Align.END}
                 cssClasses={config.horizontalBar.splitSections ? ["barWindow"] : []}>
-                {addWidgets(config.horizontalBar.rightWidgets, false)}
+                <box
+                    vertical={false}
+                    marginStart={config.horizontalBar.sectionPadding}
+                    marginEnd={config.horizontalBar.sectionPadding}
+                    spacing={config.horizontalBar.widgetSpacing}>
+                    {addWidgets(config.horizontalBar.rightWidgets, false)}
+                </box>
             </box>
         </centerbox>
     </window>

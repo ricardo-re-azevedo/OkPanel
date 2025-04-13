@@ -30,7 +30,9 @@ export type VerticalBar = {
     bottomWidgets: BarWidget[];
     expanded: boolean;
     splitSections: boolean;
+    sectionPadding: number;
     minimumHeight: number;
+    widgetSpacing: number;
 }
 
 export type HorizontalBar = {
@@ -39,7 +41,9 @@ export type HorizontalBar = {
     rightWidgets: BarWidget[];
     expanded: boolean;
     splitSections: boolean;
+    sectionPadding: number;
     minimumWidth: number;
+    widgetSpacing: number;
 }
 
 export enum BarWidget {
@@ -388,7 +392,9 @@ function checkConfigIntegrity(config: Config) {
             ],
             expanded: true,
             splitSections: false,
-            minimumWidth: 800
+            sectionPadding: 0,
+            minimumWidth: 800,
+            widgetSpacing: 0,
         }
     }
     if (config.horizontalBar.leftWidgets === undefined) {
@@ -430,8 +436,14 @@ function checkConfigIntegrity(config: Config) {
     if (config.horizontalBar.splitSections === undefined) {
         config.horizontalBar.splitSections = false
     }
+    if (config.horizontalBar.sectionPadding === undefined) {
+        config.horizontalBar.sectionPadding = 0
+    }
     if (config.horizontalBar.minimumWidth === undefined) {
         config.horizontalBar.minimumWidth = 800
+    }
+    if (config.horizontalBar.widgetSpacing === undefined) {
+        config.horizontalBar.widgetSpacing = 0
     }
 
     if (config.verticalBar === undefined) {
@@ -454,7 +466,9 @@ function checkConfigIntegrity(config: Config) {
             ],
             expanded: true,
             splitSections: false,
-            minimumHeight: 600
+            sectionPadding: 0,
+            minimumHeight: 600,
+            widgetSpacing: 0,
         }
     }
     if (config.verticalBar.topWidgets === undefined) {
@@ -495,8 +509,14 @@ function checkConfigIntegrity(config: Config) {
     if (config.verticalBar.splitSections === undefined) {
         config.verticalBar.splitSections = false
     }
+    if (config.verticalBar.sectionPadding === undefined) {
+        config.verticalBar.sectionPadding = 0
+    }
     if (config.verticalBar.minimumHeight === undefined) {
         config.verticalBar.minimumHeight = 600
+    }
+    if (config.verticalBar.widgetSpacing === undefined) {
+        config.verticalBar.widgetSpacing = 0
     }
 
     if (config.notificationsPosition === undefined) {

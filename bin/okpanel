@@ -51,7 +51,7 @@ EOF
 }
 
 is_hex_color() {
-  [[ "$1" =~ ^#[0-9a-fA-F]{6}$ ]]
+  [[ "$1" =~ ^#[0-9a-fA-F]{6}([0-9a-fA-F]{2})?$ ]]
 }
 
 run_theme_command() {
