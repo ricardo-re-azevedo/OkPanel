@@ -53,7 +53,7 @@ okpanel mute
 All colors are required to change a theme.  They should be in hex format, without the leading #
 
 ```
-okpanel theme --background 000000 --foreground FFFFFF --primary 99AA00 --button 994466 --hover 444444 --slider 444444 --warning FF5544
+okpanel theme --background 000000 --foreground FFFFFF --primary 99AA00 --button 994466 --hover 444444 --slider 444444 --warning FF5544 --barBorder 000000 --alertBorder 000000 --windowBorder 000000
 ```
 
 ---
