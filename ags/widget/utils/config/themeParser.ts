@@ -19,6 +19,12 @@ export function parseTheme(input: string): Theme {
         slider: 'sliderTrough',
         w: 'warning',
         warning: 'warning',
+        bb: 'barBorder',
+        barBorder: 'barBorder',
+        ab: 'alertBorder',
+        alertBorder: 'alertBorder',
+        wb: 'windowBorder',
+        windowBorder: 'windowBorder',
     };
 
     const regex = /--?([a-z]+)\s+(#[0-9a-fA-F]{6})/g;
@@ -43,6 +49,9 @@ export function parseTheme(input: string): Theme {
         sliderTrough: colors.sliderTrough ?? defaultColor,
         hover: colors.hover ?? defaultColor,
         warning: colors.warning ?? defaultColor,
+        barBorder: colors.barBorder ?? defaultColor,
+        alertBorder: colors.alertBorder ?? defaultColor,
+        windowBorder: colors.windowBorder ?? defaultColor,
     };
 
     return {
