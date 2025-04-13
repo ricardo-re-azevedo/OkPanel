@@ -14,15 +14,15 @@ Create a config file and place it in the config directory like so
 
 | Name                    | Description                                                                                                                                                                                                   | Required | Type                       | Default                            |
 |:------------------------|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:---------|:---------------------------|------------------------------------|
-| buttonBorderRadius      | General border radius for panel elements.                                                                                                                                                                     | False    | number                     | 8                                  |
-| windowBorderRadius      | Border radius for popup or window-like elements.                                                                                                                                                              | False    | number                     | 8                                  |
-| largeButtonBorderRadius | Optional radius for large buttons.                                                                                                                                                                            | False    | number                     | 16                                 |
-| themeUpdateScript       | Script to execute when changing the theme.                                                                                                                                                                    | False    | string                     | undefined                          |
-| wallpaperUpdateScript   | Script to execute when changing the wallpaper.                                                                                                                                                                | False    | string                     | undefined                          |
-| notificationsPosition   | Where to display notifications.  Left or right                                                                                                                                                                | False    | string : "left", "right"   | "right"                            |
+| buttonBorderRadius      | General border radius for panel elements                                                                                                                                                                      | False    | number                     | 8                                  |
+| windowBorderRadius      | Border radius for popup or window-like elements                                                                                                                                                               | False    | number                     | 8                                  |
+| largeButtonBorderRadius | Optional radius for large buttons                                                                                                                                                                             | False    | number                     | 16                                 |
+| themeUpdateScript       | Script to execute when changing the theme                                                                                                                                                                     | False    | string                     | undefined                          |
+| wallpaperUpdateScript   | Script to execute when changing the wallpaper                                                                                                                                                                 | False    | string                     | undefined                          |
+| notificationsPosition   | Where to display notifications, left or right                                                                                                                                                                 | False    | string : "left", "right"   | "right"                            |
 | mainMonitor             | The monitor that displays the bar                                                                                                                                                                             | False    | number                     | 0                                  |
-| scrimColor              | The color of a full screen window that displays behind OkPanel windows that is used to detect clicks to close windows.  Recommend using the alpha color channel.  If set to #00000000 scrim will be disabled. | False    | string                     | #00000001                          |
-| font                    | Font used in the UI                                                                                                                                                                                           | False    | string                     | JetBrainsMono NF                   |
+| scrimColor              | The color of a full screen window that displays behind OkPanel windows that is used to detect clicks to close windows.  Recommend using the alpha color channel.  If set to #00000000 scrim will be disabled. | False    | string                     | "#00000001"                        |
+| font                    | Font used in the UI                                                                                                                                                                                           | False    | string                     | "JetBrainsMono NF"                 |
 | horizontalBar           | Horizontal bar configuration                                                                                                                                                                                  | False    | HorizontalBar : see below  | see below                          |
 | verticalBar             | Vertical bar configuration                                                                                                                                                                                    | False    | VerticalBar : see below    | see below                          |
 | windows                 | Common configurations for all windows and bars                                                                                                                                                                | False    | Windows : see below        | see below                          |
@@ -45,16 +45,16 @@ Create a config file and place it in the config directory like so
 
 ### Vertical Bar
 
-| Name           | Description                                         | Required | Type                                  | Default                                                                                                               |
-|:---------------|:----------------------------------------------------|:---------|:--------------------------------------|-----------------------------------------------------------------------------------------------------------------------|
-| topWidgets     | Widgets to display on the top side of the panel.    | False    | array[string : see bar widget values] | ["menu", "workspaces"]                                                                                                |
-| centerWidgets  | Widgets to display in the center of the panel.      | False    | array[string : see bar widget values] | []                                                                                                                    |
-| bottomWidgets  | Widgets to display on the bottom side of the panel. | False    | array[string : see bar widget values] | ["recording_indicator", "tray", "audio_out", "audio_in", "bluetooth", "vpn_indicator", "network", "battery", "clock"] |
-| expanded       | Expand the bar to the edges of the screen           | False    | boolean                               | true                                                                                                                  |
-| splitSections  | Split each section visually                         | False    | boolean                               | false                                                                                                                 |
-| sectionPadding | Top and bottom padding for each section             | False    | number                                | 0                                                                                                                     |
-| minimumHeight  | The minimum height of the bar if not expanded       | False    | number                                | 600                                                                                                                   |
-| widgetSpacing  | Spacing between each bar widget                     | False    | number                                | 0                                                                                                                     |
+| Name           | Description                                        | Required | Type                                  | Default                                                                                                               |
+|:---------------|:---------------------------------------------------|:---------|:--------------------------------------|-----------------------------------------------------------------------------------------------------------------------|
+| topWidgets     | Widgets to display on the top side of the panel    | False    | array[string : see bar widget values] | ["menu", "workspaces"]                                                                                                |
+| centerWidgets  | Widgets to display in the center of the panel      | False    | array[string : see bar widget values] | []                                                                                                                    |
+| bottomWidgets  | Widgets to display on the bottom side of the panel | False    | array[string : see bar widget values] | ["recording_indicator", "tray", "audio_out", "audio_in", "bluetooth", "vpn_indicator", "network", "battery", "clock"] |
+| expanded       | Expand the bar to the edges of the screen          | False    | boolean                               | true                                                                                                                  |
+| splitSections  | Split each section visually                        | False    | boolean                               | false                                                                                                                 |
+| sectionPadding | Top and bottom padding for each section            | False    | number                                | 0                                                                                                                     |
+| minimumHeight  | The minimum height of the bar if not expanded      | False    | number                                | 600                                                                                                                   |
+| widgetSpacing  | Spacing between each bar widget                    | False    | number                                | 0                                                                                                                     |
 
 ### System Menu
 
@@ -66,63 +66,63 @@ Create a config file and place it in the config directory like so
 
 ### System Commands
 
-| Name     | Description                                         | Required   | Type       |
-|:---------|:----------------------------------------------------|:-----------|:-----------|
-| logout   | Command to log out the session.                     | True       | string     |
-| lock     | Command to lock the screen.                         | True       | string     |
-| restart  | Command to restart the system.                      | True       | string     |
-| shutdown | Command to shut down the system.                    | True       | string     |
+| Name     | Description                                     | Required   | Type       |
+|:---------|:------------------------------------------------|:-----------|:-----------|
+| logout   | Command to log out the session                  | True       | string     |
+| lock     | Command to lock the screen                      | True       | string     |
+| restart  | Command to restart the system                   | True       | string     |
+| shutdown | Command to shut down the system                 | True       | string     |
 
 ### Windows
 
-| Name         | Description                          | Required   | Type   | Default |
-|:-------------|:-------------------------------------|:-----------|:-------|---------|
-| gaps         | Gap size in pixels between elements. | False      | number | 5       |
-| borderRadius | Border radius of windows.            | False      | number | 8       |
-| borderWidth  | Border width of windows.             | False      | number | 2       |
+| Name         | Description                         | Required   | Type   | Default |
+|:-------------|:------------------------------------|:-----------|:-------|---------|
+| gaps         | Gap size in pixels between elements | False      | number | 5       |
+| borderRadius | Border radius of windows            | False      | number | 8       |
+| borderWidth  | Border width of windows             | False      | number | 2       |
 
 ### Theme
 
-| Name         | Description                                     | Required  | Type                        |
-|:-------------|:------------------------------------------------|:----------|:----------------------------|
-| name         | Name of the theme.                              | True      | string                      |
-| icon         | Nerd font character to represent the theme.     | True      | char                        |
-| pixelOffset  | Pixel offset adjustment for the theme icon.     | True      | number : between -10 and 10 |
-| wallpaperDir | Directory containing wallpapers for this theme. | True      | string                      |
-| colors       | Color palette for this theme.                   | True      | [Color : see below]         |
+| Name         | Description                                    | Required  | Type                        |
+|:-------------|:-----------------------------------------------|:----------|:----------------------------|
+| name         | Name of the theme                              | True      | string                      |
+| icon         | Nerd font character to represent the theme     | True      | char                        |
+| pixelOffset  | Pixel offset adjustment for the theme icon     | True      | number : between -10 and 10 |
+| wallpaperDir | Directory containing wallpapers for this theme | True      | string                      |
+| colors       | Color palette for this theme                   | True      | [Color : see below]         |
 
 ### Color
 
-| Name          | Description                                      | Required  | Type       |
-|:--------------|:-------------------------------------------------|:----------|:-----------|
-| background    | Background color.                                | True      | string     |
-| foreground    | Foreground/text color.                           | True      | string     |
-| primary       | Primary color used for highlights.               | True      | string     |
-| buttonPrimary | Primary button color.                            | True      | string     |
-| sliderTrough  | Color for slider troughs.                        | True      | string     |
-| hover         | Hover state color.                               | True      | string     |
-| warning       | Color for warning or alert states.               | True      | string     |
-| barBorder     | Bar border color.                                | True      | string     |
-| alertBorder   | Volume and brightness alert window border color. | True      | string     |
-| windowBorder  | Color for all other window borders.              | True      | string     |
+| Name          | Description                                     | Required  | Type       |
+|:--------------|:------------------------------------------------|:----------|:-----------|
+| background    | Background color                                | True      | string     |
+| foreground    | Foreground/text color                           | True      | string     |
+| primary       | Primary color used for highlights               | True      | string     |
+| buttonPrimary | Primary button color                            | True      | string     |
+| sliderTrough  | Color for slider troughs                        | True      | string     |
+| hover         | Hover state color                               | True      | string     |
+| warning       | Color for warning or alert states               | True      | string     |
+| barBorder     | Bar border color                                | True      | string     |
+| alertBorder   | Volume and brightness alert window border color | True      | string     |
+| windowBorder  | Color for all other window borders              | True      | string     |
 
 ### Bar widget values
 
-| Widget String       | Description                                                            |
-|---------------------|------------------------------------------------------------------------|
-| menu                | Button that opens the system menu.                                     |
-| workspaces          | Workspace indicators                                                   |
-| clock               | Show the time.  Click to open the calendar.                            |
-| recording_indicator | Shows if screen or audio recording is active.  Click to stop recording |
-| audio_out           | Displays output volume level and mute toggle                           |
-| audio_in            | Displays input (microphone) level and mute toggle                      |
-| bluetooth           | Shows Bluetooth status                                                 |
-| vpn_indicator       | Indicates active VPN connection                                        |
-| network             | Displays current network status (Wi-Fi/Ethernet)                       |
-| tray                | Displays the system tray button when available                         |
-| battery             | Shows battery level and charging status                                |
-| app_launcher        | Button that opens the app launcher window.                             |
-| screenshot          | Button that opens the screenshot window.                               |
+| Widget String       | Description                                                           |
+|---------------------|-----------------------------------------------------------------------|
+| menu                | Button that opens the system menu                                     |
+| workspaces          | Workspace indicators                                                  |
+| clock               | Show the time; Click to open the calendar                             |
+| recording_indicator | Shows if screen or audio recording is active; Click to stop recording |
+| audio_out           | Displays output volume level and mute toggle                          |
+| audio_in            | Displays input (microphone) level and mute toggle                     |
+| bluetooth           | Shows Bluetooth status                                                |
+| vpn_indicator       | Indicates active VPN connection                                       |
+| network             | Displays current network status (Wi-Fi/Ethernet)                      |
+| tray                | Displays the system tray button when available                        |
+| battery             | Shows battery level and charging status                               |
+| app_launcher        | Button that opens the app launcher window                             |
+| screenshot          | Button that opens the screenshot window                               |
 
 ---
 
