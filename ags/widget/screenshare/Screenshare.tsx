@@ -97,7 +97,7 @@ function Monitors() {
                                 cssClasses={["primaryButton", "screenshareButton"]}
                                 onClicked={() => {
                                     response(`[SELECTION]/screen:${monitor.name}`)
-                                    App.toggle_window(ScreenshareWindowName)
+                                    hideAllWindows()
                                 }}>
                                 <label
                                     halign={Gtk.Align.START}
@@ -159,7 +159,7 @@ function Windows() {
                                             cssClasses={["primaryButton", "screenshareButton"]}
                                             onClicked={() => {
                                                 response(`[SELECTION]/window:${instance.windowId}`)
-                                                App.toggle_window(ScreenshareWindowName)
+                                                hideAllWindows()
                                             }}>
                                             <box
                                                 vertical={true}>
@@ -211,7 +211,7 @@ function Region() {
                             }
                         })
                         .finally(() => {
-                            App.toggle_window(ScreenshareWindowName)
+                            hideAllWindows()
                         })
                 }}>
                 <label

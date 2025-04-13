@@ -223,7 +223,7 @@ function ScreenShots() {
                 icon={""}
                 label={"All"}
                 onClicked={() => {
-                    App.toggle_window(ScreenshotWindowName)
+                    hideAllWindows()
                     const time = GLib.DateTime.new_now_local().format("%Y_%m_%d_%H_%M_%S")!
                     const path = `${screenshotDir}/${time}_screenshot.png`
                     execAsync(
@@ -246,7 +246,7 @@ function ScreenShots() {
                 icon={"󰹑"}
                 label={"Monitor"}
                 onClicked={() => {
-                    App.toggle_window(ScreenshotWindowName)
+                    hideAllWindows()
                     const time = GLib.DateTime.new_now_local().format("%Y_%m_%d_%H_%M_%S")!
                     const path = `${screenshotDir}/${time}_screenshot.png`
                     execAsync(
@@ -268,7 +268,7 @@ function ScreenShots() {
                 icon={""}
                 label={"Area"}
                 onClicked={() => {
-                    App.toggle_window(ScreenshotWindowName)
+                    hideAllWindows()
                     const time = GLib.DateTime.new_now_local().format("%Y_%m_%d_%H_%M_%S")!
                     const path = `${screenshotDir}/${time}_screenshot.png`
                     execAsync(
@@ -525,7 +525,7 @@ function ScreenRecording() {
                     const audioParam = selectedAudio.get() !== null ? `--audio=${selectedAudio.get()!.name}` : ""
                     const command = `wf-recorder --file=${path} ${audioParam} -p preset=${selectedEncodingPreset.get()} -p crf=${selectedCrfQuality.get()} -c ${selectedCodec.get().lib}`
                     print(command)
-                    App.toggle_window(ScreenshotWindowName)
+                    hideAllWindows()
                     execAsync(
                         [
                             "bash",
@@ -552,7 +552,7 @@ function ScreenRecording() {
                     const audioParam = selectedAudio.get() !== null ? `--audio=${selectedAudio.get()!.name}` : ""
                     const command = `wf-recorder --file=${path} -g "$(slurp -o)" ${audioParam} -p preset=${selectedEncodingPreset.get()} -p crf=${selectedCrfQuality.get()} -c ${selectedCodec.get().lib}`
                     print(command)
-                    App.toggle_window(ScreenshotWindowName)
+                    hideAllWindows()
                     execAsync(
                         [
                             "bash",
@@ -579,7 +579,7 @@ function ScreenRecording() {
                     const audioParam = selectedAudio.get() !== null ? `--audio=${selectedAudio.get()!.name}` : ""
                     const command = `wf-recorder --file=${path} -g "$(slurp)" ${audioParam} -p preset=${selectedEncodingPreset.get()} -p crf=${selectedCrfQuality.get()} -c ${selectedCodec.get().lib}`
                     print(command)
-                    App.toggle_window(ScreenshotWindowName)
+                    hideAllWindows()
                     execAsync(
                         [
                             "bash",

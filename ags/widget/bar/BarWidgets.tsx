@@ -208,7 +208,7 @@ function TrayButton() {
     //     cssClasses={["iconButton"]}
     //     label="󱊔"
     //     onClicked={() => {
-    //         App.toggle_window(TrayWindowName)
+    //         hideAllWindows()
     //     }}/>
     return <menubutton
         visible={bind(tray, "items").as((items) => items.length > 0)}

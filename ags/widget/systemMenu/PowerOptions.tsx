@@ -1,8 +1,8 @@
-import {App, Gtk} from "astal/gtk4"
-import {SystemMenuWindowName} from "./SystemMenuWindow";
+import {Gtk} from "astal/gtk4"
 import {execAsync} from "astal/process"
 import {config} from "../utils/config/config";
 import LargeIconButton from "../common/LargeIconButton";
+import {hideAllWindows} from "../utils/windows";
 
 export default function () {
     return <box
@@ -13,28 +13,28 @@ export default function () {
             icon="󰍃"
             offset={0}
             onClicked={() => {
-                App.toggle_window(SystemMenuWindowName)
+                hideAllWindows()
                 execAsync(config.systemCommands.logout)
             }}/>
         <LargeIconButton
             icon=""
             offset={2}
             onClicked={() => {
-                App.toggle_window(SystemMenuWindowName)
+                hideAllWindows()
                 execAsync(config.systemCommands.lock)
             }}/>
         <LargeIconButton
             icon=""
             offset={0}
             onClicked={() => {
-                App.toggle_window(SystemMenuWindowName)
+                hideAllWindows()
                 execAsync(config.systemCommands.restart)
             }}/>
         <LargeIconButton
             icon="⏻"
             offset={2}
             onClicked={() => {
-                App.toggle_window(SystemMenuWindowName)
+                hideAllWindows()
                 execAsync(config.systemCommands.shutdown)
             }}/>
     </box>
