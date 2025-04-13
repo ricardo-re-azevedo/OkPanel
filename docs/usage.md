@@ -34,6 +34,8 @@ okpanel launcher
 okpanel screenshot
 ```
 
+To stop screen recording, click the recording button that appears in your bar.
+
 ---
 
 ### Changing volume
