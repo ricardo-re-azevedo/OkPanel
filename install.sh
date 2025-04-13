@@ -3,13 +3,13 @@
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 # Clean up old install
-sudo rm -rf /usr/share/OkPanel
-sudo rm /usr/bin/okpanel
-sudo rm /usr/bin/okpanelShare
+sudo rm -rf $HOME/.local/share/okpanel
+sudo rm $HOME/.local/bin/okpanel
+sudo rm $HOME/.local/bin/okpanel-share
 
 # Install
-sudo mkdir -p /usr/share/OkPanel
-sudo cp -r $SCRIPT_DIR/ags/ /usr/share/OkPanel/
+sudo mkdir -p $HOME/.local/share/okpanel
+sudo cp -r $SCRIPT_DIR/ags/ $HOME/.local/share/okpanel/
 
-sudo cp $SCRIPT_DIR/bin/okpanel /usr/bin/
-sudo cp $SCRIPT_DIR/bin/okpanelShare /usr/bin/
+sudo cp $SCRIPT_DIR/bin/okpanel $HOME/.local/bin/
+sudo cp $SCRIPT_DIR/bin/okpanel-share $HOME/.local/bin/
