@@ -1,6 +1,6 @@
 #/bin/bash
 
-sudo rm -rf $HOME/.local/share/okpanel
-sudo rm $HOME/.local/bin/okpanel
-sudo rm $HOME/.local/bin/okpanelShare
+rm -rf $HOME/.local/share/okpanel
+rm -f $HOME/.local/bin/okpanel
+rm -f $HOME/.local/bin/okpanelShare
 
