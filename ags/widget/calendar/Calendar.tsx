@@ -12,7 +12,7 @@ export default function () {
 
     return <window
         monitor={config.mainMonitor}
-        cssClasses={["focusedWindow"]}
+        cssClasses={["window"]}
         name={CalendarWindowName}
         application={App}
         anchor={selectedBar((bar) => {

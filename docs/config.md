@@ -88,15 +88,18 @@ Create a config file and place it in the config directory like so
 
 ### Color
 
-| Name          | Description                                         | Required  | Type       |
-|:--------------|:----------------------------------------------------|:----------|:-----------|
-| background    | Background color.                                   | True      | string     |
-| foreground    | Foreground/text color.                              | True      | string     |
-| primary       | Primary color used for highlights.                  | True      | string     |
-| buttonPrimary | Primary button color.                               | True      | string     |
-| sliderTrough  | Color for slider troughs.                           | True      | string     |
-| hover         | Hover state color.                                  | True      | string     |
-| warning       | Color for warning or alert states.                  | True      | string     |
+| Name          | Description                                      | Required  | Type       |
+|:--------------|:-------------------------------------------------|:----------|:-----------|
+| background    | Background color.                                | True      | string     |
+| foreground    | Foreground/text color.                           | True      | string     |
+| primary       | Primary color used for highlights.               | True      | string     |
+| buttonPrimary | Primary button color.                            | True      | string     |
+| sliderTrough  | Color for slider troughs.                        | True      | string     |
+| hover         | Hover state color.                               | True      | string     |
+| warning       | Color for warning or alert states.               | True      | string     |
+| barBorder     | Bar border color.                                | True      | string     |
+| alertBorder   | Volume and brightness alert window border color. | True      | string     |
+| windowBorder  | Color for all other window borders.              | True      | string     |
 
 ### Bar widget values
 
@@ -120,9 +123,7 @@ Create a config file and place it in the config directory like so
 
 ```json
 {
-  "gaps": 5,
   "borderRadius": 8,
-  "windowBorderRadius": 8,
   "largeButtonBorderRadius": 16,
   "horizontalBar": {
     "leftWidgets": [
@@ -182,7 +183,10 @@ Create a config file and place it in the config directory like so
         "buttonPrimary": "#384B55",
         "sliderTrough": "#2E383C",
         "hover": "#2E383C",
-        "warning": "#E67E80"
+        "warning": "#E67E80",
+        "barBorder": "#7A8478",
+        "windowBorder": "#D3C6AA",
+        "alertBorder": "#7A8478"
       }
     },
     {
@@ -197,7 +201,10 @@ Create a config file and place it in the config directory like so
         "buttonPrimary": "#5e81ac",
         "sliderTrough": "#4c566a",
         "hover": "#4c566a",
-        "warning": "#BF616A"
+        "warning": "#BF616A",
+        "barBorder": "#81a1c1",
+        "windowBorder": "#d8dee9",
+        "alertBorder": "#81a1c1"
       }
     }
   ]

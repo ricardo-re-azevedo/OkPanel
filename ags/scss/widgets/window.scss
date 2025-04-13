@@ -1,17 +1,25 @@
 @use "../variables" as vars;
 
-.window {
+.barWindow {
     background-color: vars.$bg;
     border-radius: vars.$windowBorderRadius;
-    border-color: vars.$primary;
+    border-color: vars.$barBorder;
     border-width: vars.$windowBorderWidth;
     border-style: solid;
 }
 
-.focusedWindow {
+.window {
     background-color: vars.$bg;
     border-radius: vars.$windowBorderRadius;
-    border-color: vars.$fg;
+    border-color: vars.$windowBorder;
+    border-width: vars.$windowBorderWidth;
+    border-style: solid;
+}
+
+.alertWindow {
+    background-color: vars.$bg;
+    border-radius: vars.$windowBorderRadius;
+    border-color: vars.$alertBorder;
     border-width: vars.$windowBorderWidth;
     border-style: solid;
 }

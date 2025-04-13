@@ -32,22 +32,22 @@ export default function () {
         application={App}>
         <centerbox
             orientation={Gtk.Orientation.HORIZONTAL}
-            cssClasses={config.horizontalBar.splitSections ? ["topBar"] : ["window", "topBar"]}>
+            cssClasses={config.horizontalBar.splitSections ? ["topBar"] : ["barWindow", "topBar"]}>
             <box
                 visible={config.horizontalBar.leftWidgets.length > 0}
                 halign={Gtk.Align.START}
-                cssClasses={config.horizontalBar.splitSections ? ["window"] : []}>
+                cssClasses={config.horizontalBar.splitSections ? ["barWindow"] : []}>
                 {addWidgets(config.horizontalBar.leftWidgets, false)}
             </box>
             <box
                 visible={config.horizontalBar.centerWidgets.length > 0}
-                cssClasses={config.horizontalBar.splitSections ? ["window"] : []}>
+                cssClasses={config.horizontalBar.splitSections ? ["barWindow"] : []}>
                 {addWidgets(config.horizontalBar.centerWidgets, false)}
             </box>
             <box
                 visible={config.horizontalBar.rightWidgets.length > 0}
                 halign={Gtk.Align.END}
-                cssClasses={config.horizontalBar.splitSections ? ["window"] : []}>
+                cssClasses={config.horizontalBar.splitSections ? ["barWindow"] : []}>
                 {addWidgets(config.horizontalBar.rightWidgets, false)}
             </box>
         </centerbox>

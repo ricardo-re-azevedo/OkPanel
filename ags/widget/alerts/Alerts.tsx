@@ -35,7 +35,7 @@ export function AlertWindow(
         anchor={Astal.WindowAnchor.BOTTOM}
         exclusivity={Astal.Exclusivity.NORMAL}
         layer={Astal.Layer.OVERLAY}
-        cssClasses={["window"]}
+        cssClasses={["alertWindow"]}
         margin_bottom={100}
         visible={false}
         setup={(self) => {

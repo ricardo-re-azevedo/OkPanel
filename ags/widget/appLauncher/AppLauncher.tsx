@@ -131,7 +131,7 @@ export default function () {
         <box
             vertical={true}>
             <box
-                cssClasses={["focusedWindow"]}>
+                cssClasses={["window"]}>
                 <box
                     widthRequest={500}
                     cssClasses={["appLauncher"]}

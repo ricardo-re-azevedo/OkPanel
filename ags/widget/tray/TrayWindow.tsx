@@ -56,7 +56,7 @@ export default function () {
 
     return <window
         monitor={config.mainMonitor}
-        cssClasses={["focusedWindow"]}
+        cssClasses={["window"]}
         name={TrayWindowName}
         application={App}
         anchor={selectedBar((bar) => {

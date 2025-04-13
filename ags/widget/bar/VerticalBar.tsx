@@ -32,24 +32,24 @@ export default function () {
         application={App}>
         <centerbox
             orientation={Gtk.Orientation.VERTICAL}
-            cssClasses={config.verticalBar.splitSections ? ["sideBar"] : ["window", "sidebar"]}>
+            cssClasses={config.verticalBar.splitSections ? ["sideBar"] : ["barWindow", "sidebar"]}>
             <box
                 visible={config.verticalBar.topWidgets.length > 0}
                 vertical={true}
-                cssClasses={config.verticalBar.splitSections ? ["window"] : []}>
+                cssClasses={config.verticalBar.splitSections ? ["barWindow"] : []}>
                 {addWidgets(config.verticalBar.topWidgets, true)}
             </box>
             <box
                 visible={config.verticalBar.centerWidgets.length > 0}
                 vertical={true}
-                cssClasses={config.verticalBar.splitSections ? ["window"] : []}>
+                cssClasses={config.verticalBar.splitSections ? ["barWindow"] : []}>
                 {addWidgets(config.verticalBar.centerWidgets, true)}
             </box>
             <box
                 visible={config.verticalBar.bottomWidgets.length > 0}
                 vertical={true}
                 valign={Gtk.Align.END}
-                cssClasses={config.verticalBar.splitSections ? ["window"] : []}>
+                cssClasses={config.verticalBar.splitSections ? ["barWindow"] : []}>
                 {addWidgets(config.verticalBar.bottomWidgets, true)}
             </box>
         </centerbox>

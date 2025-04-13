@@ -248,7 +248,7 @@ export default function () {
             <box
                 vexpand={true}/>
             <box
-                cssClasses={["focusedWindow"]}>
+                cssClasses={["window"]}>
                 <Gtk.ScrolledWindow
                     widthRequest={500}
                     cssClasses={["scrollWindow"]}

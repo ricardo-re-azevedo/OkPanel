@@ -18,6 +18,9 @@ export type Theme = {
         sliderTrough: string;
         hover: string;
         warning: string;
+        barBorder: string;
+        windowBorder: string;
+        alertBorder: string;
     };
 };
 
@@ -105,6 +108,9 @@ const defaultTheme: Theme = {
         sliderTrough: "#293642",
         hover: "#293642",
         warning: "#7C7C54",
+        barBorder: "#7C545F",
+        windowBorder: "#AFB3BD",
+        alertBorder: "#7C545F",
     },
 }
 
@@ -172,6 +178,9 @@ cat > "$TARGET_DIR/variables.scss" <<EOF
 \\$sliderTrough: ${theme.colors.sliderTrough};
 \\$bgHover: ${theme.colors.hover};
 \\$warning: ${theme.colors.warning};
+\\$barBorder: ${theme.colors.barBorder};
+\\$windowBorder: ${theme.colors.windowBorder};
+\\$alertBorder: ${theme.colors.alertBorder};
 \\$gaps: ${config.windows.gaps}px;
 \\$buttonBorderRadius: ${config.buttonBorderRadius}px;
 \\$windowBorderRadius: ${config.windows.borderRadius}px;
@@ -318,6 +327,9 @@ function checkConfigIntegrity(config: Config) {
             || theme.colors.buttonPrimary === undefined
             || theme.colors.sliderTrough === undefined
             || theme.colors.warning === undefined
+            || theme.colors.barBorder === undefined
+            || theme.colors.windowBorder === undefined
+            || theme.colors.alertBorder === undefined
         ) {
             throw Error(`Config invalid.  Problem with ${theme.name} theme.`)
         }

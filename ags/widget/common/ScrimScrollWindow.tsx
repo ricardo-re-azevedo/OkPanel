@@ -66,7 +66,7 @@ export default function(
             <box vexpand={topExpand}/>
             <box
                 vertical={true}
-                cssClasses={["focusedWindow"]}
+                cssClasses={["window"]}
                 setup={(self) => {
                     mainBox = self;
                 }}>
