@@ -58,6 +58,8 @@ export enum BarWidget {
     VPN_INDICATOR = "vpn_indicator",
     BATTERY = "battery",
     TRAY = "tray",
+    APP_LAUNCHER = "app_launcher",
+    SCREENSHOT ="screenshot",
 }
 
 export enum NotificationsPosition {

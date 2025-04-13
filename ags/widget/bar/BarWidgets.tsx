@@ -10,12 +10,13 @@ import {execAsync} from "astal/process"
 import {SystemMenuWindowName} from "../systemMenu/SystemMenuWindow";
 import Bluetooth from "gi://AstalBluetooth"
 import {activeVpnConnections} from "../systemMenu/NetworkControls";
-import {isRecording} from "../screenshot/Screenshot";
+import {isRecording, ScreenshotWindowName} from "../screenshot/Screenshot";
 import Divider from "../common/Divider";
 import {BarWidget} from "../utils/config/config";
-import {TrayPopover, TrayWindowName} from "../tray/TrayWindow";
+import {TrayPopover} from "../tray/TrayWindow";
 import Tray from "gi://AstalTray"
 import {toggleWindow} from "../utils/windows";
+import {AppLauncherWindowName} from "../appLauncher/AppLauncher";
 
 function groupByProperty(
     array: Hyprland.Workspace[],
@@ -217,6 +218,24 @@ function TrayButton() {
     </menubutton>
 }
 
+function AppLauncherButton() {
+    return <button
+        cssClasses={["iconButton"]}
+        label="󰀻"
+        onClicked={() => {
+            toggleWindow(AppLauncherWindowName)
+        }}/>
+}
+
+function ScreenshotButton() {
+    return <button
+        cssClasses={["iconButton"]}
+        label="󰹑"
+        onClicked={() => {
+            toggleWindow(ScreenshotWindowName)
+        }}/>
+}
+
 export function addWidgets(widgets: BarWidget[], isVertical: boolean) {
     return widgets.map((widget) => {
         switch (widget) {
@@ -242,6 +261,10 @@ export function addWidgets(widgets: BarWidget[], isVertical: boolean) {
                 return <VpnIndicator/>
             case BarWidget.TRAY:
                 return <TrayButton/>
+            case BarWidget.APP_LAUNCHER:
+                return <AppLauncherButton/>
+            case BarWidget.SCREENSHOT:
+                return <ScreenshotButton/>
         }
     })
 }

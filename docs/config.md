@@ -120,6 +120,8 @@ Create a config file and place it in the config directory like so
 | network             | Displays current network status (Wi-Fi/Ethernet)                       |
 | tray                | Displays the system tray button when available                         |
 | battery             | Shows battery level and charging status                                |
+| app_launcher        | Button that opens the app launcher window.                             |
+| screenshot          | Button that opens the screenshot window.                               |
 
 ---
 
