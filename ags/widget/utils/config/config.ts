@@ -92,6 +92,7 @@ export type Config = {
     wallpaperUpdateScript: string;
     mainMonitor: number;
     scrimColor: string;
+    font: string;
     windows: Windows;
     notificationsPosition: NotificationsPosition;
     verticalBar: VerticalBar;
@@ -177,6 +178,7 @@ mkdir -p /tmp/OkPanel
 cp -r "$SOURCE_DIR" "$TARGET_DIR"
 
 cat > "$TARGET_DIR/variables.scss" <<EOF
+\\$font: "${config.font}";
 \\$bg: ${theme.colors.background};
 \\$fg: ${theme.colors.foreground};
 \\$primary: ${theme.colors.primary};
@@ -558,5 +560,8 @@ function checkConfigIntegrity(config: Config) {
     }
     if (config.windows.borderWidth === undefined) {
         config.windows.borderWidth = 2
+    }
+    if (config.font === undefined) {
+        config.font = "JetBrainsMono NF"
     }
 }
