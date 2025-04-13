@@ -11,7 +11,7 @@ export default function () {
             return bar === Bar.LEFT || bar === Bar.RIGHT
         })}
         exclusivity={Astal.Exclusivity.EXCLUSIVE}
-        margin={config.gaps}
+        margin={config.windows.gaps}
         anchor={selectedBar((bar) => {
             if (bar === Bar.LEFT) {
                 if (!config.verticalBar.expanded) {

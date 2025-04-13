@@ -4,7 +4,7 @@
     background-color: vars.$bg;
     border-radius: vars.$windowBorderRadius;
     border-color: vars.$primary;
-    border-width: 2px;
+    border-width: vars.$windowBorderWidth;
     border-style: solid;
 }
 
@@ -12,7 +12,7 @@
     background-color: vars.$bg;
     border-radius: vars.$windowBorderRadius;
     border-color: vars.$fg;
-    border-width: 2px;
+    border-width: vars.$windowBorderWidth;
     border-style: solid;
 }
 

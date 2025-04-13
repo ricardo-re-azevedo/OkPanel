@@ -70,15 +70,20 @@ export type SystemMenu = {
     enableVpnControls: boolean;
 }
 
-export type Config = {
+export type Windows = {
     gaps: number;
     borderRadius: number;
-    windowBorderRadius: number;
+    borderWidth: number;
+}
+
+export type Config = {
+    buttonBorderRadius: number;
     largeButtonBorderRadius: number;
     themeUpdateScript: string;
     wallpaperUpdateScript: string;
     mainMonitor: number;
     scrimColor: string;
+    windows: Windows;
     notificationsPosition: NotificationsPosition;
     verticalBar: VerticalBar;
     horizontalBar: HorizontalBar;
@@ -167,9 +172,10 @@ cat > "$TARGET_DIR/variables.scss" <<EOF
 \\$sliderTrough: ${theme.colors.sliderTrough};
 \\$bgHover: ${theme.colors.hover};
 \\$warning: ${theme.colors.warning};
-\\$gaps: ${config.gaps}px;
-\\$borderRadius: ${config.borderRadius}px;
-\\$windowBorderRadius: ${config.windowBorderRadius}px;
+\\$gaps: ${config.windows.gaps}px;
+\\$buttonBorderRadius: ${config.buttonBorderRadius}px;
+\\$windowBorderRadius: ${config.windows.borderRadius}px;
+\\$windowBorderWidth: ${config.windows.borderWidth}px;
 \\$largeButtonBorderRadius: ${config.largeButtonBorderRadius}px;
 \\$verticalBarMinHeight: ${config.verticalBar.minimumHeight}px;
 \\$horizontalBarMinWidth: ${config.horizontalBar.minimumWidth}px;
@@ -340,14 +346,8 @@ function checkConfigIntegrity(config: Config) {
             throw Error(`Config invalid.  Theme update script does not exist.`)
         }
     }
-    if (config.gaps === undefined) {
-        config.gaps = 5
-    }
-    if (config.borderRadius === undefined) {
-        config.borderRadius = 8
-    }
-    if (config.windowBorderRadius === undefined) {
-        config.windowBorderRadius = 8
+    if (config.buttonBorderRadius === undefined) {
+        config.buttonBorderRadius = 8
     }
     if (config.largeButtonBorderRadius === undefined) {
         config.largeButtonBorderRadius = 16
@@ -508,5 +508,21 @@ function checkConfigIntegrity(config: Config) {
 
     if (config.scrimColor === undefined) {
         config.scrimColor = "#00000001"
+    }
+    if (config.windows === undefined) {
+        config.windows = {
+            gaps: 5,
+            borderRadius: 8,
+            borderWidth: 2
+        }
+    }
+    if (config.windows.gaps === undefined) {
+        config.windows.gaps = 5
+    }
+    if (config.windows.borderRadius === undefined) {
+        config.windows.borderRadius = 8
+    }
+    if (config.windows.borderWidth === undefined) {
+        config.windows.borderWidth = 2
     }
 }

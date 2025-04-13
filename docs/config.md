@@ -14,8 +14,7 @@ Create a config file and place it in the config directory like so
 
 | Name                    | Description                                                                                                                                                                                                   | Required | Type                       | Default                            |
 |:------------------------|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:---------|:---------------------------|------------------------------------|
-| gaps                    | Gap size in pixels between elements.                                                                                                                                                                          | False    | number                     | 5                                  |
-| borderRadius            | General border radius for panel elements.                                                                                                                                                                     | False    | number                     | 8                                  |
+| buttonBorderRadius      | General border radius for panel elements.                                                                                                                                                                     | False    | number                     | 8                                  |
 | windowBorderRadius      | Border radius for popup or window-like elements.                                                                                                                                                              | False    | number                     | 8                                  |
 | largeButtonBorderRadius | Optional radius for large buttons.                                                                                                                                                                            | False    | number                     | 16                                 |
 | themeUpdateScript       | Script to execute when changing the theme.                                                                                                                                                                    | False    | string                     | undefined                          |
@@ -25,6 +24,7 @@ Create a config file and place it in the config directory like so
 | scrimColor              | The color of a full screen window that displays behind OkPanel windows that is used to detect clicks to close windows.  Recommend using the alpha color channel.  If set to #00000000 scrim will be disabled. | False    | string                     | #00000001                          |
 | horizontalBar           | Horizontal bar configuration                                                                                                                                                                                  | False    | HorizontalBar : see below  | see below                          |
 | verticalBar             | Vertical bar configuration                                                                                                                                                                                    | False    | VerticalBar : see below    | see below                          |
+| windows                 | Common configurations for all windows and bars                                                                                                                                                                | False    | Windows : see below        | see below                          |
 | systemMenu              | System menu configuration                                                                                                                                                                                     | False    | SystemMenu : see below     | see below                          |
 | systemCommands          | System commands configuration                                                                                                                                                                                 | True     | SystemCommands : see below | required                           |
 | themes                  | A list of predefined themes                                                                                                                                                                                   | False    | array[Theme : see below]   | defaults to a single premade theme |
@@ -67,6 +67,14 @@ Create a config file and place it in the config directory like so
 | lock     | Command to lock the screen.                         | True       | string     |
 | restart  | Command to restart the system.                      | True       | string     |
 | shutdown | Command to shut down the system.                    | True       | string     |
+
+### Windows
+
+| Name         | Description                          | Required   | Type   | Default |
+|:-------------|:-------------------------------------|:-----------|:-------|---------|
+| gaps         | Gap size in pixels between elements. | False      | number | 5       |
+| borderRadius | Border radius of windows.            | False      | number | 8       |
+| borderWidth  | Border width of windows.             | False      | number | 2       |
 
 ### Theme
 

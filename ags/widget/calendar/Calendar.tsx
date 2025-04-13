@@ -52,7 +52,7 @@ export default function () {
             }
         })}
         layer={Astal.Layer.TOP}
-        margin={config.gaps}
+        margin={config.windows.gaps}
         visible={false}
         keymode={Astal.Keymode.ON_DEMAND}
         onKeyPressed={function (self, key) {

@@ -8,7 +8,7 @@
   border: none;
   min-height: 25px;
   min-width: 30px;
-  border-radius: vars.$borderRadius;
+  border-radius: vars.$buttonBorderRadius;
 }
 
 .iconButton:hover {
@@ -23,7 +23,7 @@
   border: none;
   min-height: 25px;
   min-width: 30px;
-  border-radius: vars.$borderRadius;
+  border-radius: vars.$buttonBorderRadius;
 }
 
 .activeIconButton:hover {
@@ -38,7 +38,7 @@
   border: none;
   min-height: 25px;
   min-width: 30px;
-  border-radius: vars.$borderRadius;
+  border-radius: vars.$buttonBorderRadius;
 }
 
 .warningIconButton:hover {
@@ -71,7 +71,7 @@
   all: unset;
   background-color: vars.$buttonPrimary;
   color: vars.$fg;
-  border-radius: vars.$borderRadius;
+  border-radius: vars.$buttonBorderRadius;
   padding: 4px 8px 4px 8px;
 }
 
@@ -87,7 +87,7 @@
   all: unset;
   background-color: transparent;
   color: vars.$fg;
-  border-radius: vars.$borderRadius;
+  border-radius: vars.$buttonBorderRadius;
   padding: 4px 8px 4px 8px;
 }
 
@@ -103,7 +103,7 @@
   border: none;
   min-height: 25px;
   min-width: 30px;
-  border-radius: vars.$borderRadius;
+  border-radius: vars.$buttonBorderRadius;
 }
 
 .closeButton:hover {
@@ -118,7 +118,7 @@
   border: none;
   min-height: 25px;
   min-width: 30px;
-  border-radius: vars.$borderRadius;
+  border-radius: vars.$buttonBorderRadius;
 
   .toggle {
     background-color: transparent;
@@ -134,7 +134,7 @@
   all: unset;
   background-color: transparent;
   color: vars.$fg;
-  border-radius: vars.$borderRadius;
+  border-radius: vars.$buttonBorderRadius;
   padding: 4px 8px 4px 8px;
 
   .toggle {

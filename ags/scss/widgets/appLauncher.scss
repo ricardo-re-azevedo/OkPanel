@@ -7,7 +7,7 @@
     margin: 2px 8px 0 8px;
     padding: 8px;
     background: vars.$bg;
-    border-radius: vars.$borderRadius;
+    border-radius: vars.$buttonBorderRadius;
 
     label.name {
       font-weight: bold;
@@ -23,7 +23,7 @@
     margin: 2px 8px 0 8px;
     padding: 8px;
     background: vars.$primary;
-    border-radius: vars.$borderRadius;
+    border-radius: vars.$buttonBorderRadius;
 
     label.name {
       font-weight: bold;

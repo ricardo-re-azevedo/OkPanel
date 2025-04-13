@@ -30,7 +30,7 @@ export default function(
         monitor={monitor}
         name={windowName}
         anchor={anchor}
-        margin={config.gaps}
+        margin={config.windows.gaps}
         exclusivity={Astal.Exclusivity.NORMAL}
         layer={Astal.Layer.TOP}
         cssClasses={["transparentBackground"]}
