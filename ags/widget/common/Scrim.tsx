@@ -5,7 +5,7 @@ import Hyprland from "gi://AstalHyprland"
 
 export const scrimsVisible = Variable(false)
 
-export default function (monitor: Hyprland.Monitor) {
+export default function (monitor: Hyprland.Monitor): Astal.Window {
     return <window
         monitor={monitor.id}
         anchor={Astal.WindowAnchor.BOTTOM | Astal.WindowAnchor.LEFT | Astal.WindowAnchor.RIGHT | Astal.WindowAnchor.TOP}
@@ -24,5 +24,5 @@ export default function (monitor: Hyprland.Monitor) {
         <box
             hexpand={true}
             vexpand={true}/>
-    </window>
+    </window> as Astal.Window
 }

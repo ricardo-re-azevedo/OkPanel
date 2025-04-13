@@ -111,7 +111,7 @@ class NotifiationMap implements Subscribable {
     }
 }
 
-export default function NotificationPopups(monitor: Hyprland.Monitor) {
+export default function NotificationPopups(monitor: Hyprland.Monitor): Astal.Window {
     const { TOP, RIGHT, LEFT } = Astal.WindowAnchor
     const notifs = new NotifiationMap()
 
@@ -133,5 +133,5 @@ export default function NotificationPopups(monitor: Hyprland.Monitor) {
             vertical={true}>
             {bind(notifs)}
         </box>
-    </window>
+    </window> as Astal.Window
 }

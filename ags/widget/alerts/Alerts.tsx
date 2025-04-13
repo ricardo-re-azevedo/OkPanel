@@ -26,7 +26,7 @@ export function AlertWindow(
         showVariable: Variable<any>
         monitor: Hyprland.Monitor
     }
-) {
+): Astal.Window {
     let windowVisibilityTimeout: GLib.Source | null = null
 
     return <window
@@ -91,10 +91,10 @@ export function AlertWindow(
                     value={sliderValue}/>
             </box>
         </box>
-    </window>
+    </window> as Astal.Window
 }
 
-export function VolumeAlert(monitor: Hyprland.Monitor) {
+export function VolumeAlert(monitor: Hyprland.Monitor): Astal.Window {
     const defaultSpeaker = Wp.get_default()!.audio.default_speaker
 
     const speakerVar = Variable.derive([
@@ -114,10 +114,10 @@ export function VolumeAlert(monitor: Hyprland.Monitor) {
         sliderValue={bind(defaultSpeaker, "volume")}
         windowName={VolumeAlertName}
         showVariable={showVariable}
-        monitor={monitor}/>
+        monitor={monitor}/> as Astal.Window
 }
 
-export function BrightnessAlert(monitor: Hyprland.Monitor) {
+export function BrightnessAlert(monitor: Hyprland.Monitor): Astal.Window {
     const brightness = Brightness.get_default()
 
     const showVariable = Variable.derive([
@@ -132,7 +132,7 @@ export function BrightnessAlert(monitor: Hyprland.Monitor) {
         sliderValue={bind(brightness, "screen")}
         windowName={BrightnessAlertName}
         showVariable={showVariable}
-        monitor={monitor}/>
+        monitor={monitor}/> as  Astal.Window
 }
 
 export function ChargingAlertSound() {
