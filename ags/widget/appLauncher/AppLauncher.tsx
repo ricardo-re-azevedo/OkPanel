@@ -1,15 +1,10 @@
 import Apps from "gi://AstalApps"
 import { App, Astal, Gdk, Gtk } from "astal/gtk4"
 import { Variable } from "astal"
-import {execAsync} from "astal/process"
 import Pango from "gi://Pango?version=1.0";
 import {hideAllWindows} from "../utils/windows";
 
 export const AppLauncherWindowName = "appLauncher"
-
-function hide() {
-    App.get_window(AppLauncherWindowName)!.hide()
-}
 
 function launchApp(app: Apps.Application) {
     // TODO how to detach from ags?
@@ -32,7 +27,7 @@ function AppButton({ app, isSelected, indexInList, selectedIndexVariable }: AppB
             // selectedIndexVariable.set(indexInList)
         }}
         onClicked={() => {
-            hide()
+            hideAllWindows()
             launchApp(app)
         }}>
         <box>
@@ -92,7 +87,7 @@ export default function () {
                 launchApp(app)
             }
         }
-        hide()
+        hideAllWindows()
     }
     const listBinding = Variable.derive([
         list,
