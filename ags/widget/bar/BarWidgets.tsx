@@ -12,11 +12,13 @@ import Bluetooth from "gi://AstalBluetooth"
 import {activeVpnConnections} from "../systemMenu/NetworkControls";
 import {isRecording, ScreenshotWindowName} from "../screenshot/Screenshot";
 import Divider from "../common/Divider";
-import {BarWidget} from "../utils/config/config";
-import {TrayPopover} from "../tray/TrayWindow";
+import {BarWidget, config} from "../utils/config/config";
 import Tray from "gi://AstalTray"
 import {toggleWindow} from "../utils/windows";
 import {AppLauncherWindowName} from "../appLauncher/AppLauncher";
+import {Gtk} from "astal/gtk4";
+
+const tray = Tray.get_default()
 
 function groupByProperty(
     array: Hyprland.Workspace[],
@@ -194,28 +196,51 @@ function BatteryIndicator() {
 function MenuButton() {
     return <button
         cssClasses={["iconButton"]}
-        label=""
+        label={config.systemMenu.menuButtonIcon}
         onClicked={() => {
             toggleWindow(SystemMenuWindowName)
         }}/>
 }
 
+function IntegratedTray({vertical}: { vertical: boolean }) {
+    return <TrayContent vertical={vertical}/>
+}
+
 function TrayButton() {
-    const tray = Tray.get_default()
-    // Old button that uses the tray window.  Remove after using the menu button and popover for a while
-    // return <button
-    //     visible={bind(tray, "items").as((items) => items.length > 0)}
-    //     cssClasses={["iconButton"]}
-    //     label="󱊔"
-    //     onClicked={() => {
-    //         hideAllWindows()
-    //     }}/>
     return <menubutton
         visible={bind(tray, "items").as((items) => items.length > 0)}
         cssClasses={["trayIconButton"]}>
         <label label="󱊔"/>
-        <TrayPopover/>
+        <popover
+            position={Gtk.PositionType.RIGHT}>
+            <TrayContent vertical={false}/>
+        </popover>
     </menubutton>
+}
+
+function TrayContent({vertical}: { vertical: boolean }) {
+    return <box
+        vertical={vertical}
+        visible={bind(tray, "items").as((items) => items.length > 0)}>
+        {bind(tray, "items").as((items) => {
+            return items.map((item) => {
+                let ag_handler: number;
+
+                return <menubutton
+                    cssClasses={["trayMenuButton"]}
+                    tooltipMarkup={bind(item, "tooltipMarkup")}
+                    menuModel={bind(item, "menuModel")}
+                    onDestroy={() => item.disconnect(ag_handler)}
+                    setup={self => {
+                        ag_handler = item.connect("notify::action-group", () => {
+                            self.insert_action_group("dbusmenu", item.get_action_group())
+                        })
+                    }}>
+                    <image gicon={bind(item, "gicon")}/>
+                </menubutton>
+            })
+        })}
+    </box>
 }
 
 function AppLauncherButton() {
@@ -261,6 +286,8 @@ export function addWidgets(widgets: BarWidget[], isVertical: boolean) {
                 return <VpnIndicator/>
             case BarWidget.TRAY:
                 return <TrayButton/>
+            case BarWidget.INTEGRATED_TRAY:
+                return <IntegratedTray vertical={isVertical}/>
             case BarWidget.APP_LAUNCHER:
                 return <AppLauncherButton/>
             case BarWidget.SCREENSHOT:

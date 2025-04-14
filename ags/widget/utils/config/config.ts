@@ -58,6 +58,7 @@ export enum BarWidget {
     VPN_INDICATOR = "vpn_indicator",
     BATTERY = "battery",
     TRAY = "tray",
+    INTEGRATED_TRAY = "integrated_tray",
     APP_LAUNCHER = "app_launcher",
     SCREENSHOT ="screenshot",
 }
@@ -75,6 +76,7 @@ export type SystemCommands = {
 }
 
 export type SystemMenu = {
+    menuButtonIcon: string;
     enableMprisWidget: boolean;
     enableVpnControls: boolean;
 }
@@ -324,9 +326,7 @@ function checkConfigIntegrity(config: Config) {
         if (theme.name === undefined) {
             throw Error("Config invalid.  Problem with themes.  Name undefined.")
         }
-        if (theme.wallpaperDir === undefined
-            || theme.icon === undefined
-            || theme.pixelOffset === undefined
+        if (theme.icon === undefined
             || theme.colors === undefined
             || theme.colors.background === undefined
             || theme.colors.foreground === undefined
@@ -341,7 +341,13 @@ function checkConfigIntegrity(config: Config) {
         ) {
             throw Error(`Config invalid.  Problem with ${theme.name} theme.`)
         }
-        if (!Gio.file_new_for_path(theme.wallpaperDir).query_exists(null)) {
+        if (theme.wallpaperDir === undefined) {
+            theme.wallpaperDir = ""
+        }
+        if (theme.pixelOffset === undefined) {
+            theme.pixelOffset = 0
+        }
+        if (theme.wallpaperDir !== "" && !Gio.file_new_for_path(theme.wallpaperDir).query_exists(null)) {
             throw Error(`Config invalid.  Wallpaper directory for theme ${theme.name} does not exist.`)
         }
         if (theme.pixelOffset >= 10 || theme.pixelOffset <= -10) {
@@ -531,9 +537,13 @@ function checkConfigIntegrity(config: Config) {
     }
     if (config.systemMenu === undefined) {
         config.systemMenu = {
+            menuButtonIcon: "",
             enableMprisWidget: true,
             enableVpnControls: true,
         }
+    }
+    if (config.systemMenu.menuButtonIcon === undefined) {
+        config.systemMenu.menuButtonIcon = ""
     }
     if (config.systemMenu.enableMprisWidget === undefined) {
         config.systemMenu.enableMprisWidget = true

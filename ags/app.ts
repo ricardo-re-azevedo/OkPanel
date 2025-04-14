@@ -11,7 +11,6 @@ import HorizontalBar from "./widget/bar/HorizontalBar";
 import {decreaseVolume, increaseVolume, muteVolume} from "./widget/utils/audio";
 import {loadConfig, setThemeBasic} from "./widget/utils/config/config";
 import {parseTheme} from "./widget/utils/config/themeParser";
-import TrayWindow from "./widget/tray/TrayWindow";
 import Scrim from "./widget/common/Scrim";
 import {toggleWindow} from "./widget/utils/windows";
 import Hyprland from "gi://AstalHyprland"
@@ -32,7 +31,6 @@ App.start({
         AppLauncher()
         Screenshot()
         Screenshare()
-        TrayWindow()
 
         hyprland.monitors.map((monitor) => {
             VolumeAlert(monitor)

@@ -27,7 +27,7 @@ Create a config file and place it in the config directory like so
 | verticalBar             | Vertical bar configuration                                                                                                                                                                                    | False    | VerticalBar : see below    | see below                          |
 | windows                 | Common configurations for all windows and bars                                                                                                                                                                | False    | Windows : see below        | see below                          |
 | systemMenu              | System menu configuration                                                                                                                                                                                     | False    | SystemMenu : see below     | see below                          |
-| systemCommands          | System commands configuration                                                                                                                                                                                 | True     | SystemCommands : see below | required                           |
+| systemCommands          | System commands configuration                                                                                                                                                                                 | True     | SystemCommands : see below |                                    |
 | themes                  | A list of predefined themes                                                                                                                                                                                   | False    | array[Theme : see below]   | defaults to a single premade theme |
 
 ### Horizontal Bar
@@ -60,6 +60,7 @@ Create a config file and place it in the config directory like so
 
 | Name              | Description                                | Required | Type    | Default |
 |:------------------|:-------------------------------------------|:---------|:--------|---------|
+| menuButtonIcon    | Icon for the menu bar widget               | False    | char    | ""     |
 | enableMprisWidget | Show the Mpris music widget when available | False    | boolean | true    |
 | enableVpnControls | Show VPN controls in the network section   | False    | boolean | true    |
 
@@ -83,13 +84,13 @@ Create a config file and place it in the config directory like so
 
 ### Theme
 
-| Name         | Description                                    | Required  | Type                        |
-|:-------------|:-----------------------------------------------|:----------|:----------------------------|
-| name         | Name of the theme                              | True      | string                      |
-| icon         | Nerd font character to represent the theme     | True      | char                        |
-| pixelOffset  | Pixel offset adjustment for the theme icon     | True      | number : between -10 and 10 |
-| wallpaperDir | Directory containing wallpapers for this theme | True      | string                      |
-| colors       | Color palette for this theme                   | True      | [Color : see below]         |
+| Name         | Description                                    | Required | Type                        | Default |
+|:-------------|:-----------------------------------------------|:---------|:----------------------------|---------|
+| name         | Name of the theme                              | True     | string                      |         |
+| icon         | Nerd font character to represent the theme     | True     | char                        |         |
+| pixelOffset  | Pixel offset adjustment for the theme icon     | False    | number : between -10 and 10 | 0       |
+| wallpaperDir | Directory containing wallpapers for this theme | False    | string                      | ""      |
+| colors       | Color palette for this theme                   | True     | [Color : see below]         |         |
 
 ### Color
 
@@ -119,7 +120,8 @@ Create a config file and place it in the config directory like so
 | bluetooth           | Shows Bluetooth status                                                |
 | vpn_indicator       | Indicates active VPN connection                                       |
 | network             | Displays current network status (Wi-Fi/Ethernet)                      |
-| tray                | Displays the system tray button when available                        |
+| tray                | Displays a button to open the system tray when available              |
+| integrated_tray     | Integrates the tray directly into the bar                             |
 | battery             | Shows battery level and charging status                               |
 | app_launcher        | Button that opens the app launcher window                             |
 | screenshot          | Button that opens the screenshot window                               |
