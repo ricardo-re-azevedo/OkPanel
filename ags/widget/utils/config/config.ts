@@ -65,7 +65,13 @@ export enum BarWidget {
 
 export enum NotificationsPosition {
     LEFT = "left",
-    RIGHT = "right"
+    RIGHT = "right",
+    CENTER = "center",
+}
+
+export type Notifications = {
+    position: NotificationsPosition,
+    respectExclusive: boolean,
 }
 
 export type SystemCommands = {
@@ -96,7 +102,7 @@ export type Config = {
     scrimColor: string;
     font: string;
     windows: Windows;
-    notificationsPosition: NotificationsPosition;
+    notifications: Notifications;
     verticalBar: VerticalBar;
     horizontalBar: HorizontalBar;
     systemMenu: SystemMenu;
@@ -527,11 +533,20 @@ function checkConfigIntegrity(config: Config) {
         config.verticalBar.widgetSpacing = 0
     }
 
-    if (config.notificationsPosition === undefined) {
-        config.notificationsPosition = NotificationsPosition.RIGHT
+    if (config.notifications === undefined) {
+        config.notifications = {
+            position: NotificationsPosition.RIGHT,
+            respectExclusive: true
+        }
     }
-    if (config.notificationsPosition !== "left" && config.notificationsPosition !== "right") {
-        throw Error(`Config invalid.  Notification position must be left or right.`)
+    if (config.notifications.position === undefined) {
+        config.notifications.position = NotificationsPosition.RIGHT
+    }
+    if (config.notifications.position !== "left" && config.notifications.position !== "right" && config.notifications.position !== "center") {
+        throw Error(`Config invalid.  Notification position must be left, right, or center.`)
+    }
+    if (config.notifications.respectExclusive === undefined) {
+        config.notifications.respectExclusive = true
     }
     if (config.systemMenu === undefined) {
         config.systemMenu = {

@@ -1,9 +1,8 @@
-import {Astal, Gdk, Gtk} from "astal/gtk4"
+import {Astal, Gtk} from "astal/gtk4"
 import Notifd from "gi://AstalNotifd"
 import Notification from "./Notification"
 import {type Subscribable} from "astal/binding"
 import {bind, GLib, Variable} from "astal"
-import {selectedBar} from "../bar/Bar";
 import {config, NotificationsPosition} from "../utils/config/config";
 import Hyprland from "gi://AstalHyprland"
 
@@ -111,8 +110,25 @@ class NotifiationMap implements Subscribable {
     }
 }
 
+function getAnchor() {
+    if (config.notifications.position === NotificationsPosition.LEFT) {
+        return Astal.WindowAnchor.TOP | Astal.WindowAnchor.LEFT
+    } else if (config.notifications.position === NotificationsPosition.RIGHT) {
+        return Astal.WindowAnchor.TOP | Astal.WindowAnchor.RIGHT
+    } else {
+        return Astal.WindowAnchor.TOP
+    }
+}
+
+function getExclusivity() {
+    if (config.notifications.respectExclusive) {
+        return Astal.Exclusivity.NORMAL
+    } else {
+        return Astal.Exclusivity.IGNORE
+    }
+}
+
 export default function NotificationPopups(monitor: Hyprland.Monitor): Astal.Window {
-    const { TOP, RIGHT, LEFT } = Astal.WindowAnchor
     const notifs = new NotifiationMap()
 
     return <window
@@ -121,15 +137,9 @@ export default function NotificationPopups(monitor: Hyprland.Monitor): Astal.Win
         })}
         cssClasses={["NotificationPopups"]}
         monitor={monitor.id}
-        exclusivity={Astal.Exclusivity.EXCLUSIVE}
+        exclusivity={getExclusivity()}
         layer={Astal.Layer.OVERLAY}
-        anchor={selectedBar((bar) => {
-            if (config.notificationsPosition === NotificationsPosition.LEFT) {
-                return TOP | LEFT
-            } else {
-                return TOP | RIGHT
-            }
-        })}>
+        anchor={getAnchor()}>
         <box
             vertical={true}>
             {bind(notifs)}

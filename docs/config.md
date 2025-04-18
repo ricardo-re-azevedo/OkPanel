@@ -74,6 +74,13 @@ Create a config file and place it in the config directory like so
 | restart  | Command to restart the system                   | True       | string     |
 | shutdown | Command to shut down the system                 | True       | string     |
 
+### Notifications
+
+| Name             | Description                                                      | Required | Type                                | Default   |
+|:-----------------|:-----------------------------------------------------------------|:---------|:------------------------------------|-----------|
+| position         | Where to display notifications, left, right or center            | False    | string : "left", "right", "center"  | "right"   |
+| respectExclusive | If the notifications should respect exclusive space like the bar | False    | boolean                             | true      |
+
 ### Windows
 
 | Name         | Description                         | Required   | Type   | Default |
