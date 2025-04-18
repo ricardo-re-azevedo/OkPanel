@@ -5,6 +5,7 @@ import {config} from "../utils/config/config";
 
 export default function () {
     return <window
+        heightRequest={config.verticalBar.minimumHeight}
         cssClasses={["transparentBackground"]}
         monitor={config.mainMonitor}
         visible={selectedBar((bar) => {

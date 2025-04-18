@@ -25,23 +25,25 @@ export default function () {
             switch (bar) {
                 case Bar.TOP:
                 case Bar.BOTTOM:
-                    if (config.horizontalBar.leftWidgets.includes(BarWidget.MENU)) {
-                        return Astal.WindowAnchor.TOP
-                            | Astal.WindowAnchor.LEFT
-                            | Astal.WindowAnchor.BOTTOM
-                    } else if (config.horizontalBar.centerWidgets.includes(BarWidget.MENU)) {
-                        return Astal.WindowAnchor.TOP
-                            | Astal.WindowAnchor.BOTTOM
-                    } else {
+                    if (config.horizontalBar.expanded) {
                         return Astal.WindowAnchor.TOP
                             | Astal.WindowAnchor.RIGHT
                             | Astal.WindowAnchor.BOTTOM
+                            | Astal.WindowAnchor.LEFT
                     }
+                    return Astal.WindowAnchor.TOP
+                        | Astal.WindowAnchor.BOTTOM
                 case Bar.LEFT:
+                    if (!config.verticalBar.expanded) {
+                        return Astal.WindowAnchor.LEFT
+                    }
                     return Astal.WindowAnchor.TOP
                         | Astal.WindowAnchor.LEFT
                         | Astal.WindowAnchor.BOTTOM
                 case Bar.RIGHT:
+                    if (!config.verticalBar.expanded) {
+                        return Astal.WindowAnchor.RIGHT
+                    }
                     return Astal.WindowAnchor.TOP
                         | Astal.WindowAnchor.RIGHT
                         | Astal.WindowAnchor.BOTTOM
@@ -69,7 +71,31 @@ export default function () {
                 default: return false
             }
         })}
-        width={400}
+        leftExpand={selectedBar((bar) => {
+            switch (bar) {
+                case Bar.RIGHT:
+                    return true
+                case Bar.TOP:
+                case Bar.BOTTOM:
+                    return config.horizontalBar.centerWidgets.includes(BarWidget.MENU)
+                        || config.horizontalBar.rightWidgets.includes(BarWidget.MENU)
+                default: return false
+            }
+        })}
+        rightExpand={selectedBar((bar) => {
+            switch (bar) {
+                case Bar.LEFT:
+                    return true
+                case Bar.TOP:
+                case Bar.BOTTOM:
+                    return config.horizontalBar.centerWidgets.includes(BarWidget.MENU)
+                        || config.horizontalBar.leftWidgets.includes(BarWidget.MENU)
+                default: return false
+            }
+        })}
+        contentWidth={400}
+        width={config.horizontalBar.minimumWidth}
+        height={config.verticalBar.minimumHeight}
         content={
             <box
                 marginTop={20}

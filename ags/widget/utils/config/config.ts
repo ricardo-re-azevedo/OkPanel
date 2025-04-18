@@ -196,8 +196,6 @@ cat > "$TARGET_DIR/variables.scss" <<EOF
 \\$windowBorderRadius: ${config.windows.borderRadius}px;
 \\$windowBorderWidth: ${config.windows.borderWidth}px;
 \\$largeButtonBorderRadius: ${config.largeButtonBorderRadius}px;
-\\$verticalBarMinHeight: ${config.verticalBar.minimumHeight}px;
-\\$horizontalBarMinWidth: ${config.horizontalBar.minimumWidth}px;
 \\$scrimColor: ${config.scrimColor};
 EOF
 

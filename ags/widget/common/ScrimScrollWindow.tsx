@@ -9,7 +9,11 @@ type Params = {
     anchor: Binding<Astal.WindowAnchor> | Astal.WindowAnchor,
     topExpand: Binding<boolean> | boolean,
     bottomExpand: Binding<boolean> | boolean,
+    rightExpand: Binding<boolean> | boolean,
+    leftExpand: Binding<boolean> | boolean,
+    contentWidth: number,
     width: number,
+    height: number,
     content?: JSX.Element;
 }
 
@@ -20,13 +24,19 @@ export default function(
         anchor,
         topExpand,
         bottomExpand,
+        rightExpand,
+        leftExpand,
+        contentWidth,
         width,
+        height,
         content,
     }: Params
 ) {
     let mainBox: Astal.Box
 
     return <window
+        heightRequest={height}
+        widthRequest={width}
         monitor={monitor}
         name={windowName}
         anchor={anchor}
@@ -65,18 +75,24 @@ export default function(
         <box vertical={true}>
             <box vexpand={topExpand}/>
             <box
-                vertical={true}
-                cssClasses={["window"]}
-                setup={(self) => {
-                    mainBox = self;
-                }}>
-                <Gtk.ScrolledWindow
-                    cssClasses={["scrollWindow"]}
-                    vscrollbarPolicy={Gtk.PolicyType.AUTOMATIC}
-                    propagateNaturalHeight={true}
-                    widthRequest={width}>
-                    {content}
-                </Gtk.ScrolledWindow>
+                vertical={false}>
+                <box hexpand={leftExpand}/>
+                <box
+                    hexpand={false}
+                    vertical={true}
+                    cssClasses={["window"]}
+                    setup={(self) => {
+                        mainBox = self;
+                    }}>
+                    <Gtk.ScrolledWindow
+                        cssClasses={["scrollWindow"]}
+                        vscrollbarPolicy={Gtk.PolicyType.AUTOMATIC}
+                        propagateNaturalHeight={true}
+                        widthRequest={contentWidth}>
+                        {content}
+                    </Gtk.ScrolledWindow>
+                </box>
+                <box hexpand={rightExpand}/>
             </box>
             <box vexpand={bottomExpand}/>
         </box>

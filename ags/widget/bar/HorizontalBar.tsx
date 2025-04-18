@@ -5,6 +5,7 @@ import {config} from "../utils/config/config";
 
 export default function () {
     return <window
+        widthRequest={config.horizontalBar.minimumWidth}
         visible={selectedBar((bar) => {
             return bar === Bar.TOP || bar === Bar.BOTTOM
         })}
