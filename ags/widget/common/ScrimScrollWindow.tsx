@@ -2,11 +2,12 @@ import {App, Astal, Gdk, Gtk} from "astal/gtk4";
 import {Binding} from "astal";
 import {config} from "../utils/config/config";
 import {hideAllWindows} from "../utils/windows";
+import {Bar, selectedBar} from "../bar/Bar";
 
 type Params = {
     monitor: number;
     windowName: string,
-    anchor: Binding<Astal.WindowAnchor> | Astal.WindowAnchor,
+    anchor?: Binding<Astal.WindowAnchor> | Astal.WindowAnchor,
     topExpand: Binding<boolean> | boolean,
     bottomExpand: Binding<boolean> | boolean,
     rightExpand: Binding<boolean> | boolean,
@@ -17,11 +18,40 @@ type Params = {
     content?: JSX.Element;
 }
 
+const defaultAnchor = selectedBar((bar) => {
+    switch (bar) {
+        case Bar.TOP:
+        case Bar.BOTTOM:
+            if (config.horizontalBar.expanded) {
+                return Astal.WindowAnchor.TOP
+                    | Astal.WindowAnchor.RIGHT
+                    | Astal.WindowAnchor.BOTTOM
+                    | Astal.WindowAnchor.LEFT
+            }
+            return Astal.WindowAnchor.TOP
+                | Astal.WindowAnchor.BOTTOM
+        case Bar.LEFT:
+            if (!config.verticalBar.expanded) {
+                return Astal.WindowAnchor.LEFT
+            }
+            return Astal.WindowAnchor.TOP
+                | Astal.WindowAnchor.LEFT
+                | Astal.WindowAnchor.BOTTOM
+        case Bar.RIGHT:
+            if (!config.verticalBar.expanded) {
+                return Astal.WindowAnchor.RIGHT
+            }
+            return Astal.WindowAnchor.TOP
+                | Astal.WindowAnchor.RIGHT
+                | Astal.WindowAnchor.BOTTOM
+    }
+})
+
 export default function(
     {
         monitor,
         windowName,
-        anchor,
+        anchor = defaultAnchor,
         topExpand,
         bottomExpand,
         rightExpand,
