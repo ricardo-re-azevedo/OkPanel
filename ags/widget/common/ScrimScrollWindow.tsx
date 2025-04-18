@@ -72,7 +72,7 @@ export default function(
         anchor={anchor}
         margin={config.windows.gaps}
         exclusivity={Astal.Exclusivity.NORMAL}
-        layer={Astal.Layer.TOP}
+        layer={Astal.Layer.OVERLAY}
         cssClasses={["transparentBackground"]}
         application={App}
         visible={false}

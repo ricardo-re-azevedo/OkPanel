@@ -122,6 +122,7 @@ export default function NotificationPopups(monitor: Hyprland.Monitor): Astal.Win
         cssClasses={["NotificationPopups"]}
         monitor={monitor.id}
         exclusivity={Astal.Exclusivity.EXCLUSIVE}
+        layer={Astal.Layer.OVERLAY}
         anchor={selectedBar((bar) => {
             if (config.notificationsPosition === NotificationsPosition.LEFT) {
                 return TOP | LEFT

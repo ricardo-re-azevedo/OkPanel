@@ -10,7 +10,7 @@ export default function (monitor: Hyprland.Monitor): Astal.Window {
         monitor={monitor.id}
         anchor={Astal.WindowAnchor.BOTTOM | Astal.WindowAnchor.LEFT | Astal.WindowAnchor.RIGHT | Astal.WindowAnchor.TOP}
         exclusivity={Astal.Exclusivity.IGNORE}
-        layer={Astal.Layer.TOP}
+        layer={Astal.Layer.OVERLAY}
         cssClasses={["scrimBackground"]}
         application={App}
         visible={scrimsVisible()}

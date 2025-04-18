@@ -228,12 +228,12 @@ export default function () {
         name={ScreenshareWindowName}
         anchor={Astal.WindowAnchor.TOP | Astal.WindowAnchor.BOTTOM}
         application={App}
-        layer={Astal.Layer.TOP}
+        layer={Astal.Layer.OVERLAY}
         keymode={Astal.Keymode.EXCLUSIVE}
         cssClasses={["transparentBackground"]}
         margin={5}
         visible={false}
-        onKeyPressed={function (self, key) {
+        onKeyPressed={function (_, key) {
             if (key === Gdk.KEY_Escape) {
                 hideAllWindows()
                 response(`[SELECTION]/`)

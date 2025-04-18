@@ -608,12 +608,12 @@ export default function () {
         cssClasses={["transparentBackground"]}
         name={ScreenshotWindowName}
         application={App}
-        layer={Astal.Layer.TOP}
+        layer={Astal.Layer.OVERLAY}
         anchor={Astal.WindowAnchor.TOP | Astal.WindowAnchor.BOTTOM}
         keymode={Astal.Keymode.EXCLUSIVE}
         margin={5}
         visible={false}
-        onKeyPressed={function (self, key) {
+        onKeyPressed={function (_, key) {
             if (key === Gdk.KEY_Escape) {
                 hideAllWindows()
             }

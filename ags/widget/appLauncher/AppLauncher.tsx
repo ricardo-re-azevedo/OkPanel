@@ -100,7 +100,7 @@ export default function () {
         anchor={Astal.WindowAnchor.TOP | Astal.WindowAnchor.BOTTOM}
         exclusivity={Astal.Exclusivity.IGNORE}
         keymode={Astal.Keymode.EXCLUSIVE}
-        layer={Astal.Layer.TOP}
+        layer={Astal.Layer.OVERLAY}
         application={App}
         onShow={() => {
             apps = new Apps.Apps()
