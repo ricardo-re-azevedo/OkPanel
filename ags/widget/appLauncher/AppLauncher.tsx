@@ -22,10 +22,6 @@ function AppButton({ app, isSelected, indexInList, selectedIndexVariable }: AppB
     return <button
         canFocus={false}
         cssClasses={isSelected ? ["selectedAppButton"] : ["appButton"]}
-        onHoverEnter={() => {
-            // Uncomment to select the hovered app.
-            // selectedIndexVariable.set(indexInList)
-        }}
         onClicked={() => {
             hideAllWindows()
             launchApp(app)
