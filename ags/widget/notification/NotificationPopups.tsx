@@ -12,7 +12,7 @@ const TIMEOUT_DELAY = 7_000
 // The purpose if this class is to replace Variable<Array<Widget>>
 // with a Map<number, Widget> type in order to track notification widgets
 // by their id, while making it conviniently bindable as an array
-class NotifiationMap implements Subscribable {
+class NotificationMap implements Subscribable {
     // the underlying map to keep track of id widget pairs
     private map: Map<number, Gtk.Widget> = new Map()
 
@@ -129,7 +129,7 @@ function getExclusivity() {
 }
 
 export default function NotificationPopups(monitor: Hyprland.Monitor): Astal.Window {
-    const notifs = new NotifiationMap()
+    const notifs = new NotificationMap()
 
     return <window
         visible={bind(notifs).as((values) => {
