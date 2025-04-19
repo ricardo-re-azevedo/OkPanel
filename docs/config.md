@@ -139,7 +139,6 @@ Create a config file and place it in the config directory like so
 
 ```json
 {
-  "borderRadius": 8,
   "largeButtonBorderRadius": 16,
   "horizontalBar": {
     "leftWidgets": [
