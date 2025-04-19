@@ -19,7 +19,6 @@ Create a config file and place it in the config directory like so
 | largeButtonBorderRadius | Optional radius for large buttons                                                                                                                                                                             | False    | number                     | 16                                 |
 | themeUpdateScript       | Script to execute when changing the theme                                                                                                                                                                     | False    | string                     | undefined                          |
 | wallpaperUpdateScript   | Script to execute when changing the wallpaper                                                                                                                                                                 | False    | string                     | undefined                          |
-| notificationsPosition   | Where to display notifications, left or right                                                                                                                                                                 | False    | string : "left", "right"   | "right"                            |
 | mainMonitor             | The monitor that displays the bar                                                                                                                                                                             | False    | number                     | 0                                  |
 | scrimColor              | The color of a full screen window that displays behind OkPanel windows that is used to detect clicks to close windows.  Recommend using the alpha color channel.  If set to #00000000 scrim will be disabled. | False    | string                     | "#00000001"                        |
 | font                    | Font used in the UI                                                                                                                                                                                           | False    | string                     | "JetBrainsMono NF"                 |
@@ -28,6 +27,7 @@ Create a config file and place it in the config directory like so
 | windows                 | Common configurations for all windows and bars                                                                                                                                                                | False    | Windows : see below        | see below                          |
 | systemMenu              | System menu configuration                                                                                                                                                                                     | False    | SystemMenu : see below     | see below                          |
 | systemCommands          | System commands configuration                                                                                                                                                                                 | True     | SystemCommands : see below |                                    |
+| notifications           | Notification configuration                                                                                                                                                                                    | False    | Notifications : see below  | see below                          |
 | themes                  | A list of predefined themes                                                                                                                                                                                   | False    | array[Theme : see below]   | defaults to a single premade theme |
 
 ### Horizontal Bar
@@ -76,10 +76,10 @@ Create a config file and place it in the config directory like so
 
 ### Notifications
 
-| Name             | Description                                                      | Required | Type                                | Default   |
-|:-----------------|:-----------------------------------------------------------------|:---------|:------------------------------------|-----------|
-| position         | Where to display notifications, left, right or center            | False    | string : "left", "right", "center"  | "right"   |
-| respectExclusive | If the notifications should respect exclusive space like the bar | False    | boolean                             | true      |
+| Name             | Description                                                       | Required | Type                                | Default   |
+|:-----------------|:------------------------------------------------------------------|:---------|:------------------------------------|-----------|
+| position         | Where to display notifications, left, right or center             | False    | string : "left", "right", "center"  | "right"   |
+| respectExclusive | If the notifications should respect exclusive space, like the bar | False    | boolean                             | true      |
 
 ### Windows
 
