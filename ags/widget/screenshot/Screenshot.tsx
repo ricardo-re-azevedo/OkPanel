@@ -229,7 +229,50 @@ function ScreenShots() {
             cssClasses={["labelLargeBold"]}
             marginBottom={8}
             label="Screenshot"/>
+        <RevealerRow
+            icon={"󰔛"}
+            iconOffset={0}
+            windowName={ScreenshotWindowName}
+            setup={(revealed) => {
+                delayRevealed = revealed
+            }}
+            content={
+                <label
+                    cssClasses={["labelMediumBold"]}
+                    halign={Gtk.Align.START}
+                    hexpand={true}
+                    ellipsize={Pango.EllipsizeMode.END}
+                    label={delay().as((value) => {
+                        if (value === 1) {
+                            return `Delay: ${value} second`
+                        }
+                        return `Delay: ${value} seconds`
+                    })}/>
+            }
+            revealedContent={
+                <box
+                    vertical={true}>
+                    {delayOptions.map((value) => {
+                        return <button
+                            hexpand={true}
+                            cssClasses={["iconButton"]}
+                            onClicked={() => {
+                                delay.set(value)
+                                delayRevealed?.set(false)
+                            }}>
+                            <label
+                                marginStart={8}
+                                marginEnd={8}
+                                halign={Gtk.Align.START}
+                                cssClasses={["labelSmall"]}
+                                ellipsize={Pango.EllipsizeMode.END}
+                                label={`󰔛  ${value} seconds`}/>
+                        </button>
+                    })}
+                </box>
+            }/>
         <box
+            marginTop={8}
             vertical={false}>
             <ScreenshotButton
                 icon={""}
@@ -299,49 +342,6 @@ function ScreenShots() {
                     })
                 }}/>
         </box>
-        <box marginTop={10}/>
-        <RevealerRow
-            icon={"󰔛"}
-            iconOffset={0}
-            windowName={ScreenshotWindowName}
-            setup={(revealed) => {
-                delayRevealed = revealed
-            }}
-            content={
-                <label
-                    cssClasses={["labelMediumBold"]}
-                    halign={Gtk.Align.START}
-                    hexpand={true}
-                    ellipsize={Pango.EllipsizeMode.END}
-                    label={delay().as((value) => {
-                        if (value === 1) {
-                            return `Delay: ${value} second`
-                        }
-                        return `Delay: ${value} seconds`
-                    })}/>
-            }
-            revealedContent={
-                <box
-                    vertical={true}>
-                    {delayOptions.map((value) => {
-                        return <button
-                            hexpand={true}
-                            cssClasses={["iconButton"]}
-                            onClicked={() => {
-                                delay.set(value)
-                                delayRevealed?.set(false)
-                            }}>
-                            <label
-                                marginStart={8}
-                                marginEnd={8}
-                                halign={Gtk.Align.START}
-                                cssClasses={["labelSmall"]}
-                                ellipsize={Pango.EllipsizeMode.END}
-                                label={`󰔛  ${value} seconds`}/>
-                        </button>
-                    })}
-                </box>
-            }/>
     </box>
 }
 
