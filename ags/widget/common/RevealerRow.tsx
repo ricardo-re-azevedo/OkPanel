@@ -72,7 +72,10 @@ export default function (
                     label={icon}/>
             }
             <box marginEnd={10}/>
-            {content}
+            <box
+                marginTop={4}>
+                {content}
+            </box>
             <button
                 cssClasses={["iconButton"]}
                 label={revealed((revealed): string => {

@@ -56,6 +56,15 @@ const crfQualityValues = [
     26
 ]
 
+const delayOptions = [
+    0,
+    1,
+    2,
+    3,
+    5,
+    10
+]
+
 let screenshotDir = ""
 let screenRecordingDir = ""
 
@@ -211,6 +220,9 @@ function ScreenshotButton(
 }
 
 function ScreenShots() {
+    const delay = Variable(1)
+    let delayRevealed: Variable<boolean> | null = null
+
     return <box
         vertical={true}>
         <label
@@ -231,7 +243,7 @@ function ScreenShots() {
                             "bash",
                             "-c",
                             `
-                                    sleep 0.7
+                                    sleep ${delay.get()}
                                     grim ${path}
                             `
                         ]
@@ -287,6 +299,49 @@ function ScreenShots() {
                     })
                 }}/>
         </box>
+        <box marginTop={10}/>
+        <RevealerRow
+            icon={"󰔛"}
+            iconOffset={0}
+            windowName={ScreenshotWindowName}
+            setup={(revealed) => {
+                delayRevealed = revealed
+            }}
+            content={
+                <label
+                    cssClasses={["labelMediumBold"]}
+                    halign={Gtk.Align.START}
+                    hexpand={true}
+                    ellipsize={Pango.EllipsizeMode.END}
+                    label={delay().as((value) => {
+                        if (value === 1) {
+                            return `Delay: ${value} second`
+                        }
+                        return `Delay: ${value} seconds`
+                    })}/>
+            }
+            revealedContent={
+                <box
+                    vertical={true}>
+                    {delayOptions.map((value) => {
+                        return <button
+                            hexpand={true}
+                            cssClasses={["iconButton"]}
+                            onClicked={() => {
+                                delay.set(value)
+                                delayRevealed?.set(false)
+                            }}>
+                            <label
+                                marginStart={8}
+                                marginEnd={8}
+                                halign={Gtk.Align.START}
+                                cssClasses={["labelSmall"]}
+                                ellipsize={Pango.EllipsizeMode.END}
+                                label={`󰔛  ${value} seconds`}/>
+                        </button>
+                    })}
+                </box>
+            }/>
     </box>
 }
 
