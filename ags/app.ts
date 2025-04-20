@@ -9,11 +9,12 @@ import Screenshare, {ScreenshareWindowName, updateResponse, updateWindows} from 
 import VerticalBar from "./widget/bar/VerticalBar";
 import HorizontalBar from "./widget/bar/HorizontalBar";
 import {decreaseVolume, increaseVolume, muteVolume} from "./widget/utils/audio";
-import {loadConfig, setThemeBasic} from "./widget/utils/config/config";
+import {loadConfig} from "./widget/utils/config/config";
 import {parseTheme} from "./widget/utils/config/themeParser";
 import Scrim from "./widget/common/Scrim";
 import {toggleWindow} from "./widget/utils/windows";
 import Hyprland from "gi://AstalHyprland"
+import {setThemeBasic} from "./widget/utils/config/themeScripts";
 
 const hyprland = Hyprland.get_default()
 

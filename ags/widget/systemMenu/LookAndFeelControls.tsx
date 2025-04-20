@@ -6,9 +6,10 @@ import Pango from "gi://Pango?version=1.0";
 import {createScaledTexture} from "../utils/images";
 import {Bar, selectedBar, setBarType} from "../bar/Bar";
 import Divider from "../common/Divider";
-import {config, selectedTheme, setTheme, setWallpaper, Theme} from "../utils/config/config";
+import {config, selectedTheme, Theme} from "../utils/config/config";
 import LargeIconButton from "../common/LargeIconButton";
 import RevealerRow from "../common/RevealerRow";
+import {setTheme, setWallpaper} from "../utils/config/themeScripts";
 
 const files: Variable<string[][]> = Variable([])
 const numberOfColumns = 2
