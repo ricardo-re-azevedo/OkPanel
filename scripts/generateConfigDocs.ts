@@ -113,7 +113,7 @@ function generateDocs(schema: Field[]): string {
         if (children.length > 0) {
             nestedSections.push(`\n## \`${field.name}\` (${row.type})`);
             if (field.description) {
-                nestedSections.push(`\n${field.description}`);
+                nestedSections.push(`\n${field.description}\n`);
             }
             nestedSections.push(...formatTable(children));
         }
