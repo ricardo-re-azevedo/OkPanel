@@ -1,7 +1,7 @@
 import { writeFileSync } from "fs";
 import { CONFIG_SCHEMA, Field } from "../ags/widget/utils/config/configSchema";
 
-const OUT_PATH = "docs/oldConfig.md";
+const OUT_PATH = "docs/config.md";
 
 function mdEscape(s: string): string {
     return s.replace(/[`]/g, "\\`");
