@@ -15,9 +15,18 @@
     color: #AFB3BD;
 }
 
+/* Reduce width of the left navigation pane */
+.md-sidebar--primary {
+    width: 220px; /* default is ~300px */
+}
+
 /* Increase the width of the main content area */
 .md-grid {
     max-width: 80rem; /* default is 61rem */
+}
+
+td:first-child code {
+    white-space: nowrap;
 }
 
 .md-copyright {
