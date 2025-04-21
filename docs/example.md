@@ -1,7 +1,7 @@
 # Example config
 
 ```
-# ───────────── Global settings ─────────────
+# ───────────── General settings ─────────────
 largeButtonBorderRadius = 16
 
 themeUpdateScript      = "/home/john/workspace/scripts/setTheme.sh"
@@ -69,7 +69,7 @@ themes = [
             windowBorder  = #D3C6AA
             alertBorder   = #7A8478
         }
-    },
+    }
     
     {
         name         = nord
