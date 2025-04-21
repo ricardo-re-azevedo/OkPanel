@@ -59,16 +59,33 @@ function collectRow(field: Field): Row {
     };
 }
 
-function collectChildren(field: Field): Row[] {
+function collectChildren(
+    field: Field,
+    prefix = ""
+): { path: string; rows: Row[] }[] {
+    const tables: { path: string; rows: Row[] }[] = [];
+
+    const fullPrefix = prefix ? `${prefix}.${field.name}` : field.name;
+
     if (field.type === "object" && field.children) {
-        return field.children.map(collectRow);
+        const rows = field.children.map(collectRow);
+        tables.push({ path: fullPrefix, rows });
+
+        for (const child of field.children) {
+            tables.push(...collectChildren(child, fullPrefix));
+        }
     }
 
     if (field.type === "array" && field.item?.type === "object" && field.item.children) {
-        return field.item.children.map(collectRow);
+        const rows = field.item.children.map(collectRow);
+        tables.push({ path: `${fullPrefix}[]`, rows });
+
+        for (const child of field.item.children) {
+            tables.push(...collectChildren(child, `${fullPrefix}[]`));
+        }
     }
 
-    return [];
+    return tables;
 }
 
 function formatTable(rows: Row[]): string[] {
@@ -120,16 +137,14 @@ function generateDocs(schema: Field[]): string {
 
     for (const field of schema) {
         const row = collectRow(field);
-        const children = collectChildren(field);
 
         topLevelRows.push(row);
 
-        if (children.length > 0) {
-            nestedSections.push(`\n### ${field.name} (${row.type})`);
-            if (field.description) {
-                nestedSections.push(`\n${field.description}\n`);
-            }
-            nestedSections.push(...formatTable(children));
+        const childTables = collectChildren(field);
+
+        for (const { path, rows } of childTables) {
+            nestedSections.push(`\n### \`${path}\`\n`);
+            nestedSections.push(...formatTable(rows));
         }
     }
 

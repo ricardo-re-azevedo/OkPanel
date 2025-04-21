@@ -262,7 +262,7 @@ export const CONFIG_SCHEMA = [
                 name: 'minimumHeight',
                 type: 'number',
                 default: 600,
-                description: 'Minimum bar height before collapsing behaviour is applied.',
+                description: 'Minimum bar height if not expanded.',
             },
             {
                 name: 'widgetSpacing',
@@ -346,7 +346,7 @@ export const CONFIG_SCHEMA = [
                     name: 'name',
                     type: 'string',
                     required: true,
-                    description: 'Human‑friendly theme name.',
+                    description: 'Theme name.',
                 },
                 {
                     name: 'icon',
@@ -358,7 +358,7 @@ export const CONFIG_SCHEMA = [
                     name: 'pixelOffset',
                     type: 'number',
                     default: 0,
-                    description: 'Wallpaper parallax offset (‑10 … 10).',
+                    description: 'Icon offset (‑10 … 10).',
                 },
                 {
                     name: 'wallpaperDir',
