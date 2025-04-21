@@ -29,17 +29,11 @@ function flattenFields(fields: Field[], prefix = ""): Row[] {
         // If it's an array, infer array type
         if (isArray && field.item) {
             const itemType = field.item.type;
-            type = `array<${itemType}>`;
+            type = `${itemType}[]`;
 
             // If array item is an enum, explain options
             if (itemType === "enum" && field.item.enumValues?.length) {
-                extraRows.push({
-                    name: `↳ Allowed values for \`${fullName}\``,
-                    type: "",
-                    default: "",
-                    required: "",
-                    description: field.item.enumValues.map((v) => `\`${v}\``).join(", "),
-                });
+                type = type + " - allowed values: " + field.item.enumValues.map((v) => `\`${v}\``).join(", ")
             }
 
             // If array item is an object, recurse into it
@@ -52,7 +46,7 @@ function flattenFields(fields: Field[], prefix = ""): Row[] {
             name: `\`${fullName}\``,
             type,
             default: field.default !== undefined ? `\`${String(field.default)}\`` : "",
-            required: field.required ? "✅" : "",
+            required: field.required ? "✔" : "x",
             description: field.description ? mdEscape(field.description) : "",
         };
 
@@ -70,17 +64,46 @@ function flattenFields(fields: Field[], prefix = ""): Row[] {
 
 
 function generateDocs(schema: Field[]): string {
+    const rows = flattenFields(schema);
+
+    const header = ["Name", "Type", "Default", "Required", "Description"];
+
+    // Measure max width of each column
+    const widths = header.map((_, i) =>
+        Math.max(
+            header[i].length,
+            ...rows.map(row => [
+                row.name,
+                row.type,
+                row.default,
+                row.required,
+                row.description,
+            ][i]?.length || 0)
+        )
+    );
+
+    const formatRow = (cols: string[]) =>
+        `| ${cols.map((col, i) => col.padEnd(widths[i])).join(" | ")} |`;
+
     const out: string[] = [];
 
     out.push("# 🛠 OkPanel Configuration Reference\n");
     out.push("_This file is auto-generated. Do not edit manually._\n");
 
-    out.push("\n| Name | Type | Default | Required | Description |");
-    out.push("|------|------|---------|----------|-------------|");
+    // Header row
+    out.push("");
+    out.push(formatRow(header));
+    out.push(`|${widths.map(w => "-".repeat(w + 2)).join("|")}|`);
 
-    const rows = flattenFields(schema);
-    for (const r of rows) {
-        out.push(`| ${r.name} | ${r.type} | ${r.default} | ${r.required} | ${r.description} |`);
+    // Data rows
+    for (const row of rows) {
+        out.push(formatRow([
+            row.name,
+            row.type,
+            row.default,
+            row.required,
+            row.description,
+        ]));
     }
 
     return out.join("\n");
