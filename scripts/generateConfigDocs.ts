@@ -36,11 +36,11 @@ function collectRow(field: Field): Row {
     let baseType: string = field.type;
 
     if (isArray && item?.type === "enum") {
-        baseType = `array<enum (${item.enumValues!.map(v => `"${v}"`).join(" - ")})>`;
+        baseType = `enum[(${item.enumValues!.map(v => `"${v}"`).join(", ")})]`;
     } else if (isArray && item) {
-        baseType = `array<${item.type}>`;
+        baseType = `[${item.type}]`;
     } else if (field.type === "enum" && enumVals) {
-        baseType = `enum (${enumVals.map(v => `"${v}"`).join(" - ")})`;
+        baseType = `enum (${enumVals.map(v => `"${v}"`).join(", ")})`;
     }
 
     return {
@@ -51,7 +51,9 @@ function collectRow(field: Field): Row {
             field.default === "" ||
             (Array.isArray(field.default) && field.default.length === 0)
                 ? ""
-                : String(field.default),
+                : Array.isArray(field.default)
+                    ? field.default.map(String).join(" ")
+                    : String(field.default),
         required: field.required ? "✔" : "x",
         description: mdEscape(field.description ?? ""),
     };
