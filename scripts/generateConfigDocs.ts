@@ -143,7 +143,7 @@ function generateDocs(schema: Field[]): string {
         const childTables = collectChildren(field);
 
         for (const { path, rows } of childTables) {
-            nestedSections.push(`\n### \`${path}\`\n`);
+            nestedSections.push(`\n### ${path}\n`);
             nestedSections.push(...formatTable(rows));
         }
     }
