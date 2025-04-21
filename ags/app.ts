@@ -9,7 +9,7 @@ import Screenshare, {ScreenshareWindowName, updateResponse, updateWindows} from 
 import VerticalBar from "./widget/bar/VerticalBar";
 import HorizontalBar from "./widget/bar/HorizontalBar";
 import {decreaseVolume, increaseVolume, muteVolume} from "./widget/utils/audio";
-import {loadConfig} from "./widget/utils/config/config";
+import {restoreSavedState} from "./widget/utils/config/config";
 import {parseTheme} from "./widget/utils/config/themeParser";
 import Scrim from "./widget/common/Scrim";
 import {toggleWindow} from "./widget/utils/windows";
@@ -22,7 +22,7 @@ App.start({
     instanceName: "OkPanel",
     css: "/tmp/OkPanel/style.css",
     main(...args: Array<string>) {
-        loadConfig(args[0], args[1])
+        restoreSavedState(args[0], args[1])
 
         VerticalBar()
         HorizontalBar()

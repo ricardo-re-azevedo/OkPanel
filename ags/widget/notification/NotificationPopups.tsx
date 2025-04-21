@@ -3,8 +3,9 @@ import Notifd from "gi://AstalNotifd"
 import Notification from "./Notification"
 import {type Subscribable} from "astal/binding"
 import {bind, GLib, Variable} from "astal"
-import {config, NotificationsPosition} from "../utils/config/config";
+import {config} from "../utils/config/config";
 import Hyprland from "gi://AstalHyprland"
+import {NotificationsPosition} from "../utils/config/newConfig";
 
 // see comment below in constructor
 const TIMEOUT_DELAY = 7_000

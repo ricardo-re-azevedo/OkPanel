@@ -9,8 +9,9 @@ import NetworkControls from "./NetworkControls";
 import BluetoothControls from "./BluetoothControls";
 import LookAndFeelControls from "./LookAndFeelControls";
 import {Bar, selectedBar} from "../bar/Bar";
-import {BarWidget, config} from "../utils/config/config";
+import {config} from "../utils/config/config";
 import ScrimScrollWindow from "../common/ScrimScrollWindow";
+import {BarWidget} from "../utils/config/newConfig";
 
 export const SystemMenuWindowName = "systemMenuWindow"
 
