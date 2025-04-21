@@ -1,7 +1,8 @@
 import {App, Astal, Gtk} from "astal/gtk4"
 import {addWidgets} from "./BarWidgets";
-import {Bar, selectedBar} from "./Bar";
-import {config} from "../utils/config/config";
+import {config, selectedBar} from "../../config/config";
+
+import {Bar} from "../../config/bar";
 
 export default function () {
     return <window

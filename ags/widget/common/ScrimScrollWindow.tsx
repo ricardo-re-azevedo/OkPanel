@@ -1,8 +1,10 @@
 import {App, Astal, Gdk, Gtk} from "astal/gtk4";
 import {Binding} from "astal";
-import {config} from "../utils/config/config";
+import {config, selectedBar} from "../../config/config";
 import {hideAllWindows} from "../utils/windows";
-import {Bar, selectedBar} from "../bar/Bar";
+
+
+import {Bar} from "../../config/bar";
 
 type Params = {
     monitor: number;

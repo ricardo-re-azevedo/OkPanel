@@ -8,10 +8,10 @@ import NotificationHistory from "./NotificationHistory";
 import NetworkControls from "./NetworkControls";
 import BluetoothControls from "./BluetoothControls";
 import LookAndFeelControls from "./LookAndFeelControls";
-import {Bar, selectedBar} from "../bar/Bar";
-import {config} from "../utils/config/config";
+import {config, selectedBar} from "../../config/config";
 import ScrimScrollWindow from "../common/ScrimScrollWindow";
-import {BarWidget} from "../utils/config/configSchema";
+import {BarWidget} from "../../config/configSchema";
+import {Bar} from "../../config/bar";
 
 export const SystemMenuWindowName = "systemMenuWindow"
 

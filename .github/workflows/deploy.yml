@@ -6,7 +6,7 @@ on:
       - main
     paths:
       - 'scripts/generateConfigDocs.ts'
-      - 'ags/widget/utils/config/configSchema.ts'
+      - '../../ags/config/configSchema.ts'
       - '.github/workflows/deploy.yml'
       - 'docs/**'
       - 'mkdocs.yml'

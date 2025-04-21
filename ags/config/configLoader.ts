@@ -134,26 +134,36 @@ export function parseConf(text: string): Record<string, any> {
 }
 
 // ───────────────────────── validation ─────────────────────────
-export function validateAndApplyDefaults<T>(raw: Record<string, any>, schema: Field[]): T {
+export function validateAndApplyDefaults<T>(
+    raw: Record<string, any>,
+    schema: Field[],
+    path: string = ""
+): T {
     const out: any = {};
-    const recurse = (r: any, s: Field[]): any => validateAndApplyDefaults(r ?? {}, s);
+    const recurse = (r: any, s: Field[], path: string): any => validateAndApplyDefaults(r ?? {}, s, path);
 
     for (const f of schema) {
         const key = f.name;
         const rv = raw?.[key];
+        let keyPath
+        if (path === "") {
+            keyPath = key
+        } else {
+            keyPath = `${path}.${key}`
+        }
 
         // ── Missing key ─────────────────────────────────────────────
         if (rv === undefined) {
             if (f.type === 'object') {
                 // Even if not explicitly provided, build object from child defaults
-                out[key] = recurse({}, f.children ?? []);
+                out[key] = recurse({}, f.children ?? [], keyPath);
                 continue;
             }
             if (f.default !== undefined) {
                 out[key] = f.default;
                 continue;
             }
-            if (f.required) throw new Error(`Missing required: ${key}`);
+            if (f.required) throw new Error(`Missing required config value: ${keyPath}`);
             out[key] = undefined;
             continue;
         }
@@ -167,23 +177,23 @@ export function validateAndApplyDefaults<T>(raw: Record<string, any>, schema: Fi
                 break;
 
             case 'enum':
-                if (!f.enumValues!.includes(rv)) throw new Error(`Invalid value for ${key}: ${rv}`);
+                if (!f.enumValues!.includes(rv)) throw new Error(`Invalid config value for ${keyPath}: ${rv}`);
                 out[key] = rv;
                 break;
 
             case 'object':
-                out[key] = recurse(rv, f.children ?? []);
+                out[key] = recurse(rv, f.children ?? [], keyPath);
                 break;
 
             case 'array': {
-                if (!Array.isArray(rv)) throw new Error(`Expected array for ${key}`);
+                if (!Array.isArray(rv)) throw new Error(`Expected array for config value ${keyPath}`);
                 const item = f.item!;
                 out[key] = rv.map((v) => {
                     if (item.type === 'enum') {
-                        if (!item.enumValues!.includes(v)) throw new Error(`Invalid value in ${key}: ${v}`);
+                        if (!item.enumValues!.includes(v)) throw new Error(`Invalid config value in ${keyPath}: ${v}`);
                         return v;
                     }
-                    if (item.type === 'object') return recurse(v, item.children ?? []);
+                    if (item.type === 'object') return recurse(v, item.children ?? [], keyPath);
                     return castPrimitive(String(v), item.type as PrimitiveType);
                 });
                 break;

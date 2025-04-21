@@ -6,7 +6,7 @@ import {execAsync} from "astal/process"
 import {SystemMenuWindowName} from "./SystemMenuWindow";
 import Pango from "gi://Pango?version=1.0";
 import RevealerRow from "../common/RevealerRow";
-import {config} from "../utils/config/config";
+import {config} from "../../config/config";
 
 const wifiConnections = Variable<string[]>([])
 const inactiveWifiConnections = Variable<string[]>([])

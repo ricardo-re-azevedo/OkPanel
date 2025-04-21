@@ -9,12 +9,12 @@ import Screenshare, {ScreenshareWindowName, updateResponse, updateWindows} from 
 import VerticalBar from "./widget/bar/VerticalBar";
 import HorizontalBar from "./widget/bar/HorizontalBar";
 import {decreaseVolume, increaseVolume, muteVolume} from "./widget/utils/audio";
-import {restoreSavedState} from "./widget/utils/config/config";
-import {parseTheme} from "./widget/utils/config/themeParser";
+import {parseTheme} from "./config/themeParser";
 import Scrim from "./widget/common/Scrim";
 import {toggleWindow} from "./widget/utils/windows";
 import Hyprland from "gi://AstalHyprland"
-import {setThemeBasic} from "./widget/utils/config/themeScripts";
+import {restoreSavedState, setThemeBasic} from "./config/cachedStates";
+import {setHomeDir, setProjectDir} from "./config/config";
 
 const hyprland = Hyprland.get_default()
 
@@ -22,7 +22,9 @@ App.start({
     instanceName: "OkPanel",
     css: "/tmp/OkPanel/style.css",
     main(...args: Array<string>) {
-        restoreSavedState(args[0], args[1])
+        setProjectDir(args[0])
+        setHomeDir(args[1])
+        restoreSavedState()
 
         VerticalBar()
         HorizontalBar()

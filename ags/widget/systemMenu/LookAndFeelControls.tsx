@@ -4,12 +4,12 @@ import {bind, Variable} from "astal"
 import {SystemMenuWindowName} from "./SystemMenuWindow";
 import Pango from "gi://Pango?version=1.0";
 import {createScaledTexture} from "../utils/images";
-import {Bar, selectedBar, setBarType} from "../bar/Bar";
 import Divider from "../common/Divider";
-import {config, selectedTheme, Theme} from "../utils/config/config";
+import {config, selectedBar, selectedTheme, Theme} from "../../config/config";
 import LargeIconButton from "../common/LargeIconButton";
 import RevealerRow from "../common/RevealerRow";
-import {setTheme, setWallpaper} from "../utils/config/themeScripts";
+import {setBarType, setTheme, setWallpaper} from "../../config/cachedStates";
+import {Bar} from "../../config/bar";
 
 const files: Variable<string[][]> = Variable([])
 const numberOfColumns = 2

@@ -1,5 +1,5 @@
 import { writeFileSync } from "fs";
-import { CONFIG_SCHEMA, Field } from "../ags/widget/utils/config/configSchema";
+import { CONFIG_SCHEMA, Field } from "../ags/config/configSchema";
 
 const INTRO = `# Configure
 

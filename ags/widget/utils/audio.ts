@@ -1,6 +1,6 @@
 import Wp from "gi://AstalWp"
 import {execAsync} from "astal/process";
-import {projectDir} from "./config/config";
+import {projectDir} from "../../config/config";
 
 export function getVolumeIcon(speaker?: Wp.Endpoint) {
     let volume = speaker?.volume

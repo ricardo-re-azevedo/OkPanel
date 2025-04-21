@@ -1,6 +1,6 @@
 import {Gtk} from "astal/gtk4"
 import {execAsync} from "astal/process"
-import {config} from "../utils/config/config";
+import {config} from "../../config/config";
 import LargeIconButton from "../common/LargeIconButton";
 import {hideAllWindows} from "../utils/windows";
 

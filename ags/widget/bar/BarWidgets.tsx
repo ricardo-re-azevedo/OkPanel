@@ -12,12 +12,12 @@ import Bluetooth from "gi://AstalBluetooth"
 import {activeVpnConnections} from "../systemMenu/NetworkControls";
 import {isRecording, ScreenshotWindowName} from "../screenshot/Screenshot";
 import Divider from "../common/Divider";
-import {config} from "../utils/config/config";
+import {config} from "../../config/config";
 import Tray from "gi://AstalTray"
 import {toggleWindow} from "../utils/windows";
 import {AppLauncherWindowName} from "../appLauncher/AppLauncher";
 import {Gtk} from "astal/gtk4";
-import {BarWidget} from "../utils/config/configSchema";
+import {BarWidget} from "../../config/configSchema";
 
 const tray = Tray.get_default()
 
