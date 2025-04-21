@@ -38,7 +38,7 @@ jobs:
         run: npx tsc
 
       - name: Generate config documentation
-        run: node scripts/build/generateConfigDocs.js
+        run: node scripts/build/scripts/generateConfigDocs.js
 
       - name: Install dependencies
         run: |
