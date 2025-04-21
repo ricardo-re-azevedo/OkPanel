@@ -426,3 +426,5 @@ export type SystemCommands = Config["systemCommands"];
 // Whole themes array vs. a single theme
 export type Themes = Config["themes"];
 export type Theme  = Themes[number];
+
+export const themeSchema = (CONFIG_SCHEMA.find(f => f.name === "themes")!.item!)!;

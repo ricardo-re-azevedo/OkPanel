@@ -1,4 +1,4 @@
-import {Config, CONFIG_SCHEMA, Field, PrimitiveType} from "./newConfig";
+import {Config, CONFIG_SCHEMA, Field, PrimitiveType} from "./configSchema";
 import {readFile} from "astal/file";
 
 

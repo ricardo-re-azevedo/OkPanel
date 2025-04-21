@@ -3,7 +3,7 @@ import {GLib} from "astal";
 import {App} from "astal/gtk4";
 import Gio from "gi://Gio?version=2.0";
 import {config, homeDir, projectDir, selectedTheme} from "./config";
-import {Theme} from "./newConfig";
+import {Theme} from "./configSchema";
 
 export function setWallpaper(path: string) {
     const theme = selectedTheme.get()

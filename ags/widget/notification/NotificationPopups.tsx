@@ -5,7 +5,7 @@ import {type Subscribable} from "astal/binding"
 import {bind, GLib, Variable} from "astal"
 import {config} from "../utils/config/config";
 import Hyprland from "gi://AstalHyprland"
-import {NotificationsPosition} from "../utils/config/newConfig";
+import {NotificationsPosition} from "../utils/config/configSchema";
 
 // see comment below in constructor
 const TIMEOUT_DELAY = 7_000

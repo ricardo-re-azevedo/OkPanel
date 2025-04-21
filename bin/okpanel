@@ -64,8 +64,7 @@ run_theme_command() {
       -f|--foreground) fg="#$2"; shift ;;
       -p|--primary) primary="#$2"; shift ;;
       -bt|--button) btn="#$2"; shift ;;
-      -h) hover="#$2"; shift ;;
-      --hover) hover="#$2"; shift ;;
+      -h|--hover) hover="#$2"; shift ;;
       -s|--slider) slider="#$2"; shift ;;
       -w|--warning) warning="#$2"; shift ;;
       -bb|--barBorder) barBorder="#$2"; shift;;
@@ -97,7 +96,7 @@ run_theme_command() {
   echo "Alert Border: $alertBorder"
   echo "Window Border: $windowBorder"
 
-  astal -i "OkPanel" "theme -b $bg -f $fg -p $primary -bt $btn -h $hover -s $slider -w $warning" -bb "$barBorder" -ab "$alertBorder" -wb "$windowBorder"
+  astal -i "OkPanel" "theme -b $bg -f $fg -p $primary -bt $btn -h $hover -s $slider -w $warning -bb $barBorder -ab $alertBorder -wb $windowBorder"
 }
 
 run_run_command() {

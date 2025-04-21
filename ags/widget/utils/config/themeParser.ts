@@ -1,4 +1,12 @@
-import {Theme} from "./config";
+import { Theme, CONFIG_SCHEMA }         from "./configSchema";
+import { validateAndApplyDefaults }     from "./configLoader";  // <- already exported
+import type { Field }                   from "./configSchema";
+
+/* ------------------------------------------------------------------ */
+/* helper – grab the theme item schema once so we can reuse defaults  */
+/* ------------------------------------------------------------------ */
+const themeField = CONFIG_SCHEMA.find(f => f.name === "themes")!;
+const THEME_SCHEMA = (themeField.item as Field).children!;       // children of 'theme'
 
 /**
  * Parse and apply theme from external request
@@ -35,30 +43,19 @@ export function parseTheme(input: string): Theme {
         const [_, key, value] = match;
         const mappedKey = flagMap[key];
         if (mappedKey) {
+            // @ts-ignore
             colors[mappedKey] = value;
         }
     }
 
-    // Fill in default values or throw if any required color is missing
-    const defaultColor = "#000000";
-    const completeColors: Theme['colors'] = {
-        background: colors.background ?? defaultColor,
-        foreground: colors.foreground ?? defaultColor,
-        primary: colors.primary ?? defaultColor,
-        buttonPrimary: colors.buttonPrimary ?? defaultColor,
-        sliderTrough: colors.sliderTrough ?? defaultColor,
-        hover: colors.hover ?? defaultColor,
-        warning: colors.warning ?? defaultColor,
-        barBorder: colors.barBorder ?? defaultColor,
-        alertBorder: colors.alertBorder ?? defaultColor,
-        windowBorder: colors.windowBorder ?? defaultColor,
-    };
-
-    return {
-        name: "okpanel-shell",
-        icon: "",
-        pixelOffset: 0,
-        wallpaperDir: "",
-        colors: completeColors,
-    };
+    return validateAndApplyDefaults<Theme>(
+        {
+            name: "okpanel-shell",
+            icon: "",
+            pixelOffset: 0,
+            wallpaperDir: "",
+            colors: colors,
+        },
+        THEME_SCHEMA,
+    );
 }

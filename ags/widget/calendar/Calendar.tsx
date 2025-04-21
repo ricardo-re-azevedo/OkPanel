@@ -3,7 +3,7 @@ import {GLib, Variable} from "astal"
 import {Bar, selectedBar} from "../bar/Bar";
 import {config} from "../utils/config/config";
 import ScrimScrollWindow from "../common/ScrimScrollWindow";
-import {BarWidget} from "../utils/config/newConfig";
+import {BarWidget} from "../utils/config/configSchema";
 
 export const CalendarWindowName = "calendarWindow"
 

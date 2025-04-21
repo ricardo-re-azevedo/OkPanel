@@ -17,7 +17,7 @@ import Tray from "gi://AstalTray"
 import {toggleWindow} from "../utils/windows";
 import {AppLauncherWindowName} from "../appLauncher/AppLauncher";
 import {Gtk} from "astal/gtk4";
-import {BarWidget} from "../utils/config/newConfig";
+import {BarWidget} from "../utils/config/configSchema";
 
 const tray = Tray.get_default()
 
