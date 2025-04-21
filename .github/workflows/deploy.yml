@@ -31,13 +31,14 @@ jobs:
         with:
           node-version: '20'
 
+      - name: Install TypeScript
+        run: npm install -g typescript
+
       - name: Compile TypeScript
-        run: |
-          npx tsc scripts/generateConfigDocs.ts --outDir scripts/build
+        run: npx tsc scripts/generateConfigDocs.ts --outDir scripts/build
 
       - name: Generate config documentation
-        run: |
-          node scripts/build/generateConfigDocs.js
+        run: node scripts/build/generateConfigDocs.js
 
       - name: Install dependencies
         run: |
