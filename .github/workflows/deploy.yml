@@ -31,7 +31,6 @@ jobs:
 
       - name: Compile TypeScript
         run: |
-          npm install
           npx tsc scripts/generateConfigDocs.ts --outDir scripts/build
 
       - name: Generate config documentation
