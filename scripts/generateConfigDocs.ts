@@ -36,11 +36,11 @@ function collectRow(field: Field): Row {
     let baseType: string = field.type;
 
     if (isArray && item?.type === "enum") {
-        baseType = `array<enum (${item.enumValues!.map(v => `"${v}"`).join(" | ")})>`;
+        baseType = `array<enum (${item.enumValues!.map(v => `"${v}"`).join(" \| ")})>`;
     } else if (isArray && item) {
         baseType = `array<${item.type}>`;
     } else if (field.type === "enum" && enumVals) {
-        baseType = `enum (${enumVals.map(v => `"${v}"`).join(" | ")})`;
+        baseType = `enum (${enumVals.map(v => `"${v}"`).join(" \| ")})`;
     }
 
     return {
