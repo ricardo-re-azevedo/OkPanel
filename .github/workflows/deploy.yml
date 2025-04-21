@@ -24,6 +24,20 @@ jobs:
         with:
           python-version: '3.x'
 
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Compile TypeScript
+        run: |
+          npm install
+          npx tsc scripts/generateConfigDocs.ts --outDir scripts/build
+
+      - name: Generate config documentation
+        run: |
+          node scripts/build/generateConfigDocs.js
+
       - name: Install dependencies
         run: |
           pip install mkdocs-material
