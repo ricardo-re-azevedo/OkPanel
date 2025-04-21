@@ -32,10 +32,10 @@ jobs:
           node-version: '20'
 
       - name: Install TypeScript
-        run: npm install -g typescript @types/node
+        run: npm install
 
       - name: Compile TypeScript
-        run: tsc
+        run: npx tsc
 
       - name: Generate config documentation
         run: node scripts/build/generateConfigDocs.js
