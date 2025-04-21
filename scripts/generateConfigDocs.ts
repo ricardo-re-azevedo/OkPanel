@@ -7,53 +7,80 @@ function mdEscape(s: string): string {
     return s.replace(/\|/g, "\\|").replace(/`/g, "\\`");
 }
 
-function formatTable(fields: Field[], depth = 0): string {
-    const rows: string[] = [];
+type Row = {
+    name: string;
+    type: string;
+    default: string;
+    required: string;
+    description: string;
+};
 
-    if (depth > 0) {
-        rows.push(`\n### ${"▪️ ".repeat(depth)} Subfields\n`);
-    }
-
-    rows.push(`| Name | Type | Default | Required | Description |`);
-    rows.push(`|------|------|---------|----------|-------------|`);
+function flattenFields(fields: Field[], prefix = ""): Row[] {
+    const rows: Row[] = [];
 
     for (const field of fields) {
-        const name = `\`${field.name}\``;
-        const type = field.type;
-        const def =
-            field.default !== undefined
-                ? `\`${String(field.default)}\``
-                : "";
-        const required = field.required ? "✅" : "";
-        const desc = field.description ? mdEscape(field.description) : "";
+        const baseName = prefix + field.name;
+        const isArray = field.type === "array";
+        const fullName = isArray ? `${baseName}[]` : baseName;
 
-        rows.push(`| ${name} | ${type} | ${def} | ${required} | ${desc} |`);
+        let type: string = field.type;
+        let extraRows: Row[] = [];
 
-        if (field.type === "object" && field.children) {
-            rows.push(formatTable(field.children, depth + 1));
+        // If it's an array, infer array type
+        if (isArray && field.item) {
+            const itemType = field.item.type;
+            type = `array<${itemType}>`;
+
+            // If array item is an enum, explain options
+            if (itemType === "enum" && field.item.enumValues?.length) {
+                extraRows.push({
+                    name: `↳ Allowed values for \`${fullName}\``,
+                    type: "",
+                    default: "",
+                    required: "",
+                    description: field.item.enumValues.map((v) => `\`${v}\``).join(", "),
+                });
+            }
+
+            // If array item is an object, recurse into it
+            if (itemType === "object" && field.item.children) {
+                extraRows.push(...flattenFields(field.item.children, `${fullName}.`));
+            }
         }
 
-        if (field.type === "array" && field.item) {
-            rows.push(`\n> Array of:\n`);
-            rows.push(formatTable([field.item], depth + 1));
+        const row: Row = {
+            name: `\`${fullName}\``,
+            type,
+            default: field.default !== undefined ? `\`${String(field.default)}\`` : "",
+            required: field.required ? "✅" : "",
+            description: field.description ? mdEscape(field.description) : "",
+        };
+
+        rows.push(row);
+        rows.push(...extraRows);
+
+        // For object fields, recurse
+        if (field.type === "object" && field.children) {
+            rows.push(...flattenFields(field.children, `${baseName}.`));
         }
     }
 
-    return rows.join("\n");
+    return rows;
 }
+
 
 function generateDocs(schema: Field[]): string {
     const out: string[] = [];
+
     out.push("# 🛠 OkPanel Configuration Reference\n");
     out.push("_This file is auto-generated. Do not edit manually._\n");
 
-    for (const field of schema) {
-        out.push(`\n## 🔹 \`${field.name}\` (${field.type})`);
-        if (field.description) {
-            out.push(`\n${mdEscape(field.description)}\n`);
-        }
+    out.push("\n| Name | Type | Default | Required | Description |");
+    out.push("|------|------|---------|----------|-------------|");
 
-        out.push(formatTable([field]));
+    const rows = flattenFields(schema);
+    for (const r of rows) {
+        out.push(`| ${r.name} | ${r.type} | ${r.default} | ${r.required} | ${r.description} |`);
     }
 
     return out.join("\n");
