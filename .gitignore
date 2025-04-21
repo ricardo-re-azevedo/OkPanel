@@ -5,3 +5,4 @@ OkPanel
 scripts/build
 node_modules
 package-lock.json
+docs/config.md

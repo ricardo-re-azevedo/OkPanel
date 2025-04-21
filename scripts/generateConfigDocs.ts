@@ -15,60 +15,50 @@ type Row = {
     description: string;
 };
 
-function flattenFields(fields: Field[], prefix = ""): Row[] {
-    const rows: Row[] = [];
+function collectRow(field: Field): Row {
+    const isArray = field.type === "array";
+    const item = field.item;
+    const enumVals = field.enumValues?.length ? field.enumValues : item?.enumValues;
 
-    for (const field of fields) {
-        const baseName = prefix + field.name;
-        const isArray = field.type === "array";
-        const fullName = isArray ? `${baseName}[]` : baseName;
+    let baseType: string = field.type;
 
-        let type: string = field.type;
-        let extraRows: Row[] = [];
-
-        // If it's an array, infer array type
-        if (isArray && field.item) {
-            const itemType = field.item.type;
-            type = `${itemType}[]`;
-
-            // If array item is an enum, explain options
-            if (itemType === "enum" && field.item.enumValues?.length) {
-                type = type + " - allowed values: " + field.item.enumValues.map((v) => `\`${v}\``).join(", ")
-            }
-
-            // If array item is an object, recurse into it
-            if (itemType === "object" && field.item.children) {
-                extraRows.push(...flattenFields(field.item.children, `${fullName}.`));
-            }
-        }
-
-        const row: Row = {
-            name: `\`${fullName}\``,
-            type,
-            default: field.default !== undefined ? `\`${String(field.default)}\`` : "",
-            required: field.required ? "✔" : "x",
-            description: field.description ? mdEscape(field.description) : "",
-        };
-
-        rows.push(row);
-        rows.push(...extraRows);
-
-        // For object fields, recurse
-        if (field.type === "object" && field.children) {
-            rows.push(...flattenFields(field.children, `${baseName}.`));
-        }
+    if (isArray && item?.type === "enum") {
+        baseType = `array<enum (${item.enumValues!.map(v => `"${v}"`).join(" | ")})>`;
+    } else if (isArray && item) {
+        baseType = `array<${item.type}>`;
+    } else if (field.type === "enum" && enumVals) {
+        baseType = `enum (${enumVals.map(v => `"${v}"`).join(" | ")})`;
     }
 
-    return rows;
+    return {
+        name: `\`${field.name}\``,
+        type: baseType,
+        default:
+            field.default === undefined ||
+            field.default === "" ||
+            (Array.isArray(field.default) && field.default.length === 0)
+                ? ""
+                : `\`${String(field.default)}\``,
+        required: field.required ? "✔" : "x",
+        description: mdEscape(field.description ?? ""),
+    };
 }
 
+function collectChildren(field: Field): Row[] {
+    if (field.type === "object" && field.children) {
+        return field.children.map(collectRow);
+    }
 
-function generateDocs(schema: Field[]): string {
-    const rows = flattenFields(schema);
+    if (field.type === "array" && field.item?.type === "object" && field.item.children) {
+        return field.item.children.map(collectRow);
+    }
 
+    return [];
+}
+
+function formatTable(rows: Row[]): string[] {
     const header = ["Name", "Type", "Default", "Required", "Description"];
 
-    // Measure max width of each column
     const widths = header.map((_, i) =>
         Math.max(
             header[i].length,
@@ -85,26 +75,55 @@ function generateDocs(schema: Field[]): string {
     const formatRow = (cols: string[]) =>
         `| ${cols.map((col, i) => col.padEnd(widths[i])).join(" | ")} |`;
 
+    const lines: string[] = [];
+    lines.push(formatRow(header));
+    lines.push(`|${widths.map(w => "-".repeat(w + 2)).join("|")}|`);
+
+    for (const row of rows) {
+        lines.push(
+            formatRow([
+                row.name,
+                row.type,
+                row.default,
+                row.required,
+                row.description,
+            ])
+        );
+    }
+
+    return lines;
+}
+
+function generateDocs(schema: Field[]): string {
     const out: string[] = [];
 
     out.push("# 🛠 OkPanel Configuration Reference\n");
     out.push("_This file is auto-generated. Do not edit manually._\n");
 
-    // Header row
-    out.push("");
-    out.push(formatRow(header));
-    out.push(`|${widths.map(w => "-".repeat(w + 2)).join("|")}|`);
+    // Top-level table for all non-object fields
+    const topLevelRows: Row[] = [];
+    const nestedSections: string[] = [];
 
-    // Data rows
-    for (const row of rows) {
-        out.push(formatRow([
-            row.name,
-            row.type,
-            row.default,
-            row.required,
-            row.description,
-        ]));
+    for (const field of schema) {
+        const row = collectRow(field);
+        const children = collectChildren(field);
+
+        topLevelRows.push(row);
+
+        if (children.length > 0) {
+            nestedSections.push(`\n## \`${field.name}\` (${row.type})`);
+            if (field.description) {
+                nestedSections.push(`\n${field.description}`);
+            }
+            nestedSections.push(...formatTable(children));
+        }
     }
+
+    // Main table
+    out.push(...formatTable(topLevelRows));
+
+    // Append nested sections
+    out.push(...nestedSections);
 
     return out.join("\n");
 }
