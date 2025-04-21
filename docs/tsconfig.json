@@ -12,7 +12,8 @@
     "resolveJsonModule": true,
     "skipLibCheck": true
   },
-  "include": ["scripts/**/*",
-    "ags/config/configSchema.ts"
+  "include": [
+    "scripts/**/*",
+    "../ags/config/configSchema.ts"
   ]
 }

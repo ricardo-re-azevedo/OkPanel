@@ -5,8 +5,7 @@ on:
     branches:
       - main
     paths:
-      - 'scripts/generateConfigDocs.ts'
-      - '../../ags/config/configSchema.ts'
+      - 'ags/config/configSchema.ts'
       - '.github/workflows/deploy.yml'
       - 'docs/**'
       - 'mkdocs.yml'
@@ -33,12 +32,15 @@ jobs:
           node-version: '20'
 
       - name: Install TypeScript
+        working-directory: docs
         run: npm install
 
       - name: Compile TypeScript
+        working-directory: docs
         run: npx tsc
 
       - name: Generate config documentation
+        working-directory: docs
         run: node scripts/build/scripts/generateConfigDocs.js
 
       - name: Install dependencies
