@@ -1,6 +1,19 @@
 import { writeFileSync } from "fs";
 import { CONFIG_SCHEMA, Field } from "../ags/widget/utils/config/configSchema";
 
+const INTRO = `# Configure
+
+Create a config file and place it in the config directory like so
+
+\`\`\`
+~/.config/OkPanel/okpanel.conf
+\`\`\`
+
+## Config values
+
+---
+`;
+
 const OUT_PATH = "docs/config.md";
 
 function mdEscape(s: string): string {
@@ -97,8 +110,7 @@ function formatTable(rows: Row[]): string[] {
 function generateDocs(schema: Field[]): string {
     const out: string[] = [];
 
-    out.push("# 🛠 OkPanel Configuration Reference\n");
-    out.push("_This file is auto-generated. Do not edit manually._\n");
+    out.push(INTRO);
 
     // Top-level table for all non-object fields
     const topLevelRows: Row[] = [];
