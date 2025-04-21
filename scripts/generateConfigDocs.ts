@@ -31,7 +31,7 @@ function collectRow(field: Field): Row {
     }
 
     return {
-        name: `\`${field.name}\``,
+        name: `\`${field.name.replace(/\./g, "&#8203;.")}\``,
         type: baseType,
         default:
             field.default === undefined ||
