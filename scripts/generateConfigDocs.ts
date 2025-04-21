@@ -4,51 +4,56 @@ import { CONFIG_SCHEMA, Field } from "../ags/widget/utils/config/configSchema";
 const OUT_PATH = "docs/config.md";
 
 function mdEscape(s: string): string {
-    return s.replace(/[`]/g, "\\`");
+    return s.replace(/\|/g, "\\|").replace(/`/g, "\\`");
 }
 
-function formatField(field: Field, indent = 0): string {
-    const pad = "  ".repeat(indent);
-    const lines: string[] = [];
+function formatTable(fields: Field[], depth = 0): string {
+    const rows: string[] = [];
 
-    const header = `${pad}- \`${field.name}\` (${field.type})`;
-    lines.push(header);
-
-    if (field.description)
-        lines.push(`${pad}  — ${mdEscape(field.description)}`);
-
-    if (field.default !== undefined)
-        lines.push(`${pad}  - Default: \`${String(field.default)}\``);
-
-    if (field.required)
-        lines.push(`${pad}  - Required`);
-
-    if (field.type === "enum" && field.enumValues?.length) {
-        const enums = field.enumValues.map((v) => `\`${v}\``).join(", ");
-        lines.push(`${pad}  - Allowed: ${enums}`);
+    if (depth > 0) {
+        rows.push(`\n### ${"▪️ ".repeat(depth)} Subfields\n`);
     }
 
-    if (field.type === "object" && field.children) {
-        for (const child of field.children) {
-            lines.push(formatField(child, indent + 1));
+    rows.push(`| Name | Type | Default | Required | Description |`);
+    rows.push(`|------|------|---------|----------|-------------|`);
+
+    for (const field of fields) {
+        const name = `\`${field.name}\``;
+        const type = field.type;
+        const def =
+            field.default !== undefined
+                ? `\`${String(field.default)}\``
+                : "";
+        const required = field.required ? "✅" : "";
+        const desc = field.description ? mdEscape(field.description) : "";
+
+        rows.push(`| ${name} | ${type} | ${def} | ${required} | ${desc} |`);
+
+        if (field.type === "object" && field.children) {
+            rows.push(formatTable(field.children, depth + 1));
+        }
+
+        if (field.type === "array" && field.item) {
+            rows.push(`\n> Array of:\n`);
+            rows.push(formatTable([field.item], depth + 1));
         }
     }
 
-    if (field.type === "array" && field.item) {
-        lines.push(`${pad}  - Array items:\n${formatField(field.item, indent + 1)}`);
-    }
-
-    return lines.join("\n");
+    return rows.join("\n");
 }
 
 function generateDocs(schema: Field[]): string {
     const out: string[] = [];
-    out.push("# OkPanel Configuration Reference\n");
+    out.push("# 🛠 OkPanel Configuration Reference\n");
     out.push("_This file is auto-generated. Do not edit manually._\n");
 
     for (const field of schema) {
-        out.push(formatField(field));
-        out.push(""); // blank line between top-level fields
+        out.push(`\n## 🔹 \`${field.name}\` (${field.type})`);
+        if (field.description) {
+            out.push(`\n${mdEscape(field.description)}\n`);
+        }
+
+        out.push(formatTable([field]));
     }
 
     return out.join("\n");
