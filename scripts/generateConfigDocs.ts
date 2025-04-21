@@ -44,7 +44,7 @@ function collectRow(field: Field): Row {
     }
 
     return {
-        name: `\`${field.name}\``,
+        name: `<code class="nowrap">${field.name}</code>`,
         type: baseType,
         default:
             field.default === undefined ||
