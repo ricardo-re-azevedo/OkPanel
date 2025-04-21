@@ -44,14 +44,14 @@ function collectRow(field: Field): Row {
     }
 
     return {
-        name: `<code class="nowrap">${field.name}</code>`,
+        name: field.name,
         type: baseType,
         default:
             field.default === undefined ||
             field.default === "" ||
             (Array.isArray(field.default) && field.default.length === 0)
                 ? ""
-                : `\`${String(field.default)}\``,
+                : String(field.default),
         required: field.required ? "✔" : "x",
         description: mdEscape(field.description ?? ""),
     };

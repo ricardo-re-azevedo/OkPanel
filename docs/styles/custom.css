@@ -17,11 +17,7 @@
 
 /* Increase the width of the main content area */
 .md-grid {
-    max-width: 90rem; /* default is 61rem */
-}
-
-code.nowrap {
-    white-space: nowrap;
+    max-width: 80rem; /* default is 61rem */
 }
 
 .md-copyright {
