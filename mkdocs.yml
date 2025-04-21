@@ -29,6 +29,7 @@ nav:
   - Home: index.md
   - Installation: installation.md
   - Configuration: config.md
+  - Example: example.md
   - Usage: usage.md
   - Features: features.md
   - oldconf: oldConfig.md
