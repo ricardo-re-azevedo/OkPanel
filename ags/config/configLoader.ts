@@ -144,7 +144,8 @@ export function validateAndApplyDefaults<T>(
 
     for (const f of schema) {
         const key = f.name;
-        const rv = raw?.[key];
+        const rawValue = raw?.[key];
+        const value = f.transformation ? f.transformation(rawValue) : rawValue
         let keyPath
         if (path === "") {
             keyPath = key
@@ -153,7 +154,7 @@ export function validateAndApplyDefaults<T>(
         }
 
         // ── Missing key ─────────────────────────────────────────────
-        if (rv === undefined) {
+        if (value === undefined) {
             if (f.type === 'object') {
                 // Even if not explicitly provided, build object from child defaults
                 out[key] = recurse({}, f.children ?? [], keyPath);
@@ -173,22 +174,22 @@ export function validateAndApplyDefaults<T>(
             case 'string':
             case 'number':
             case 'boolean':
-                out[key] = castPrimitive(String(rv), f.type);
+                out[key] = castPrimitive(String(value), f.type);
                 break;
 
             case 'enum':
-                if (!f.enumValues!.includes(rv)) throw new Error(`Invalid config value for ${keyPath}: ${rv}`);
-                out[key] = rv;
+                if (!f.enumValues!.includes(value)) throw new Error(`Invalid config value for ${keyPath}: ${value}`);
+                out[key] = value;
                 break;
 
             case 'object':
-                out[key] = recurse(rv, f.children ?? [], keyPath);
+                out[key] = recurse(value, f.children ?? [], keyPath);
                 break;
 
             case 'array': {
-                if (!Array.isArray(rv)) throw new Error(`Expected array for config value ${keyPath}`);
+                if (!Array.isArray(value)) throw new Error(`Expected array for config value ${keyPath}`);
                 const item = f.item!;
-                out[key] = rv.map((v) => {
+                out[key] = value.map((v) => {
                     if (item.type === 'enum') {
                         if (!item.enumValues!.includes(v)) throw new Error(`Invalid config value in ${keyPath}: ${v}`);
                         return v;

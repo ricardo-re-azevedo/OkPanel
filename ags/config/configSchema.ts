@@ -1,26 +1,30 @@
 // ────────────────────────────────────────────────────────────────────────────
 // 1. Primitive schema definitions
 // ────────────────────────────────────────────────────────────────────────────
-export type PrimitiveType = 'string' | 'number' | 'boolean';
-export type FieldType = PrimitiveType | 'enum' | 'object' | 'array';
+export type PrimitiveType = 'string' | 'number' | 'boolean'
+export type FieldType = PrimitiveType | 'enum' | 'object' | 'array'
 
-export interface Field {
+export interface Field<T = any> {
     /** Dot‑notation path/name (object keys re‑use Field.name in children). */
-    name: string;
+    name: string
     /** Core kind of data stored. */
-    type: FieldType;
+    type: FieldType
     /** Human‑readable explanation – used to auto‑generate docs. */
-    description?: string;
+    description?: string
     /** If true, config must provide a value (defaults are still applied). */
-    required?: boolean;
+    required?: boolean
     /** Default applied when the value is missing. */
-    default?: any;
+    default?: T
     /** Allowed values when type === 'enum'. */
-    enumValues?: readonly any[];
+    enumValues?: readonly any[]
     /** Children when type === 'object'. */
-    children?: Field[];
+    children?: Field[]
     /** Item schema when type === 'array'. */
-    item?: Field;
+    item?: Field
+    /** Function to force constraints on the value.  Return true if the value is within the constraints */
+    withinConstraints?: () => boolean
+    /** Optional value transformation */
+    transformation?: (value: T) => T
 }
 
 // ────────────────────────────────────────────────────────────────────────────
@@ -43,14 +47,14 @@ export enum BarWidget {
     APP_LAUNCHER = "app_launcher",
     SCREENSHOT ="screenshot",
 }
-export const BAR_WIDGET_VALUES = Object.values(BarWidget) as readonly BarWidget[];
+export const BAR_WIDGET_VALUES = Object.values(BarWidget) as readonly BarWidget[]
 
 export enum NotificationsPosition {
     LEFT = "left",
     RIGHT = "right",
     CENTER = "center",
 }
-export const NOTIFICATION_POSITIONS = Object.values(NotificationsPosition) as readonly NotificationsPosition[];
+export const NOTIFICATION_POSITIONS = Object.values(NotificationsPosition) as readonly NotificationsPosition[]
 
 // Helper factory to reduce repetition for BarWidget string arrays
 const widgetsArrayField = <N extends string>( //preserve the literal key
@@ -68,7 +72,7 @@ const widgetsArrayField = <N extends string>( //preserve the literal key
             type: "enum",
             enumValues: BAR_WIDGET_VALUES,
         },
-    } as const satisfies Field & { name: N });
+    } as const satisfies Field & { name: N })
 
 // ────────────────────────────────────────────────────────────────────────────
 // 3. CONFIG_SCHEMA – the single source of truth
@@ -109,6 +113,13 @@ export const CONFIG_SCHEMA = [
         type: 'string',
         default: '#00000001',
         description: 'CSS/GTK‑style color used for translucent overlays (RGBA hex). If set to #00000000 scrim will be disabled.',
+        transformation: (value) => {
+            if (value === "#00000000" || value === "#000000") {
+                return "#00000001"
+            } else {
+                return value
+            }
+        }
     },
     {
         name: 'font',
@@ -387,7 +398,7 @@ export const CONFIG_SCHEMA = [
             ],
         },
     },
-] as const satisfies Field[];
+] as const satisfies Field[]
 
 // ───────────────────────────────────────────────
 //  Type‑generation helpers – compile‑time only
@@ -395,7 +406,7 @@ export const CONFIG_SCHEMA = [
 type PrimitiveByKind<K extends PrimitiveType> =
     K extends 'string'  ? string  :
         K extends 'number'  ? number  :
-            K extends 'boolean' ? boolean : never;
+            K extends 'boolean' ? boolean : never
 
 type FieldToProp<F extends Field> =
     F['type'] extends 'object'
@@ -404,27 +415,27 @@ type FieldToProp<F extends Field> =
             ? FieldToProp<NonNullable<F['item']>>[]
             : F['type'] extends 'enum'
                 ? (F['enumValues'] extends readonly (infer E)[] ? E : string)
-                : PrimitiveByKind<F['type' & PrimitiveType]>;
+                : PrimitiveByKind<F['type' & PrimitiveType]>
 
 type SchemaToType<S extends readonly Field[] | undefined> =
     S extends readonly Field[]
         ? { [K in S[number] as K['name']]: FieldToProp<K> }
-        : unknown;
+        : unknown
 
 // ───────────────────────────────────────────────
 //  Derived section‑level types for convenience
 // ───────────────────────────────────────────────
-export type Config = SchemaToType<typeof CONFIG_SCHEMA>;
+export type Config = SchemaToType<typeof CONFIG_SCHEMA>
 
-export type Windows        = Config["windows"];
-export type Notifications  = Config["notifications"];
-export type HorizontalBar  = Config["horizontalBar"];
-export type VerticalBar    = Config["verticalBar"];
-export type SystemMenu     = Config["systemMenu"];
-export type SystemCommands = Config["systemCommands"];
+export type Windows        = Config["windows"]
+export type Notifications  = Config["notifications"]
+export type HorizontalBar  = Config["horizontalBar"]
+export type VerticalBar    = Config["verticalBar"]
+export type SystemMenu     = Config["systemMenu"]
+export type SystemCommands = Config["systemCommands"]
 
 // Whole themes array vs. a single theme
-export type Themes = Config["themes"];
-export type Theme  = Themes[number];
+export type Themes = Config["themes"]
+export type Theme  = Themes[number]
 
-export const themeSchema = (CONFIG_SCHEMA.find(f => f.name === "themes")!.item!)!;
+export const themeSchema = (CONFIG_SCHEMA.find(f => f.name === "themes")!.item!)!
