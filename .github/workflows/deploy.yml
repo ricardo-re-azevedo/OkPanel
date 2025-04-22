@@ -41,7 +41,7 @@ jobs:
 
       - name: Generate config documentation
         working-directory: docs
-        run: node docs/scripts/build/scripts/generateConfigDocs.js
+        run: node build/docs/scripts/generateConfigDocs.js
 
       - name: Install dependencies
         run: |

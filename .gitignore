@@ -2,7 +2,7 @@
 src
 pkg
 OkPanel
-docs/scripts/build
+docs/build
 docs/node_modules
 docs/package-lock.json
 docs/config.md

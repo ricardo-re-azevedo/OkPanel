@@ -14,7 +14,7 @@ Create a config file and place it in the config directory like so
 ---
 `;
 
-const OUT_PATH = "docs/config.md";
+const OUT_PATH = "config.md";
 
 function mdEscape(s: string): string {
     return s.replace(/\|/g, "\\|").replace(/`/g, "\\`");
