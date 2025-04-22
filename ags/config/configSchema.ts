@@ -22,7 +22,9 @@ export interface Field<T = any> {
     /** Item schema when type === 'array'. */
     item?: Field
     /** Function to force constraints on the value.  Return true if the value is within the constraints */
-    withinConstraints?: () => boolean
+    withinConstraints?: (value: T) => boolean
+    /** Description of the constraint */
+    constraintDescription?: string
     /** Optional value transformation */
     transformation?: (value: T) => T
 }
@@ -219,6 +221,8 @@ export const CONFIG_SCHEMA = [
                 type: 'number',
                 default: 800,
                 description: 'Minimum bar width if not expanded.',
+                withinConstraints: (value) => value >= 500,
+                constraintDescription: 'Must be > 500',
             },
             {
                 name: 'widgetSpacing',
@@ -274,6 +278,8 @@ export const CONFIG_SCHEMA = [
                 type: 'number',
                 default: 600,
                 description: 'Minimum bar height if not expanded.',
+                withinConstraints: (value) => value >= 500,
+                constraintDescription: 'Must be > 500',
             },
             {
                 name: 'widgetSpacing',
@@ -370,6 +376,8 @@ export const CONFIG_SCHEMA = [
                     type: 'number',
                     default: 0,
                     description: 'Icon offset (‑10 … 10).',
+                    withinConstraints: (value) => value >= -10 && value <= 10,
+                    constraintDescription: 'Must be between -10 and 10'
                 },
                 {
                     name: 'wallpaperDir',

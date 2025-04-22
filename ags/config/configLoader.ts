@@ -157,6 +157,12 @@ export function validateAndApplyDefaults<T>(
             keyPath = `${path}.${key}`
         }
 
+        if (value !== undefined && f.withinConstraints !== undefined && !f.withinConstraints(value)) {
+            throw new Error(
+                `Invalid config value for ${keyPath}: ${value}; ${f.constraintDescription}`
+            )
+        }
+
         // ── Missing key ─────────────────────────────────────────────
         if (value === undefined) {
             if (f.type === 'object') {
