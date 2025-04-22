@@ -1,7 +1,7 @@
 // ────────────────────────────────────────────────────────────────────────────
 // 1. Primitive schema definitions
 // ────────────────────────────────────────────────────────────────────────────
-export type PrimitiveType = 'string' | 'number' | 'boolean'
+export type PrimitiveType = 'string' | 'number' | 'boolean' | 'color'
 export type FieldType = PrimitiveType | 'enum' | 'object' | 'array'
 
 export interface Field<T = any> {
@@ -110,7 +110,7 @@ export const CONFIG_SCHEMA = [
     },
     {
         name: 'scrimColor',
-        type: 'string',
+        type: 'color',
         default: '#00000001',
         description: 'CSS/GTK‑style color used for translucent overlays (RGBA hex). If set to #00000000 scrim will be disabled.',
         transformation: (value) => {
@@ -383,16 +383,16 @@ export const CONFIG_SCHEMA = [
                     required: true,
                     description: 'Palette used by widgets & windows.',
                     children: [
-                        { name: 'background', type: 'string', required: true },
-                        { name: 'foreground', type: 'string', required: true },
-                        { name: 'primary', type: 'string', required: true },
-                        { name: 'buttonPrimary', type: 'string', required: true },
-                        { name: 'sliderTrough', type: 'string', required: true },
-                        { name: 'hover', type: 'string', required: true },
-                        { name: 'warning', type: 'string', required: true },
-                        { name: 'barBorder', type: 'string', required: true },
-                        { name: 'windowBorder', type: 'string', required: true },
-                        { name: 'alertBorder', type: 'string', required: true },
+                        { name: 'background', type: 'color', required: true },
+                        { name: 'foreground', type: 'color', required: true },
+                        { name: 'primary', type: 'color', required: true },
+                        { name: 'buttonPrimary', type: 'color', required: true },
+                        { name: 'sliderTrough', type: 'color', required: true },
+                        { name: 'hover', type: 'color', required: true },
+                        { name: 'warning', type: 'color', required: true },
+                        { name: 'barBorder', type: 'color', required: true },
+                        { name: 'windowBorder', type: 'color', required: true },
+                        { name: 'alertBorder', type: 'color', required: true },
                     ],
                 },
             ],
@@ -405,8 +405,10 @@ export const CONFIG_SCHEMA = [
 // ───────────────────────────────────────────────
 type PrimitiveByKind<K extends PrimitiveType> =
     K extends 'string'  ? string  :
-        K extends 'number'  ? number  :
-            K extends 'boolean' ? boolean : never
+    K extends 'number'  ? number  :
+    K extends 'boolean' ? boolean :
+    K extends 'color'   ? string  :
+    never
 
 type FieldToProp<F extends Field> =
     F['type'] extends 'object'

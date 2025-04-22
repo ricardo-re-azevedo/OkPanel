@@ -32,6 +32,10 @@ function parseInlineValue(raw: string): any {
     return t;
 }
 
+function isHexColor(value: string): boolean {
+    return /^#([0-9a-fA-F]{6}|[0-9a-fA-F]{8})$/.test(value);
+}
+
 // ───────────────────────── parser ─────────────────────────
 export function parseConf(text: string): Record<string, any> {
     const root: any = {};
@@ -174,6 +178,11 @@ export function validateAndApplyDefaults<T>(
             case 'string':
             case 'number':
             case 'boolean':
+                out[key] = castPrimitive(String(value), f.type);
+                break;
+
+            case 'color':
+                if (!isHexColor(value)) throw new Error(`Invalid config value for ${keyPath}: ${value}`)
                 out[key] = castPrimitive(String(value), f.type);
                 break;
 
