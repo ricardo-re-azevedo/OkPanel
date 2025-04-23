@@ -3,6 +3,7 @@ import Pango from "gi://Pango?version=1.0";
 import {LoopStatus, Mpris, PlaybackStatus, Player, ShuffleStatus} from "../utils/mpris"
 
 const mpris = new Mpris()
+const STREAMING_TRACK_LENGTH = 9999999999
 
 function lengthStr(length: number) {
     const min = Math.floor(length / 60)
@@ -53,6 +54,9 @@ function MediaPlayer({ player }: { player: Player }) {
                 hexpand={true}
                 visible={player.trackLength(l => l > 0)}
                 onChangeValue={({value}) => {
+                    if (player.trackLength.get() > STREAMING_TRACK_LENGTH) {
+                        return
+                    }
                     player.setPosition(value * player.trackLength.get())
                 }}
                 value={player.position((position) => {
@@ -63,7 +67,15 @@ function MediaPlayer({ player }: { player: Player }) {
                 cssClasses={["labelSmall"]}
                 halign={END}
                 visible={player.trackLength(l => l > 0)}
-                label={player.trackLength(l => l > 0 ? lengthStr(l) : "0:00")}
+                label={player.trackLength((l) => {
+                    if (l > STREAMING_TRACK_LENGTH) {
+                        return " "
+                    } else if (l > 0) {
+                        return lengthStr(l)
+                    } else {
+                        return "0:00"
+                    }
+                })}
             />
         </box>
         <box
