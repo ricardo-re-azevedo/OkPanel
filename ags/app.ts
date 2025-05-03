@@ -3,10 +3,8 @@ import Calendar from "./widget/calendar/Calendar"
 import SystemMenuWindow from "./widget/systemMenu/SystemMenuWindow";
 import {BrightnessAlert, ChargingAlertSound, VolumeAlert} from "./widget/alerts/Alerts";
 import NotificationPopups from "./widget/notification/NotificationPopups";
-import AppLauncher, {AppLauncherWindowName} from "./widget/appLauncher/AppLauncher";
 import Screenshot, {ScreenshotWindowName} from "./widget/screenshot/Screenshot";
 import Screenshare, {ScreenshareWindowName, updateResponse, updateWindows} from "./widget/screenshare/Screenshare";
-import VerticalBar from "./widget/bar/VerticalBar";
 import HorizontalBar from "./widget/bar/HorizontalBar";
 import {decreaseVolume, increaseVolume, muteVolume} from "./widget/utils/audio";
 import {parseTheme} from "./config/themeParser";
@@ -25,13 +23,10 @@ App.start({
         setProjectDir(args[0])
         setHomeDir(args[1])
         restoreSavedState()
-
-        VerticalBar()
         HorizontalBar()
         Calendar()
         SystemMenuWindow()
         ChargingAlertSound()
-        AppLauncher()
         Screenshot()
         Screenshare()
 
@@ -54,9 +49,6 @@ App.start({
             const theme = parseTheme(request)
             setThemeBasic(theme)
             res("ags theme applied")
-        } else if (request === "appLauncher") {
-            toggleWindow(AppLauncherWindowName)
-            res("app launcher toggled")
         } else if (request === "screenshot") {
             toggleWindow(ScreenshotWindowName)
             res("screenshot toggled")

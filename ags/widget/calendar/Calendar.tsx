@@ -18,10 +18,6 @@ export default function () {
             switch (bar) {
                 case Bar.BOTTOM:
                     return true
-                case Bar.LEFT:
-                case Bar.RIGHT:
-                    return config.verticalBar.centerWidgets.includes(BarWidget.CLOCK)
-                        || config.verticalBar.bottomWidgets.includes(BarWidget.CLOCK)
                 default: return false
             }
         })}
@@ -29,17 +25,11 @@ export default function () {
             switch (bar) {
                 case Bar.TOP:
                     return true
-                case Bar.LEFT:
-                case Bar.RIGHT:
-                    return config.verticalBar.centerWidgets.includes(BarWidget.CLOCK)
-                        || config.verticalBar.topWidgets.includes(BarWidget.CLOCK)
                 default: return false
             }
         })}
         leftExpand={selectedBar((bar) => {
             switch (bar) {
-                case Bar.RIGHT:
-                    return true
                 case Bar.TOP:
                 case Bar.BOTTOM:
                     return config.horizontalBar.centerWidgets.includes(BarWidget.CLOCK)
@@ -49,8 +39,6 @@ export default function () {
         })}
         rightExpand={selectedBar((bar) => {
             switch (bar) {
-                case Bar.LEFT:
-                    return true
                 case Bar.TOP:
                 case Bar.BOTTOM:
                     return config.horizontalBar.centerWidgets.includes(BarWidget.CLOCK)
@@ -68,12 +56,7 @@ export default function () {
                 <label
                     cssClasses={["labelMedium"]}
                     label={time().as((t) => {
-                        return t.format("%A")!
-                    })}/>
-                <label
-                    cssClasses={["labelMedium"]}
-                    label={time().as((t) => {
-                        return t.format("%B %-d, %Y")!
+                        return t.format("%A %B %-d, %Y")!
                     })}/>
                 <Gtk.Calendar
                     marginTop={12}

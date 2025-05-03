@@ -6,13 +6,10 @@ import {execAsync} from "astal/process"
 import {SystemMenuWindowName} from "./SystemMenuWindow";
 import Pango from "gi://Pango?version=1.0";
 import RevealerRow from "../common/RevealerRow";
-import {config} from "../../config/config";
 
 const wifiConnections = Variable<string[]>([])
 const inactiveWifiConnections = Variable<string[]>([])
 const activeWifiConnections = Variable<string[]>([])
-const vpnConnections = Variable<string[]>([])
-export const activeVpnConnections = Variable<string[]>([])
 
 function ssidInRange(ssid: string) {
     const network = AstalNetwork.get_default()
@@ -50,20 +47,6 @@ function updateConnections() {
                 });
 
             activeWifiConnections.set(wifiNames)
-
-            const vpnNames = value
-                .split("\n")
-                .filter((line) => line.includes("vpn") || line.includes("wireguard"))
-                .map((line) => line.split(":")[0].trim())
-                .sort((a, b) => {
-                    if (a > b) {
-                        return 1
-                    } else {
-                        return -1
-                    }
-                });
-
-            activeVpnConnections.set(vpnNames)
         })
         .finally(() => {
             // update inactive connections
@@ -97,21 +80,6 @@ function updateConnections() {
                         wifiNames
                             .filter((line) => !activeWifiConnections.get().includes(line))
                     )
-
-                    const vpnNames = value
-                        .split("\n")
-                        .filter((line) => line.includes("vpn") || line.includes("wireguard"))
-                        .map((line) => line.split(":")[0].trim())
-                        .filter((line) => !activeVpnConnections.get().includes(line))
-                        .sort((a, b) => {
-                            if (a > b) {
-                                return 1
-                            } else {
-                                return -1
-                            }
-                        });
-
-                    vpnConnections.set(vpnNames)
                 })
         })
 }
@@ -159,23 +127,6 @@ function addWireguardConnection()
     });
 
     dialog.show();
-}
-
-function connectVpn(name: string) {
-    // first disconnect any existing vpn connections
-    activeVpnConnections.get().forEach((vpnName) => {
-        execAsync(["bash", "-c", `nmcli connection down "${vpnName}"`])
-            .finally(() => {
-                updateConnections()
-            })
-    })
-
-    execAsync(["bash", "-c", `nmcli connection up "${name}"`])
-        .catch((error) => {
-            print(error)
-        }).finally(() => {
-            updateConnections()
-        })
 }
 
 function PasswordEntry(
@@ -420,164 +371,6 @@ function WifiScannedConnections() {
     </box>
 }
 
-function VpnActiveConnections() {
-    return <box
-        visible={activeVpnConnections((connections) => {
-            return connections.length !== 0
-        })}
-        vertical={true}>
-        {activeVpnConnections().as((connections) => {
-            if (connections.length === 0) {
-                return <box/>
-            }
-            return <box
-                vertical={true}>
-                <label
-                    halign={Gtk.Align.START}
-                    cssClasses={["labelLargeBold"]}
-                    label="Active VPN"/>
-                {connections.map((connection) => {
-                    const buttonsRevealed = Variable(false)
-
-                    setTimeout(() => {
-                        bind(App.get_window(SystemMenuWindowName)!, "visible").subscribe((visible) => {
-                            if (!visible) {
-                                buttonsRevealed.set(false)
-                            }
-                        })
-                    }, 1_000)
-
-                    return <box
-                        vertical={true}>
-                        <button
-                            hexpand={true}
-                            cssClasses={["transparentButton"]}
-                            onClicked={() => {
-                                buttonsRevealed.set(!buttonsRevealed.get())
-                            }}>
-                            <label
-                                halign={Gtk.Align.START}
-                                cssClasses={["labelSmall"]}
-                                label={`󰯄  ${connection}`}/>
-                        </button>
-                        <revealer
-                            revealChild={buttonsRevealed()}
-                            transitionDuration={200}
-                            transitionType={Gtk.RevealerTransitionType.SLIDE_DOWN}>
-                            <box
-                                marginTop={4}
-                                marginBottom={4}
-                                vertical={true}
-                                spacing={4}>
-                                <button
-                                    hexpand={true}
-                                    cssClasses={["primaryButton"]}
-                                    label="Disconnect"
-                                    onClicked={() => {
-                                        execAsync(`nmcli c down ${connection}`)
-                                            .catch((error) => {
-                                                print(error)
-                                            })
-                                            .finally(() => {
-                                                updateConnections()
-                                            })
-                                    }}/>
-                                <button
-                                    hexpand={true}
-                                    cssClasses={["primaryButton"]}
-                                    label="Forget"
-                                    onClicked={() => {
-                                        deleteConnection(connection)
-                                    }}/>
-                            </box>
-                        </revealer>
-                    </box>
-                })}
-            </box>
-        })}
-    </box>
-}
-
-function VpnConnections() {
-    return <box
-        vertical={true}
-        spacing={4}>
-        <label
-            halign={Gtk.Align.START}
-            cssClasses={["labelLargeBold"]}
-            label="VPN Connections"/>
-        {vpnConnections((connectionsValue) => {
-            return connectionsValue.map((connection) => {
-                const buttonsRevealed = Variable(false)
-                const isConnecting = Variable(false)
-
-                setTimeout(() => {
-                    bind(App.get_window(SystemMenuWindowName)!, "visible").subscribe((visible) => {
-                        if (!visible) {
-                            buttonsRevealed.set(false)
-                        }
-                    })
-                }, 1_000)
-
-                return <box
-                    vertical={true}>
-                    <button
-                        hexpand={true}
-                        cssClasses={["transparentButton"]}
-                        onClicked={() => {
-                            buttonsRevealed.set(!buttonsRevealed.get())
-                        }}>
-                        <label
-                            halign={Gtk.Align.START}
-                            cssClasses={["labelSmall"]}
-                            label={`󰯄  ${connection}`}/>
-                    </button>
-                    <revealer
-                        revealChild={buttonsRevealed()}
-                        transitionDuration={200}
-                        transitionType={Gtk.RevealerTransitionType.SLIDE_DOWN}>
-                        <box
-                            marginTop={4}
-                            marginBottom={4}
-                            vertical={true}
-                            spacing={4}>
-                            <button
-                                hexpand={true}
-                                cssClasses={["primaryButton"]}
-                                label={isConnecting().as((connecting) => {
-                                    if (connecting) {
-                                        return "Connecting"
-                                    } else {
-                                        return "Connect"
-                                    }
-                                })}
-                                onClicked={() => {
-                                    if (!isConnecting.get()) {
-                                        isConnecting.set(true)
-                                        connectVpn(connection)
-                                    }
-                                }}/>
-                            <button
-                                hexpand={true}
-                                cssClasses={["primaryButton"]}
-                                label="Forget"
-                                onClicked={() => {
-                                    deleteConnection(connection)
-                                }}/>
-                        </box>
-                    </revealer>
-                </box>
-            })
-        })}
-        <button
-            cssClasses={["primaryButton"]}
-            label="Add Wireguard VPN"
-            onClicked={() => {
-                addWireguardConnection()
-            }}/>
-    </box>
-}
-
 export default function () {
     const network = AstalNetwork.get_default()
 
@@ -593,7 +386,6 @@ export default function () {
 
     const networkName = Variable.derive([
         bind(network.client, "primaryConnection"),
-        activeVpnConnections
     ])
 
     return <RevealerRow
@@ -608,7 +400,6 @@ export default function () {
                 ellipsize={Pango.EllipsizeMode.END}
                 label={networkName().as((value) => {
                     const primaryConnection = value[0]
-                    const activeVpnConnectionsValue = value[1]
                     let name: string
                     if (primaryConnection === null) {
                         name = "Not Connected"
@@ -617,11 +408,7 @@ export default function () {
                     } else {
                         name = primaryConnection.id
                     }
-                    if (activeVpnConnectionsValue.length === 0) {
-                        return name
-                    } else {
-                        return `${name} (+VPN)`
-                    }
+                    return name
                 })}/>
         }
         revealedContent={
@@ -639,8 +426,6 @@ export default function () {
                             disconnect(activeAccessPoint.ssid)
                         }}/>
                 })}
-                {config.systemMenu.enableVpnControls && <VpnActiveConnections/>}
-                {config.systemMenu.enableVpnControls && <VpnConnections/>}
                 {network.wifi && <WifiConnections connections={inactiveWifiConnections}/>}
                 {network.wifi && <WifiScannedConnections/>}
             </box>

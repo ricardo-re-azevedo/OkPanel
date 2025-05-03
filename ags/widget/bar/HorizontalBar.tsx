@@ -13,7 +13,6 @@ export default function () {
         cssClasses={["transparentBackground"]}
         monitor={config.mainMonitor}
         exclusivity={Astal.Exclusivity.EXCLUSIVE}
-        margin={config.windows.gaps}
         anchor={selectedBar((bar) => {
             if (bar === Bar.TOP) {
                 if (!config.horizontalBar.expanded) {

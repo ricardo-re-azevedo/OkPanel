@@ -5,17 +5,15 @@ import Wp from "gi://AstalWp"
 import Battery from "gi://AstalBattery"
 import {getMicrophoneIcon, getVolumeIcon, playBatteryWarning} from "../utils/audio"
 import {getNetworkIconBinding} from "../utils/network"
-import {getBatteryIcon} from "../utils/battery"
+import {getBatteryIcon, getBatteryTooltip} from "../utils/battery"
 import {execAsync} from "astal/process"
 import {SystemMenuWindowName} from "../systemMenu/SystemMenuWindow";
 import Bluetooth from "gi://AstalBluetooth"
-import {activeVpnConnections} from "../systemMenu/NetworkControls";
 import {isRecording, ScreenshotWindowName} from "../screenshot/Screenshot";
 import Divider from "../common/Divider";
 import {config} from "../../config/config";
 import Tray from "gi://AstalTray"
 import {toggleWindow} from "../utils/windows";
-import {AppLauncherWindowName} from "../appLauncher/AppLauncher";
 import {Gtk} from "astal/gtk4";
 import {BarWidget} from "../../config/configSchema";
 
@@ -78,9 +76,9 @@ function Clock({singleLine}: { singleLine: boolean }) {
     let format: string
 
     if (singleLine) {
-        format = "%I:%M"
+        format = "%B %-d, %I:%M"
     } else {
-        format = "%I\n%M"
+        format = "%I%M\n%B %-d"
     }
 
     const time = Variable<string>("").poll(1000, () =>
@@ -94,15 +92,6 @@ function Clock({singleLine}: { singleLine: boolean }) {
         }}>
 
     </button>
-}
-
-function VpnIndicator() {
-    return <label
-        cssClasses={["iconLabel"]}
-        label="󰯄"
-        visible={activeVpnConnections().as((connections) => {
-            return connections.length !== 0
-        })}/>
 }
 
 function ScreenRecordingStopButton() {
@@ -169,6 +158,8 @@ function BatteryIndicator() {
 
     const batteryVar = Variable.derive([
         bind(battery, "percentage"),
+        bind(battery, "timeToFull"),
+        bind(battery, "timeToEmpty"),
         bind(battery, "state")
     ])
 
@@ -191,6 +182,7 @@ function BatteryIndicator() {
             }
         })}
         label={batteryVar(() => getBatteryIcon(battery))}
+        tooltipText={batteryVar(() => getBatteryTooltip(battery))}
         visible={bind(battery, "isBattery")}/>
 }
 
@@ -244,15 +236,6 @@ function TrayContent({vertical}: { vertical: boolean }) {
     </box>
 }
 
-function AppLauncherButton() {
-    return <button
-        cssClasses={["iconButton"]}
-        label="󰀻"
-        onClicked={() => {
-            toggleWindow(AppLauncherWindowName)
-        }}/>
-}
-
 function ScreenshotButton() {
     return <button
         cssClasses={["iconButton"]}
@@ -283,14 +266,10 @@ export function addWidgets(widgets: BarWidget[], isVertical: boolean) {
                 return <NetworkIndicator/>
             case BarWidget.RECORDING_INDICATOR:
                 return <ScreenRecordingStopButton/>
-            case BarWidget.VPN_INDICATOR:
-                return <VpnIndicator/>
             case BarWidget.TRAY:
                 return <TrayButton/>
             case BarWidget.INTEGRATED_TRAY:
                 return <IntegratedTray vertical={isVertical}/>
-            case BarWidget.APP_LAUNCHER:
-                return <AppLauncherButton/>
             case BarWidget.SCREENSHOT:
                 return <ScreenshotButton/>
         }

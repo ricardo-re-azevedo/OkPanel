@@ -7,7 +7,6 @@ Usage: $(basename "$0") <command> [options]
 Commands:
   run           Run the main application.
   quit          Exit or stop the application.
-  launcher      Launch a specific component.
   screenshot    Take a screenshot.
   theme         Apply a theme with color options.
   volume-up     Increase system volume.
@@ -120,7 +119,6 @@ main() {
   case $1 in
     run)          run_run_command;;
     quit)         ags quit -i "OkPanel";;
-    launcher)     astal -i "OkPanel" "appLauncher";;
     screenshot)   astal -i "OkPanel" "screenshot";;
     volume-up)    astal -i "OkPanel" "volume-up";;
     volume-down)  astal -i "OkPanel" "volume-down";;

@@ -30,7 +30,7 @@ export const selectedTheme = Variable<Theme>(
     }, themeSchema.children!)
 )
 
-export const selectedBar = Variable(Bar.LEFT)
+export const selectedBar = Variable(Bar.TOP)
 
 export let projectDir = ""
 export let homeDir = ""

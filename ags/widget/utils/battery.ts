@@ -1,4 +1,10 @@
-import Battery from "gi://AstalBattery"
+import Battery from "gi://AstalBattery";
+
+const formatTime = (seconds: number): Record<string, number> => {
+    const hours = Math.floor(seconds / 3600);
+    const minutes = Math.floor((seconds % 3600) / 60);
+    return { hours, minutes };
+};
 
 export function getBatteryIcon(battery: Battery.Device) {
     const percent = battery.percentage
@@ -46,5 +52,17 @@ export function getBatteryIcon(battery: Battery.Device) {
         } else {
             return "󰁹"
         }
+    }
+}
+export function getBatteryTooltip(battery: Battery.Device) {
+
+    if (battery.state === Battery.State.FULLY_CHARGED) {
+        return 'Full';
+    } else if (battery.state === Battery.State.CHARGING) {
+        const { hours, minutes } = formatTime(battery.timeToFull);
+        return `Time to full: ${hours} h ${minutes} min`;
+    } else {
+        const { hours, minutes } = formatTime(battery.timeToEmpty);
+        return `Time to empty: ${hours} h ${minutes} min`;
     }
 }

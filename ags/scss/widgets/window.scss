@@ -2,9 +2,9 @@
 
 .barWindow {
     background-color: vars.$bg;
-    border-radius: vars.$windowBorderRadius;
+    border-radius: 0px;
     border-color: vars.$barBorder;
-    border-width: vars.$windowBorderWidth;
+    border-width: vars.$windowBorderWidth 0px;
     border-style: solid;
 }
 
@@ -24,12 +24,8 @@
     border-style: solid;
 }
 
-.sideBar {
-    padding: 2px;
-    min-width: 40px;
+.topBar {
+    border-width: 0px 0px vars.$windowBorderWidth 0px;
+    padding: 1px;
 }
 
-.topBar {
-    padding: 2px;
-    min-height: 40px;
-}

@@ -5,7 +5,8 @@ import {SystemMenuWindowName} from "./SystemMenuWindow";
 import Pango from "gi://Pango?version=1.0";
 import {createScaledTexture} from "../utils/images";
 import Divider from "../common/Divider";
-import {config, selectedBar, selectedTheme, Theme} from "../../config/config";
+import {config, selectedBar, selectedTheme} from "../../config/config";
+import {Theme} from "../../config/configSchema";
 import LargeIconButton from "../common/LargeIconButton";
 import RevealerRow from "../common/RevealerRow";
 import {setBarType, setTheme, setWallpaper} from "../../config/cachedStates";
@@ -115,18 +116,6 @@ function BarButton(
             marginEnd={20}
             label={icon}/>
     </button>
-}
-
-function BarPositionOptions() {
-    return <box
-        vertical={false}
-        halign={Gtk.Align.CENTER}
-        spacing={12}>
-        <BarButton barType={Bar.LEFT} icon={"󱂪"}/>
-        <BarButton barType={Bar.TOP} icon={"󱔓"}/>
-        <BarButton barType={Bar.RIGHT} icon={"󱂫"}/>
-        <BarButton barType={Bar.BOTTOM} icon={"󱂩"}/>
-    </box>
 }
 
 function ThemeButton(
@@ -240,7 +229,6 @@ export default function () {
                         marginTop={10}
                         marginBottom={10}/>
                 </box>}
-                <BarPositionOptions/>
                 <box
                     vertical={false}>
                     {Array.from({length: numberOfColumns}).map((_, index) => {

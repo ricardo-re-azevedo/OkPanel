@@ -32,20 +32,6 @@ const defaultAnchor = selectedBar((bar) => {
             }
             return Astal.WindowAnchor.TOP
                 | Astal.WindowAnchor.BOTTOM
-        case Bar.LEFT:
-            if (!config.verticalBar.expanded) {
-                return Astal.WindowAnchor.LEFT
-            }
-            return Astal.WindowAnchor.TOP
-                | Astal.WindowAnchor.LEFT
-                | Astal.WindowAnchor.BOTTOM
-        case Bar.RIGHT:
-            if (!config.verticalBar.expanded) {
-                return Astal.WindowAnchor.RIGHT
-            }
-            return Astal.WindowAnchor.TOP
-                | Astal.WindowAnchor.RIGHT
-                | Astal.WindowAnchor.BOTTOM
     }
 })
 

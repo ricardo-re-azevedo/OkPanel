@@ -25,10 +25,6 @@ export default function () {
             switch (bar) {
                 case Bar.BOTTOM:
                     return true
-                case Bar.LEFT:
-                case Bar.RIGHT:
-                    return config.verticalBar.centerWidgets.includes(BarWidget.MENU)
-                        || config.verticalBar.bottomWidgets.includes(BarWidget.MENU)
                 default: return false
             }
         })}
@@ -36,17 +32,11 @@ export default function () {
             switch (bar) {
                 case Bar.TOP:
                     return true
-                case Bar.LEFT:
-                case Bar.RIGHT:
-                    return config.verticalBar.centerWidgets.includes(BarWidget.MENU)
-                        || config.verticalBar.topWidgets.includes(BarWidget.MENU)
                 default: return false
             }
         })}
         leftExpand={selectedBar((bar) => {
             switch (bar) {
-                case Bar.RIGHT:
-                    return true
                 case Bar.TOP:
                 case Bar.BOTTOM:
                     return config.horizontalBar.centerWidgets.includes(BarWidget.MENU)
@@ -56,8 +46,6 @@ export default function () {
         })}
         rightExpand={selectedBar((bar) => {
             switch (bar) {
-                case Bar.LEFT:
-                    return true
                 case Bar.TOP:
                 case Bar.BOTTOM:
                     return config.horizontalBar.centerWidgets.includes(BarWidget.MENU)
@@ -67,7 +55,7 @@ export default function () {
         })}
         contentWidth={400}
         width={config.horizontalBar.minimumWidth}
-        height={config.verticalBar.minimumHeight}
+        height={600}
         content={
             <box
                 marginTop={20}

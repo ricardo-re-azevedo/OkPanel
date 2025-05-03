@@ -72,7 +72,7 @@ export function AlertWindow(
             halign={Gtk.Align.CENTER}>
             <label
                 marginStart={20}
-                marginEnd={15}
+                marginEnd={2}
                 cssClasses={["alertIcon"]}
                 label={iconLabel}/>
             <box

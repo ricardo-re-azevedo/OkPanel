@@ -182,8 +182,8 @@ export const CONFIG_SCHEMA = [
         type: 'object',
         description: 'Configuration for a horizontal (top/bottom) bar layout.',
         children: [
-            widgetsArrayField('leftWidgets', 'Widgets anchored left.', [BarWidget.MENU, BarWidget.WORKSPACES]),
-            widgetsArrayField('centerWidgets', 'Widgets centered.', [BarWidget.CLOCK]),
+            widgetsArrayField('leftWidgets', 'Widgets anchored left.', [BarWidget.MENU]),
+            widgetsArrayField('centerWidgets', 'Widgets centered.', [BarWidget.WORKSPACES]),
             widgetsArrayField(
                 'rightWidgets',
                 'Widgets anchored right.',
@@ -196,6 +196,7 @@ export const CONFIG_SCHEMA = [
                     BarWidget.VPN_INDICATOR,
                     BarWidget.NETWORK,
                     BarWidget.BATTERY,
+                    BarWidget.CLOCK
                 ],
             ),
             {
@@ -440,7 +441,6 @@ export type Config = SchemaToType<typeof CONFIG_SCHEMA>
 export type Windows        = Config["windows"]
 export type Notifications  = Config["notifications"]
 export type HorizontalBar  = Config["horizontalBar"]
-export type VerticalBar    = Config["verticalBar"]
 export type SystemMenu     = Config["systemMenu"]
 export type SystemCommands = Config["systemCommands"]
 

@@ -1,4 +1,6 @@
-#/bin/bash
+#!/usr/bin/env bash
+
+yay -S --answerclean No --answerdiff N --noconfirm --needed - < pkglist.txt
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
@@ -13,3 +15,4 @@ cp -r $SCRIPT_DIR/ags/. $HOME/.local/share/okpanel/
 
 cp $SCRIPT_DIR/bin/okpanel $HOME/.local/bin/
 cp $SCRIPT_DIR/bin/okpanel-share $HOME/.local/bin/
+cp $SCRIPT_DIR/bin/screenshot $HOME/.local/bin/
