@@ -3,6 +3,7 @@ import Calendar from "./widget/calendar/Calendar"
 import SystemMenuWindow from "./widget/systemMenu/SystemMenuWindow";
 import {BrightnessAlert, ChargingAlertSound, VolumeAlert} from "./widget/alerts/Alerts";
 import NotificationPopups from "./widget/notification/NotificationPopups";
+import Shortcuts, {ShortcutsWindowName} from "./widget/shortcuts/Shortcuts";
 import Screenshot, {ScreenshotWindowName} from "./widget/screenshot/Screenshot";
 import Screenshare, {ScreenshareWindowName, updateResponse, updateWindows} from "./widget/screenshare/Screenshare";
 import HorizontalBar from "./widget/bar/HorizontalBar";
@@ -27,6 +28,7 @@ App.start({
         Calendar()
         SystemMenuWindow()
         ChargingAlertSound()
+        Shortcuts()
         Screenshot()
         Screenshare()
 
@@ -66,8 +68,10 @@ App.start({
         } else if (request.startsWith("mute")) {
             muteVolume()
             res("mute")
+        } else if (request.startsWith("shortcuts")) {
+            toggleWindow(ShortcutsWindowName)
         } else {
-            res("command not found")
+            res("command not founds")
         }
     }
 })

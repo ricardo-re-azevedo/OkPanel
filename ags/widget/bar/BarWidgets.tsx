@@ -76,7 +76,7 @@ function Clock({singleLine}: { singleLine: boolean }) {
     let format: string
 
     if (singleLine) {
-        format = "%B %-d, %I:%M"
+        format = "%B %-d: %I:%M"
     } else {
         format = "%I%M\n%B %-d"
     }

@@ -138,14 +138,8 @@ function restoreBar() {
         return
     }
     switch (details) {
-        case Bar.LEFT:
-            selectedBar.set(Bar.LEFT)
-            break;
         case Bar.TOP:
             selectedBar.set(Bar.TOP)
-            break;
-        case Bar.RIGHT:
-            selectedBar.set(Bar.RIGHT)
             break;
         case Bar.BOTTOM:
             selectedBar.set(Bar.BOTTOM)

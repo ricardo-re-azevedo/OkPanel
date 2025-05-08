@@ -119,6 +119,7 @@ main() {
   case $1 in
     run)          run_run_command;;
     quit)         ags quit -i "OkPanel";;
+    shortcuts)    astal -i "OkPanel" "shortcuts";;
     screenshot)   astal -i "OkPanel" "screenshot";;
     volume-up)    astal -i "OkPanel" "volume-up";;
     volume-down)  astal -i "OkPanel" "volume-down";;

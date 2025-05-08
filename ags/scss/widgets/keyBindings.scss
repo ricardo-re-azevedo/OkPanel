@@ -1,0 +1,25 @@
+@use "../variables" as vars;
+
+.keyboardKey {
+  all: unset;
+  background-color: vars.$bg;
+  color: vars.$fg;
+  padding: 10px;
+  border: 2px solid vars.$bgHover;
+  margin: 4px;
+  box-shadow: 2px 2px vars.$bgHover;
+  font-size: 1em;
+  line-height: 1em;
+  font-weight: 600;
+}
+
+.termCommand {
+  all: unset;
+  background-color: vars.$bg;
+  color: vars.$fg;
+  padding: 1em;
+  border-bottom: 2px solid vars.$bgHover;
+  font-size: 1em;
+  line-height: 1em;
+  font-weight: 600;
+}

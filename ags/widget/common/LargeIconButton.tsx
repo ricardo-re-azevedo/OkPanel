@@ -11,7 +11,7 @@ export default function(
         icon: Binding<string> | string,
         offset: number | Binding<number>,
         selected?: Binding<boolean>,
-        onClicked: () => void
+        onClicked: () =>void
     }
 ) {
     return <button

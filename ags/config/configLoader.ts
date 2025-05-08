@@ -134,6 +134,7 @@ export function parseConf(text: string): Record<string, any> {
     });
 
     if (ctxStack.length !== 1) throw new Error('Unclosed block/array');
+
     return root;
 }
 

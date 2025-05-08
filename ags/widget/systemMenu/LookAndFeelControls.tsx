@@ -11,6 +11,7 @@ import LargeIconButton from "../common/LargeIconButton";
 import RevealerRow from "../common/RevealerRow";
 import {setBarType, setTheme, setWallpaper} from "../../config/cachedStates";
 import {Bar} from "../../config/bar";
+import { chunkIntoColumns } from "../utils/chunking"
 
 const files: Variable<string[][]> = Variable([])
 const numberOfColumns = 2
@@ -26,18 +27,7 @@ function updateTheme(theme: Theme) {
     })
 }
 
-function chunkIntoColumns<T>(arr: T[], numCols: number): T[][] {
-    // Create numCols empty arrays
-    const columns: T[][] = Array.from({ length: numCols }, () => []);
 
-    // Distribute each item into the correct column
-    arr.forEach((item, i) => {
-        const colIndex = i % numCols;
-        columns[colIndex].push(item);
-    });
-
-    return columns;
-}
 
 function chunkEvenly<T>(items: T[], maxPerRow: number): T[][] {
     const total = items.length;
