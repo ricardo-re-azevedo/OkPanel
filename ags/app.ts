@@ -1,5 +1,7 @@
 import {App} from "astal/gtk4"
 import Calendar from "./widget/calendar/Calendar"
+import {BatteryMenu} from "./widget/bar/widgets/Battery"
+import {NetworkMenu} from "./widget/bar/widgets/Network"
 import SystemMenuWindow from "./widget/systemMenu/SystemMenuWindow";
 import {BrightnessAlert, ChargingAlertSound, VolumeAlert} from "./widget/alerts/Alerts";
 import NotificationPopups from "./widget/notification/NotificationPopups";
@@ -14,6 +16,7 @@ import {toggleWindow} from "./widget/utils/windows";
 import Hyprland from "gi://AstalHyprland"
 import {restoreSavedState, setThemeBasic} from "./config/cachedStates";
 import {setHomeDir, setProjectDir} from "./config/config";
+import {BluetoothMenu} from "./widget/bar/widgets/Bluetooth";
 
 const hyprland = Hyprland.get_default()
 
@@ -31,6 +34,9 @@ App.start({
         Shortcuts()
         Screenshot()
         Screenshare()
+        BatteryMenu()
+        NetworkMenu()
+        BluetoothMenu()
 
         hyprland.monitors.map((monitor) => {
             VolumeAlert(monitor)

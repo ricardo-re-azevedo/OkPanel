@@ -1,9 +1,8 @@
 import {bind, Variable} from "astal"
 import {Gtk, App} from "astal/gtk4"
-import {SystemMenuWindowName} from "./SystemMenuWindow";
-import {getBluetoothIcon, getBluetoothName} from "../utils/bluetooth";
+import {BluetoothWindowName} from "./Bluetooth"
+import {getBluetoothName} from "../../utils/bluetooth";
 import Bluetooth from "gi://AstalBluetooth";
-import RevealerRow from "../common/RevealerRow";
 
 function BluetoothDevices() {
     const bluetooth = Bluetooth.get_default()
@@ -26,7 +25,7 @@ function BluetoothDevices() {
                 ])
 
                 setTimeout(() => {
-                    bind(App.get_window(SystemMenuWindowName)!, "visible").subscribe((visible) => {
+                    bind(App.get_window(BluetoothWindowName)!, "visible").subscribe((visible) => {
                         if (!visible) {
                             buttonsRevealed.set(false)
                         }
@@ -85,30 +84,17 @@ function BluetoothDevices() {
                                 hexpand={true}
                                 cssClasses={["primaryButton"]}
                                 marginTop={4}
-                                visible={bind(device, "paired")}
-                                label={bind(device, "trusted").as((trusted) => {
-                                    if (trusted) {
-                                        return "Untrust"
-                                    } else {
-                                        return "Trust"
-                                    }
-                                })}
-                                onClicked={() => {
-                                    device.set_trusted(!device.trusted)
-                                }}/>
-                            <button
-                                hexpand={true}
-                                cssClasses={["primaryButton"]}
-                                marginTop={4}
                                 marginBottom={4}
                                 label={bind(device, "paired").as((paired) => {
                                     return paired ? "Unpair" : "Pair"
                                 })}
                                 onClicked={() => {
                                     if (device.paired) {
+                                        device.set_trusted(false)
                                         bluetooth.adapter.remove_device(device)
                                     } else {
                                         device.pair()
+                                        device.set_trusted(true)
                                     }
                                 }}/>
                         </box>
@@ -122,19 +108,14 @@ function BluetoothDevices() {
 export default function () {
     const bluetooth = Bluetooth.get_default()
 
-    return <RevealerRow
-        visible={bind(bluetooth, "isPowered")}
-        icon={getBluetoothIcon()}
-        iconOffset={0}
-        windowName={SystemMenuWindowName}
-        content={
+    return <box
+        vertical={true}
+        spacing={4}>
             <label
                 cssClasses={["labelMediumBold"]}
                 halign={Gtk.Align.START}
                 hexpand={true}
                 label={getBluetoothName()}/>
-        }
-        revealedContent={
             <box
                 marginTop={10}
                 vertical={true}>
@@ -162,6 +143,5 @@ export default function () {
                 </box>
                 <BluetoothDevices/>
             </box>
-        }
-    />
+        </box>
 }

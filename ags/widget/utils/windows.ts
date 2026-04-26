@@ -5,6 +5,9 @@ import {CalendarWindowName} from "../calendar/Calendar";
 import {ScreenshareWindowName} from "../screenshare/Screenshare";
 import {ScreenshotWindowName} from "../screenshot/Screenshot";
 import {ShortcutsWindowName} from "../shortcuts/Shortcuts";
+import {BatteryWindowName} from "../bar/widgets/Battery";
+import {NetworkWindowName} from "../bar/widgets/Network"
+import {BluetoothWindowName} from "../bar/widgets/Bluetooth";
 
 export function toggleWindow(windowName: string) {
     const window = App.get_windows().find((window) => window.name === windowName)
@@ -22,7 +25,10 @@ export function hideAllWindows() {
             window.name === CalendarWindowName ||
             window.name === ScreenshareWindowName ||
             window.name === ScreenshotWindowName ||
-            window.name === ShortcutsWindowName
+            window.name === ShortcutsWindowName ||
+            window.name === BatteryWindowName ||
+            window.name === NetworkWindowName ||
+            window.name === BluetoothWindowName
     })
     windows.forEach((window) => {
         window.hide()

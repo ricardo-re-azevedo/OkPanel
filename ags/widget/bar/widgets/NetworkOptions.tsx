@@ -1,11 +1,14 @@
 import AstalNetwork from "gi://AstalNetwork"
-import {getAccessPointIcon, getNetworkIconBinding} from "../utils/network";
+import {getAccessPointIcon, getNetworkIconBinding} from "../../utils/network";
 import {bind, Variable} from "astal"
 import {Gtk, App} from "astal/gtk4"
 import {execAsync} from "astal/process"
-import {SystemMenuWindowName} from "./SystemMenuWindow";
+import {NetworkWindowName} from "./Network";
 import Pango from "gi://Pango?version=1.0";
-import RevealerRow from "../common/RevealerRow";
+import RevealerRow from "../../common/RevealerRow";
+import {getBatteryIcon, getBatteryTooltip} from "../../utils/battery";
+import {toggleWindow} from "../../utils/windows";
+import {BatteryWindowName} from "./Battery";
 
 const wifiConnections = Variable<string[]>([])
 const inactiveWifiConnections = Variable<string[]>([])
@@ -98,36 +101,6 @@ function disconnect(ssid: string) {
         })
 }
 
-function addWireguardConnection()
-{
-    const dialog = new Gtk.FileChooserNative({
-        title: 'Select WireGuard Config',
-        action: Gtk.FileChooserAction.OPEN,
-        accept_label: 'Open',
-        cancel_label: 'Cancel',
-    });
-
-    // Filter for .conf files
-    const filter = new Gtk.FileFilter();
-    filter.set_name('WireGuard Config (*.conf)');
-    filter.add_pattern('*.conf');
-    dialog.add_filter(filter);
-
-    dialog.connect('response', (dlg, response) => {
-        if (response === Gtk.ResponseType.ACCEPT) {
-            const file = dlg.get_file();
-            if (file !== null) {
-                execAsync(["bash", "-c", `nmcli connection import type wireguard file "${file.get_path()}"`])
-                    .finally(() => {
-                        updateConnections()
-                    })
-            }
-        }
-        dlg.destroy();
-    });
-
-    dialog.show();
-}
 
 function PasswordEntry(
     {
@@ -171,45 +144,46 @@ function PasswordEntry(
 
     return <box
         marginTop={4}
-        vertical={true}
-        spacing={4}>
+    vertical={true}
+    spacing={4}>
         {accessPoint.flags !== 0 && <box
-            vertical={true}>
+                vertical={true}>
             <label
                 halign={Gtk.Align.START}
-                cssClasses={["labelSmall"]}
-                label="Password"/>
+            cssClasses={["labelSmall"]}
+            label="Password"/>
             <entry
                 cssClasses={["networkPasswordEntry"]}
-                onChanged={self => text.set(self.text)}
-                onActivate={() => connect()}/>
-        </box>}
-        <revealer
-            revealChild={errorRevealed()}
-            transitionDuration={200}
-            transitionType={Gtk.RevealerTransitionType.SLIDE_DOWN}>
-            <label
-                halign={Gtk.Align.START}
-                cssClasses={["labelSmallWarning"]}
-                label="Error Connecting"/>
+            onChanged={self => text.set(self.text)}
+    onActivate={() => connect()}/>
+    </box>}
+    <revealer
+    revealChild={errorRevealed()}
+    transitionDuration={200}
+    transitionType={Gtk.RevealerTransitionType.SLIDE_DOWN}>
+    <label
+        halign={Gtk.Align.START}
+    cssClasses={["labelSmallWarning"]}
+    label="Error Connecting"/>
         </revealer>
         <button
-            cssClasses={["primaryButton"]}
-            hexpand={true}
-            label={isConnecting((connecting) => {
-                if (connecting) {
-                    return "Connecting"
-                } else {
-                    return "Connect"
-                }
-            })}
-            onClicked={() => {
-                if (!isConnecting.get()) {
-                    connect()
-                }
-            }}/>
+    cssClasses={["primaryButton"]}
+    hexpand={true}
+    label={isConnecting((connecting) => {
+        if (connecting) {
+            return "Connecting"
+        } else {
+            return "Connect"
+        }
+    })}
+    onClicked={() => {
+        if (!isConnecting.get()) {
+            connect()
+        }
+    }}/>
     </box>
 }
+
 
 function WifiConnections() {
     const network = AstalNetwork.get_default()
@@ -225,7 +199,7 @@ function WifiConnections() {
                 const buttonsRevealed = Variable(false)
 
                 setTimeout(() => {
-                    bind(App.get_window(SystemMenuWindowName)!, "visible").subscribe((visible) => {
+                    bind(App.get_window(NetworkWindowName)!, "visible").subscribe((visible) => {
                         if (!visible) {
                             buttonsRevealed.set(false)
                         }
@@ -324,7 +298,7 @@ function WifiScannedConnections() {
                     const passwordEntryRevealed = Variable(false)
 
                     setTimeout(() => {
-                        bind(App.get_window(SystemMenuWindowName)!, "visible").subscribe((visible) => {
+                        bind(App.get_window(NetworkWindowName)!, "visible").subscribe((visible) => {
                             if (!visible) {
                                 passwordEntryRevealed.set(false)
                             }
@@ -360,10 +334,20 @@ function WifiScannedConnections() {
 
                 return <box
                     vertical={true}>
-                    <label
-                        halign={Gtk.Align.START}
-                        cssClasses={["labelLargeBold"]}
-                        label="Available networks"/>
+                    <box
+                    vertical={false}>
+                        <label
+                            halign={Gtk.Align.START}
+                            cssClasses={["labelLargeBold"]}
+                            label="Available networks"/>
+                        <button
+                            cssClasses={["iconButton"]}
+                            label={"🗘"}
+                            onClicked={() => {
+                                network.wifi?.scan()
+                            }}/>
+                    </box>
+
                     {accessPointsUi}
                 </box>
             }
@@ -377,7 +361,7 @@ export default function () {
     updateConnections()
 
     setTimeout(() => {
-        bind(App.get_window(SystemMenuWindowName)!, "visible").subscribe((visible) => {
+        bind(App.get_window(NetworkWindowName)!, "visible").subscribe((visible) => {
             if (visible) {
                 updateConnections()
             }
@@ -388,54 +372,42 @@ export default function () {
         bind(network.client, "primaryConnection"),
     ])
 
-    return <RevealerRow
-        icon={getNetworkIconBinding()}
-        iconOffset={2}
-        windowName={SystemMenuWindowName}
-        content={
-            <label
-                cssClasses={["labelMediumBold"]}
-                halign={Gtk.Align.START}
-                hexpand={true}
-                ellipsize={Pango.EllipsizeMode.END}
-                label={networkName().as((value) => {
-                    const primaryConnection = value[0]
-                    let name: string
-                    if (primaryConnection === null) {
-                        name = "Not Connected"
-                    } else if (primaryConnection.id.toLowerCase().startsWith("wired")) {
-                        name = "Wired"
-                    } else {
-                        name = primaryConnection.id
-                    }
-                    return name
-                })}/>
-        }
-        revealedContent={
-            <box
-                marginTop={10}
-                vertical={true}
-                spacing={12}>
-                {network.wifi && bind(network.wifi, "activeAccessPoint").as((activeAccessPoint) => {
-                    return <button
-                        visible={activeAccessPoint !== null}
-                        marginBottom={8}
-                        cssClasses={["primaryButton"]}
-                        label="Disconnect"
-                        onClicked={() => {
-                            disconnect(activeAccessPoint.ssid)
-                        }}/>
-                })}
-                {network.wifi && <WifiConnections connections={inactiveWifiConnections}/>}
-                {network.wifi && <WifiScannedConnections/>}
-            </box>
-        }
-        setup={(revealed) => {
-            revealed.subscribe((r) => {
-                if (r) {
-                    network.wifi?.scan()
+    return <box
+        vertical={true}
+        spacing={4}>
+        <label
+            cssClasses={["labelMediumBold"]}
+            halign={Gtk.Align.START}
+            hexpand={true}
+            ellipsize={Pango.EllipsizeMode.END}
+            label={networkName().as((value) => {
+                const primaryConnection = value[0]
+                let name: string
+                if (primaryConnection === null) {
+                    name = "Not Connected"
+                } else if (primaryConnection.id.toLowerCase().startsWith("wired")) {
+                    name = "Wired"
+                } else {
+                    name = primaryConnection.id
                 }
-            })
-        }}
-    />
+                return name
+            })}/>
+        <box
+            marginTop={10}
+            vertical={true}
+            spacing={12}>
+            {network.wifi && bind(network.wifi, "activeAccessPoint").as((activeAccessPoint) => {
+                return <button
+                    visible={activeAccessPoint !== null}
+                    marginBottom={8}
+                    cssClasses={["primaryButton"]}
+                    label="Disconnect"
+                    onClicked={() => {
+                        disconnect(activeAccessPoint.ssid)
+                    }}/>
+            })}
+            {network.wifi && <WifiConnections connections={inactiveWifiConnections}/>}
+            {network.wifi && <WifiScannedConnections/>}
+        </box>
+    </box>
 }

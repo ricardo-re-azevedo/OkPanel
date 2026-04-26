@@ -2,10 +2,7 @@ import {bind, GLib, Variable} from "astal"
 import Hyprland from "gi://AstalHyprland"
 import {CalendarWindowName} from "../calendar/Calendar"
 import Wp from "gi://AstalWp"
-import Battery from "gi://AstalBattery"
-import {getMicrophoneIcon, getVolumeIcon, playBatteryWarning} from "../utils/audio"
-import {getNetworkIconBinding} from "../utils/network"
-import {getBatteryIcon, getBatteryTooltip} from "../utils/battery"
+import {getMicrophoneIcon, getVolumeIcon} from "../utils/audio"
 import {execAsync} from "astal/process"
 import {SystemMenuWindowName} from "../systemMenu/SystemMenuWindow";
 import Bluetooth from "gi://AstalBluetooth"
@@ -16,6 +13,9 @@ import Tray from "gi://AstalTray"
 import {toggleWindow} from "../utils/windows";
 import {Gtk} from "astal/gtk4";
 import {BarWidget} from "../../config/configSchema";
+import {BatteryIndicator} from "./widgets/Battery";
+import {NetworkIndicator} from "./widgets/Network";
+import {BluetoothIndicator} from "./widgets/Bluetooth";
 
 const tray = Tray.get_default()
 
@@ -135,56 +135,7 @@ function AudioIn() {
         label={micVar(() => getMicrophoneIcon(defaultMicrophone))}/>
 }
 
-function BluetoothIndicator() {
-    const bluetooth = Bluetooth.get_default()
-    return <label
-        cssClasses={["iconLabel"]}
-        label="󰂯"
-        visible={bind(bluetooth, "isPowered").as((isPowered) => {
-            return isPowered
-        })}/>
-}
 
-function NetworkIndicator() {
-    return <label
-        cssClasses={["iconLabel"]}
-        label={getNetworkIconBinding()}/>
-}
-
-function BatteryIndicator() {
-    const battery = Battery.get_default()
-
-    let batteryWarningInterval: GLib.Source | null = null
-
-    const batteryVar = Variable.derive([
-        bind(battery, "percentage"),
-        bind(battery, "timeToFull"),
-        bind(battery, "timeToEmpty"),
-        bind(battery, "state")
-    ])
-
-    return <label
-        cssClasses={batteryVar((value) => {
-            if (value[0] > 0.04 || battery.state === Battery.State.CHARGING) {
-                if (batteryWarningInterval != null) {
-                    batteryWarningInterval.destroy()
-                    batteryWarningInterval = null
-                }
-                return ["iconLabel"]
-            } else {
-                if (batteryWarningInterval === null && battery.isBattery) {
-                    batteryWarningInterval = setInterval(() => {
-                        playBatteryWarning()
-                    }, 120_000)
-                    playBatteryWarning()
-                }
-                return ["warningIconLabel"]
-            }
-        })}
-        label={batteryVar(() => getBatteryIcon(battery))}
-        tooltipText={batteryVar(() => getBatteryTooltip(battery))}
-        visible={bind(battery, "isBattery")}/>
-}
 
 function MenuButton() {
     return <button
@@ -201,9 +152,8 @@ function IntegratedTray({vertical}: { vertical: boolean }) {
 
 function TrayButton() {
     return <menubutton
-        visible={bind(tray, "items").as((items) => items.length > 0)}
-        cssClasses={["trayIconButton"]}>
-        <label label="󱊔"/>
+        cssClasses={["trayIconButton"]}
+        visible={bind(tray, "items").as((items) => items.length > 0)}>
         <popover
             position={Gtk.PositionType.RIGHT}>
             <TrayContent vertical={false}/>

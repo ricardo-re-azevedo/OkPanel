@@ -132,10 +132,13 @@
 
 .trayMenuButton {
   all: unset;
-  background-color: transparent;
+  background-color: vars.$bg;
   color: vars.$fg;
+  padding: 4px 4px 4px 2px;
+  border: none;
+  min-height: 1em;
+  min-width: 30px;
   border-radius: vars.$buttonBorderRadius;
-  padding: 4px 8px 4px 8px;
 
   .toggle {
     background-color: transparent;
