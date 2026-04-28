@@ -13,6 +13,7 @@ rm -f $HOME/.local/bin/okpanel-share
 mkdir -p $HOME/.local/share/okpanel
 cp -r $SCRIPT_DIR/ags/. $HOME/.local/share/okpanel/
 
+mkdir -p $HOME/.local/bin/
 cp $SCRIPT_DIR/bin/okpanel $HOME/.local/bin/
 cp $SCRIPT_DIR/bin/okpanel-share $HOME/.local/bin/
 cp $SCRIPT_DIR/bin/screenshot $HOME/.local/bin/
