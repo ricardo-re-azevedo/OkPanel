@@ -15,9 +15,9 @@ export function BluetoothIndicator() {
     return <button
         cssClasses={["iconButton"]}
         label="󰂯"
-        visible={bind(bluetooth, "isPowered").as((isPowered) => {
-            return isPowered
-        })}
+        //visible={bind(bluetooth, "isPowered").as((isPowered) => {
+        //    return isPowered
+        //})}
         onClicked={() => {
             toggleWindow(BluetoothWindowName)
         }}
@@ -25,6 +25,7 @@ export function BluetoothIndicator() {
 }
 
 export function BluetoothMenu() {
+    // @ts-ignore
     return <ScrimScrollWindow
         monitor={config.mainMonitor}
         windowName={BluetoothWindowName}

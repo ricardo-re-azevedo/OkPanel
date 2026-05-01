@@ -111,14 +111,26 @@ export default function () {
     return <box
         vertical={true}
         spacing={4}>
-            <label
-                cssClasses={["labelMediumBold"]}
-                halign={Gtk.Align.START}
-                hexpand={true}
-                label={getBluetoothName()}/>
+            <box
+                vertical={false}>
+                <label
+                    cssClasses={["labelMediumBold"]}
+                    halign={Gtk.Align.START}
+                    hexpand={true}
+                    label={getBluetoothName()}/>
+                <button
+                    cssClasses={["iconButton"]}
+                    label={"⏻"}
+                    onClicked={() => {
+                        bluetooth.toggle()
+                    }}/>
+            </box>
             <box
                 marginTop={10}
-                vertical={true}>
+                vertical={true}
+                visible={bind(bluetooth, "isPowered").as((isPowered) => {
+                    return isPowered
+                })}>
                 <box
                     vertical={false}>
                     <label
