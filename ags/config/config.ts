@@ -1,8 +1,9 @@
 import {exec} from "astal/process";
-import {Variable} from "astal";
+import {GLib, Variable} from "astal";
 import {loadConfig, validateAndApplyDefaults} from "./configLoader";
 import {Config, Theme, themeSchema} from "./configSchema";
 import {Bar} from "./bar";
+import Gio from "gi://Gio?version=2.0";
 
 export const config: Config = (() => {
     const homePath = exec('bash -c "echo $HOME"')
@@ -33,10 +34,14 @@ export const selectedTheme = Variable<Theme>(
 export const selectedBar = Variable(Bar.TOP)
 
 export let projectDir = ""
-export let homeDir = ""
+export let homeDir = GLib.get_home_dir()
 
-export function setProjectDir(dir: string) {
-    projectDir = dir
+export function setProjectDir() {
+    const dir = Gio.File.new_for_path('.').get_path()
+    print(`Running app from ${dir}`)
+    if (typeof dir == "string") {
+        projectDir = dir
+    }
 }
 
 export function setHomeDir(dir: string) {

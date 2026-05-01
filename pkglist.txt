@@ -1,3 +1,4 @@
+libastal-meta
 aylurs-gtk-shell-git
 gvfs
 sox

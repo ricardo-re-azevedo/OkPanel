@@ -8,9 +8,10 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 rm -rf $HOME/.local/share/okpanel
 rm -f $HOME/.local/bin/okpanel
 rm -f $HOME/.local/bin/okpanel-share
-
+re
 # Install
 mkdir -p $HOME/.local/share/okpanel
+mkdir -p $HOME/.local/bin
 cp -r $SCRIPT_DIR/ags/. $HOME/.local/share/okpanel/
 
 mkdir -p $HOME/.local/bin/

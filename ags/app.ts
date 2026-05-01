@@ -24,7 +24,7 @@ App.start({
     instanceName: "OkPanel",
     css: "/tmp/OkPanel/style.css",
     main(...args: Array<string>) {
-        setProjectDir(args[0])
+        setProjectDir()
         setHomeDir(args[1])
         restoreSavedState()
         HorizontalBar()

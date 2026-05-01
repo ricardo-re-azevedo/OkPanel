@@ -107,7 +107,7 @@ run_run_command() {
       dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/../ags
   fi
 
-  ags run --gtk4 -d $dir -a $dir -a $HOME
+  ags run --gtk=4 -d $dir
 }
 
 main() {

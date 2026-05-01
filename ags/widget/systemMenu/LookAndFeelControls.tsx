@@ -225,6 +225,21 @@ export default function () {
                         return <WallpaperColumn column={index}/>
                     })}
                 </box>
+                <Divider
+                    marginStart={20}
+                    marginEnd={20}
+                    marginTop={10}
+                    marginBottom={10}/>
+                <box
+                    vertical={false}
+                    marginStart={20}
+                    marginEnd={20}
+                    halign={Gtk.Align.CENTER}
+                    spacing={12}>
+
+                    <BarButton barType={Bar.TOP} icon={"Top"}/>
+                    <BarButton barType={Bar.BOTTOM} icon={"Bottom"}/>
+                </box>
             </box>
         }
     />

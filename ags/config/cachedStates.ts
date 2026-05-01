@@ -97,33 +97,40 @@ ${compileThemeBashScript(theme)}
 }
 
 export function restoreSavedState() {
-    const savedThemeString = readFile(`${homeDir}/.cache/OkPanel/theme`).trim()
 
     let savedTheme: Theme | null = null
-    try {
+
+    // read config file if it exists
+    const dir = Gio.File.new_for_path(`${homeDir}/.cache/OkPanel/theme`)
+    if (dir.query_exists(null)) {
+        const savedThemeString = readFile(`${homeDir}/.cache/OkPanel/theme`).trim()
+
         if (savedThemeString !== "") {
             savedTheme = JSON.parse(savedThemeString)
         }
-    } catch (e) {
-        print(e)
     }
+
     if (savedTheme !== null) {
         if (config.themes.length > 0) {
             // we have a saved theme, and we have configured themes.
             // if the saved theme is not in the configured themes, don't use it.
             const matchingConfigTheme = config.themes.find((theme) => theme.name === savedTheme.name)
             if (matchingConfigTheme !== undefined) {
+                print("Cached theme config exists, using matching theme from configured themes")
                 selectedTheme.set(matchingConfigTheme)
             } else if (config.themes.length > 0) {
+                print(`Cached theme config exists, no configured theme for theme defined in cache, falling back to first configured theme: ${config.themes[0].name}`)
                 selectedTheme.set(config.themes[0])
             }
         } else {
             // we have a saved theme and no configured themes
+            print("Cached theme config exists, using theme from cache (no configured themes)")
             selectedTheme.set(savedTheme)
         }
     } else if (config.themes.length > 0) {
         // we have no saved themes, but we do have configured themes
-        // use the first configured theme
+        // use the first configconfig.themes[0]ured theme
+        print(`No cached theme config exists, falling back to first configured theme: ${config.themes[0].name}`)
         selectedTheme.set(config.themes[0])
     }
 
@@ -132,11 +139,23 @@ export function restoreSavedState() {
 }
 
 function restoreBar() {
-    const details = readFile(`${homeDir}/.cache/OkPanel/savedBar`).trim()
 
-    if (details.trim() === "") {
+    // read config file if it exists
+    const dir = Gio.File.new_for_path(`${homeDir}/.cache/OkPanel/savedBar`)
+    let details: string | null = null
+
+    if (dir.query_exists(null)) {
+        details = readFile(`${homeDir}/.cache/OkPanel/savedBar`).trim()
+    } else {
+        print ("No cached config file for bar")
         return
     }
+
+    if (details.trim() === "") {
+        print ("Cached config file for bar exists but has no configuration")
+        return
+    }
+
     switch (details) {
         case Bar.TOP:
             selectedBar.set(Bar.TOP)
@@ -157,7 +176,6 @@ echo "${selectedBar.get()}" > ${homeDir}/.cache/OkPanel/savedBar
 }
 
 function cacheTheme(theme: Theme) {
-    const homeDir = GLib.get_home_dir()
     const dirPath = `${homeDir}/.cache/OkPanel`
     const filePath = `${dirPath}/theme`
 
