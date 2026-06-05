@@ -1,4 +1,4 @@
-import {App} from "astal/gtk4"
+import {App, Gtk} from "astal/gtk4"
 import Calendar from "./widget/calendar/Calendar"
 import {BatteryMenu} from "./widget/bar/widgets/Battery"
 import {NetworkMenu} from "./widget/bar/widgets/Network"
@@ -23,7 +23,13 @@ const hyprland = Hyprland.get_default()
 App.start({
     instanceName: "OkPanel",
     css: "/tmp/OkPanel/style.css",
+    icons: `${SRC}/icons`,
     main(...args: Array<string>) {
+
+        new Gtk.Image({
+            iconName: "tailscale-light",
+        })
+
         setProjectDir()
         setHomeDir(args[1])
         restoreSavedState()

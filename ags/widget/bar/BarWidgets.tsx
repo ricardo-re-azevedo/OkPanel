@@ -5,7 +5,6 @@ import Wp from "gi://AstalWp"
 import {getMicrophoneIcon, getVolumeIcon} from "../utils/audio"
 import {execAsync} from "astal/process"
 import {SystemMenuWindowName} from "../systemMenu/SystemMenuWindow";
-import Bluetooth from "gi://AstalBluetooth"
 import {isRecording, ScreenshotWindowName} from "../screenshot/Screenshot";
 import Divider from "../common/Divider";
 import {config} from "../../config/config";
@@ -16,6 +15,7 @@ import {BarWidget} from "../../config/configSchema";
 import {BatteryIndicator} from "./widgets/Battery";
 import {NetworkIndicator} from "./widgets/Network";
 import {BluetoothIndicator} from "./widgets/Bluetooth";
+import {tailscale_installed, tailscale_status, Tailscale} from "./widgets/Tailscale";
 
 const tray = Tray.get_default()
 
@@ -214,6 +214,10 @@ export function addWidgets(widgets: BarWidget[], isVertical: boolean) {
                 return <Clock singleLine={!isVertical}/>
             case BarWidget.NETWORK:
                 return <NetworkIndicator/>
+            case BarWidget.TAILSCALE:
+                if (tailscale_installed()) {
+                    return <Tailscale/>
+                }
             case BarWidget.RECORDING_INDICATOR:
                 return <ScreenRecordingStopButton/>
             case BarWidget.TRAY:

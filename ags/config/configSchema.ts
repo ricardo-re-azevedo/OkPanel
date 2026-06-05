@@ -42,6 +42,7 @@ export enum BarWidget {
     BLUETOOTH = "bluetooth",
     NETWORK = "network",
     RECORDING_INDICATOR =  "recording_indicator",
+    TAILSCALE = "tailscale",
     VPN_INDICATOR = "vpn_indicator",
     BATTERY = "battery",
     TRAY = "tray",
@@ -195,6 +196,7 @@ export const CONFIG_SCHEMA = [
                     BarWidget.BLUETOOTH,
                     BarWidget.VPN_INDICATOR,
                     BarWidget.NETWORK,
+                    BarWidget.TAILSCALE,
                     BarWidget.BATTERY,
                     BarWidget.CLOCK
                 ],
