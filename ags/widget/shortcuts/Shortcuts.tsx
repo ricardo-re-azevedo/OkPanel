@@ -1,12 +1,7 @@
 import {App, Astal, Gdk, Gtk} from "astal/gtk4"
-import {execAsync} from "astal/process"
-import Divider from "../common/Divider";
 import {hideAllWindows} from "../utils/windows";
-import {config} from "../../config/config";
 import {Keybind, getKeybindings} from "../screenshot/helpers";
 import {chunkIntoColumns} from "../utils/chunking";
-import Wp from "gi://AstalWp";
-import {Binding} from "astal";
 
 export const ShortcutsWindowName = "shortcutsWindow"
 
