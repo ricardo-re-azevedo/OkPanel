@@ -30,6 +30,7 @@ export default function () {
                 offset={0}
                 onClicked={() => {
                     hideAllWindows()
+                    print(config.systemCommands.logout);
                     execAsync(config.systemCommands.logout)
                 }}/>
             <LargeIconButton
