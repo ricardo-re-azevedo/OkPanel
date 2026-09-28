@@ -6,6 +6,7 @@ import PowerOptions from "./PowerOptions";
 import MediaPlayers from "./MediaPlayers";
 import NotificationHistory from "./NotificationHistory";
 import LookAndFeelControls from "./LookAndFeelControls";
+import BrightnessControls from "./BrightnessControls";
 import {config, selectedBar} from "../../config/config";
 import ScrimScrollWindow from "../common/ScrimScrollWindow";
 import {BarWidget} from "../../config/configSchema";
@@ -69,6 +70,7 @@ export default function () {
                     defaultEndpoint={audio.default_microphone}
                     endpointsBinding={bind(audio, "microphones")}
                     getIcon={getMicrophoneIcon}/>
+                <BrightnessControls/>
                 <LookAndFeelControls/>
                 {/*MediaPlayersAstal uses the astal mpris component.  It causes UI jank.  Until it gets fix
                         use MediaPlayers.  It uses a home-made mpris component that doesn't cause the jank.*/}

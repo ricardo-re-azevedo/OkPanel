@@ -1,8 +1,68 @@
 import {bind, Variable} from "astal"
-import {Gtk, App} from "astal/gtk4"
+import {Gtk, App, astalify} from "astal/gtk4"
+import {execAsync} from "astal/process"
 import {BluetoothWindowName} from "./Bluetooth"
 import {getBluetoothName} from "../../utils/bluetooth";
 import Bluetooth from "gi://AstalBluetooth";
+
+const Spinner = astalify<Gtk.Spinner, Gtk.Spinner.ConstructorProps>(Gtk.Spinner)
+
+function BluetoothSavedDevices() {
+    const bluetooth = Bluetooth.get_default()
+
+    return <box
+        vertical={true}>
+        {bind(bluetooth, "devices").as((devices) => {
+            return devices.filter((device) => {
+                return device.name != null
+            }).map((device) => {
+                return <box
+                    vertical={false}
+                    visible={bind(device, "paired")}>
+                    <button
+                        hexpand={true}
+                        cssClasses={bind(device, "connected").as((connected) => {
+                            return connected ? ["primaryButton"] : ["transparentButton"]
+                        })}
+                        onClicked={() => {
+                            if (device.connecting) {
+                                // do nothing
+                            } else if (device.connected) {
+                                device.disconnect_device((device, result, data) => {
+                                    print("disconnected")
+                                })
+                            } else {
+                                device.connect_device((device, result, data) => {
+                                    print("connected")
+                                })
+                            }
+                        }}>
+                        <box
+                            spacing={8}>
+                            <label
+                                halign={Gtk.Align.START}
+                                hexpand={true}
+                                cssClasses={["labelSmall"]}
+                                label={`  ${device.name}`}/>
+                            <Spinner
+                                visible={bind(device, "connecting")}
+                                spinning={bind(device, "connecting")}/>
+                        </box>
+                    </button>
+                    <button
+                        cssClasses={["iconButton"]}
+                        marginStart={4}
+                        label="󰆴"
+                        tooltipText="Unpair"
+                        onClicked={() => {
+                            device.set_trusted(false)
+                            bluetooth.adapter?.remove_device(device)
+                        }}/>
+                </box>
+            })
+        })}
+    </box>
+}
 
 function BluetoothDevices() {
     const bluetooth = Bluetooth.get_default()
@@ -19,10 +79,7 @@ function BluetoothDevices() {
                 return device.name != null
             }).map((device) => {
                 const buttonsRevealed = Variable(false)
-                const connectionState = Variable.derive([
-                    bind(device, "connected"),
-                    bind(device, "connecting")
-                ])
+                const pairing = Variable(false)
 
                 setTimeout(() => {
                     bind(App.get_window(BluetoothWindowName)!, "visible").subscribe((visible) => {
@@ -33,7 +90,8 @@ function BluetoothDevices() {
                 }, 1_000)
 
                 return <box
-                    vertical={true}>
+                    vertical={true}
+                    visible={bind(device, "paired").as((paired) => !paired)}>
                     <button
                         hexpand={true}
                         cssClasses={["transparentButton"]}
@@ -43,7 +101,7 @@ function BluetoothDevices() {
                         <label
                             halign={Gtk.Align.START}
                             cssClasses={["labelSmall"]}
-                            label={`  ${device.name}`}/>
+                            label={`  ${device.name}`}/>
                     </button>
                     <revealer
                         revealChild={buttonsRevealed()}
@@ -55,48 +113,38 @@ function BluetoothDevices() {
                                 hexpand={true}
                                 cssClasses={["primaryButton"]}
                                 marginTop={4}
-                                visible={bind(device, "paired")}
-                                label={connectionState((value) => {
-                                    const connected = value[0]
-                                    const connecting = value[1]
-                                    if (connecting) {
-                                        return "Connecting"
-                                    } else if (connected) {
-                                        return "Disconnect"
-                                    } else {
-                                        return "Connect"
-                                    }
-                                })}
-                                onClicked={() => {
-                                    if (device.connecting) {
-                                        // do nothing
-                                    } else if (device.connected) {
-                                        device.disconnect_device((device, result, data) => {
-                                            print("disconnected")
-                                        })
-                                    } else {
-                                        device.connect_device((device, result, data) => {
-                                            print("connected")
-                                        })
-                                    }
-                                }}/>
-                            <button
-                                hexpand={true}
-                                cssClasses={["primaryButton"]}
-                                marginTop={4}
                                 marginBottom={4}
-                                label={bind(device, "paired").as((paired) => {
-                                    return paired ? "Unpair" : "Pair"
-                                })}
                                 onClicked={() => {
-                                    if (device.paired) {
-                                        device.set_trusted(false)
-                                        bluetooth.adapter.remove_device(device)
-                                    } else {
-                                        device.pair()
-                                        device.set_trusted(true)
+                                    if (pairing.get()) {
+                                        return
                                     }
-                                }}/>
+                                    // device.pair() is synchronous and blocks the UI, so make the same dbus call through busctl.
+                                    // bluetoothctl can't be used here because it doesn't register a pairing agent when non-interactive.
+                                    pairing.set(true)
+                                    const devicePath = `/org/bluez/hci0/dev_${device.address.replaceAll(":", "_")}`
+                                    execAsync(["busctl", "call", "--timeout=60", "org.bluez", devicePath, "org.bluez.Device1", "Pair"])
+                                        .then(() => {
+                                            device.set_trusted(true)
+                                        })
+                                        .catch((error) => {
+                                            print(error)
+                                        })
+                                        .finally(() => {
+                                            pairing.set(false)
+                                        })
+                                }}>
+                                <box
+                                    halign={Gtk.Align.CENTER}
+                                    spacing={8}>
+                                    <Spinner
+                                        visible={pairing()}
+                                        spinning={pairing()}/>
+                                    <label
+                                        label={pairing((isPairing) => {
+                                            return isPairing ? "Pairing" : "Pair"
+                                        })}/>
+                                </box>
+                            </button>
                         </box>
                     </revealer>
                 </box>
@@ -117,7 +165,7 @@ export default function () {
                     cssClasses={["labelMediumBold"]}
                     halign={Gtk.Align.START}
                     hexpand={true}
-                    label={getBluetoothName()}/>
+                    label={bind(bluetooth, "adapters").as(() => getBluetoothName())}/>
                 <button
                     cssClasses={["iconButton"]}
                     label={"⏻"}
@@ -131,27 +179,40 @@ export default function () {
                 visible={bind(bluetooth, "isPowered").as((isPowered) => {
                     return isPowered
                 })}>
+                <label
+                    halign={Gtk.Align.START}
+                    label="Saved devices"
+                    cssClasses={["labelLargeBold"]}/>
+                <BluetoothSavedDevices/>
                 <box
+                    marginTop={10}
                     vertical={false}>
                     <label
                         halign={Gtk.Align.START}
                         hexpand={true}
-                        label="Devices"
+                        label="Available devices"
                         cssClasses={["labelLargeBold"]}/>
-                    <button
-                        cssClasses={["transparentButton"]}
-                        marginStart={8}
-                        marginEnd={8}
-                        label={bind(bluetooth.adapter, "discovering").as((discovering) => {
-                            return discovering ? "Stop scanning" : "Scan"
-                        })}
-                        onClicked={() => {
-                            if (bluetooth.adapter.discovering) {
-                                bluetooth.adapter.stop_discovery()
-                            } else {
-                                bluetooth.adapter.start_discovery()
-                            }
-                        }}/>
+                    {/*adapter is null when bluetoothd isn't running*/}
+                    {bind(bluetooth, "adapters").as(() => {
+                        const adapter = bluetooth.adapter
+                        if (adapter == null) {
+                            return <box/>
+                        }
+                        return <button
+                            cssClasses={["transparentButton"]}
+                            marginStart={8}
+                            marginEnd={8}
+                            label={bind(adapter, "discovering").as((discovering) => {
+                                return discovering ? "Stop scanning" : "Scan"
+                            })}
+                            onClicked={() => {
+                                if (adapter.discovering) {
+                                    adapter.stop_discovery()
+                                } else {
+                                    adapter.start_discovery()
+                                }
+                            }}/>
+                    })}
                 </box>
                 <BluetoothDevices/>
             </box>

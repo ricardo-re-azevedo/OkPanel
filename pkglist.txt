@@ -17,3 +17,4 @@ ttf-jetbrains-mono-nerd
 libnotify
 power-profiles-daemon
 upower
+networkmanager

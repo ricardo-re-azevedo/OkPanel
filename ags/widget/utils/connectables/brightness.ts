@@ -6,6 +6,8 @@ const get = (args: string) => Number(exec(`brightnessctl ${args}`))
 const screen = exec(`bash -c "ls -w1 /sys/class/backlight | head -1"`)
 const kbd = exec(`bash -c "ls -w1 /sys/class/leds | head -1"`)
 
+export const hasBacklight = screen !== ""
+
 @register({ GTypeName: "Brightness" })
 export default class Brightness extends GObject.Object {
     static instance: Brightness
@@ -44,10 +46,9 @@ export default class Brightness extends GObject.Object {
         if (percent > 1)
             percent = 1
 
-        execAsync(`brightnessctl set ${Math.floor(percent * 100)}% -q`).then(() => {
-            this.#screen = percent
-            this.notify("screen")
-        })
+        this.#screen = percent
+        this.notify("screen")
+        execAsync(`brightnessctl set ${Math.round(percent * this.#screenMax)} -q`)
     }
 
     constructor() {

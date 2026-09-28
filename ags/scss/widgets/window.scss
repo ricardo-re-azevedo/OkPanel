@@ -29,3 +29,14 @@
     padding: 1px;
 }
 
+// shrink bar height without changing the shared button styles used in menus
+.topBar .iconButton,
+.topBar .activeIconButton,
+.topBar .warningIconButton,
+.topBar .iconLabel,
+.topBar .trayIconButton,
+.topBar .trayMenuButton {
+    padding-top: 1px;
+    padding-bottom: 1px;
+}
+

@@ -196,16 +196,6 @@ function WifiConnections() {
             label="Saved networks"/>
         {inactiveWifiConnections((connectionsValue) => {
             return connectionsValue.map((connection) => {
-                const buttonsRevealed = Variable(false)
-
-                setTimeout(() => {
-                    bind(App.get_window(NetworkWindowName)!, "visible").subscribe((visible) => {
-                        if (!visible) {
-                            buttonsRevealed.set(false)
-                        }
-                    })
-                }, 1_000)
-
                 let label: string
                 let canConnect: boolean
                 const accessPoint = network.wifi.accessPoints.find((accessPoint) => {
@@ -220,48 +210,35 @@ function WifiConnections() {
                 }
 
                 return <box
-                    vertical={true}>
+                    vertical={false}>
                     <button
                         hexpand={true}
                         cssClasses={["transparentButton"]}
                         onClicked={() => {
-                            buttonsRevealed.set(!buttonsRevealed.get())
+                            if (!canConnect) {
+                                return
+                            }
+                            execAsync(["nmcli", "c", "up", connection])
+                                .catch((error) => {
+                                    print(error)
+                                })
+                                .finally(() => {
+                                    updateConnections()
+                                })
                         }}>
                         <label
                             halign={Gtk.Align.START}
                             cssClasses={["labelSmall"]}
                             label={label}/>
                     </button>
-                    <revealer
-                        revealChild={buttonsRevealed()}
-                        transitionDuration={200}
-                        transitionType={Gtk.RevealerTransitionType.SLIDE_DOWN}>
-                        <box
-                            marginTop={4}
-                            vertical={true}
-                            spacing={4}>
-                            {canConnect && <button
-                                hexpand={true}
-                                cssClasses={["primaryButton"]}
-                                label="Connect"
-                                onClicked={() => {
-                                    execAsync(`nmcli c up ${connection}`)
-                                        .catch((error) => {
-                                            print(error)
-                                        })
-                                        .finally(() => {
-                                            updateConnections()
-                                        })
-                                }}/>}
-                            <button
-                                hexpand={true}
-                                cssClasses={["primaryButton"]}
-                                label="Forget"
-                                onClicked={() => {
-                                    deleteConnection(connection)
-                                }}/>
-                        </box>
-                    </revealer>
+                    <button
+                        cssClasses={["iconButton"]}
+                        marginStart={4}
+                        label="󰆴"
+                        tooltipText="Forget"
+                        onClicked={() => {
+                            deleteConnection(connection)
+                        }}/>
                 </box>
             })
         })}
