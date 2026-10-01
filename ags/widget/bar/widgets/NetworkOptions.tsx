@@ -1,7 +1,7 @@
 import AstalNetwork from "gi://AstalNetwork"
 import {getAccessPointIcon, getNetworkIconBinding} from "../../utils/network";
 import {bind, Variable} from "astal"
-import {Gtk, App} from "astal/gtk4"
+import {Gtk, App, astalify} from "astal/gtk4"
 import {execAsync} from "astal/process"
 import {NetworkWindowName} from "./Network";
 import Pango from "gi://Pango?version=1.0";
@@ -9,6 +9,8 @@ import RevealerRow from "../../common/RevealerRow";
 import {getBatteryIcon, getBatteryTooltip} from "../../utils/battery";
 import {toggleWindow} from "../../utils/windows";
 import {BatteryWindowName} from "./Battery";
+
+const Spinner = astalify<Gtk.Spinner, Gtk.Spinner.ConstructorProps>(Gtk.Spinner)
 
 const wifiConnections = Variable<string[]>([])
 const inactiveWifiConnections = Variable<string[]>([])
@@ -196,17 +198,16 @@ function WifiConnections() {
             label="Saved networks"/>
         {inactiveWifiConnections((connectionsValue) => {
             return connectionsValue.map((connection) => {
+                const connecting = Variable(false)
+
                 let label: string
-                let canConnect: boolean
                 const accessPoint = network.wifi.accessPoints.find((accessPoint) => {
                     return accessPoint.ssid === connection
                 })
                 if (accessPoint != null) {
                     label = `${getAccessPointIcon(accessPoint)}  ${connection}`
-                    canConnect = network.wifi.activeAccessPoint?.ssid !== connection;
                 } else {
                     label = `󰤮  ${connection}`
-                    canConnect = false
                 }
 
                 return <box
@@ -215,21 +216,30 @@ function WifiConnections() {
                         hexpand={true}
                         cssClasses={["transparentButton"]}
                         onClicked={() => {
-                            if (!canConnect) {
+                            if (connecting.get() || network.wifi.activeAccessPoint?.ssid === connection) {
                                 return
                             }
+                            connecting.set(true)
                             execAsync(["nmcli", "c", "up", connection])
                                 .catch((error) => {
                                     print(error)
                                 })
                                 .finally(() => {
+                                    connecting.set(false)
                                     updateConnections()
                                 })
                         }}>
-                        <label
-                            halign={Gtk.Align.START}
-                            cssClasses={["labelSmall"]}
-                            label={label}/>
+                        <box
+                            spacing={8}>
+                            <label
+                                halign={Gtk.Align.START}
+                                hexpand={true}
+                                cssClasses={["labelSmall"]}
+                                label={label}/>
+                            <Spinner
+                                visible={connecting()}
+                                spinning={connecting()}/>
+                        </box>
                     </button>
                     <button
                         cssClasses={["iconButton"]}

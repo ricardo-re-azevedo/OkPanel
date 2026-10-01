@@ -48,7 +48,7 @@ export default class Brightness extends GObject.Object {
 
         this.#screen = percent
         this.notify("screen")
-        execAsync(`brightnessctl set ${Math.round(percent * this.#screenMax)} -q`)
+        execAsync(`brightnessctl set ${Math.max(1, Math.round(percent * this.#screenMax))} -q`)
     }
 
     constructor() {

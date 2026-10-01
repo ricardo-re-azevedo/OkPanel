@@ -50,6 +50,18 @@ okpanel mute
 
 ---
 
+### Changing brightness
+
+Bind these to your brightness keys.  The brightness alert only shows for these commands, so automatic
+brightness tools like wluma don't trigger it.  Steps are finer at low brightness.
+
+```
+okpanel brightness-up
+okpanel brightness-down
+```
+
+---
+
 ### Changing theme from the command line
 
 All colors are required to change a theme.  They should be in hex format, without the leading #

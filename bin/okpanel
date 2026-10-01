@@ -12,6 +12,8 @@ Commands:
   volume-up     Increase system volume.
   volume-down   Decrease system volume.
   mute          Mute system sound.
+  brightness-up   Increase screen brightness.
+  brightness-down Decrease screen brightness.
   help          Show this help message.
 
 Theme Options (used with 'theme' command):
@@ -124,6 +126,8 @@ main() {
     volume-up)    astal -i "OkPanel" "volume-up";;
     volume-down)  astal -i "OkPanel" "volume-down";;
     mute)         astal -i "OkPanel" "mute";;
+    brightness-up)   astal -i "OkPanel" "brightness-up";;
+    brightness-down) astal -i "OkPanel" "brightness-down";;
     theme)        shift; run_theme_command "$@";;
     help|-h|--help) print_help;;
     *) echo "Unknown command: $1"; print_help; exit 1 ;;

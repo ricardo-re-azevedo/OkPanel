@@ -10,6 +10,7 @@ import Screenshot, {ScreenshotWindowName} from "./widget/screenshot/Screenshot";
 import Screenshare, {ScreenshareWindowName, updateResponse, updateWindows} from "./widget/screenshare/Screenshare";
 import HorizontalBar from "./widget/bar/HorizontalBar";
 import {decreaseVolume, increaseVolume, muteVolume} from "./widget/utils/audio";
+import {decreaseBrightness, increaseBrightness} from "./widget/utils/brightness";
 import {parseTheme} from "./config/themeParser";
 import Scrim from "./widget/common/Scrim";
 import {toggleWindow} from "./widget/utils/windows";
@@ -17,6 +18,7 @@ import Hyprland from "gi://AstalHyprland"
 import {restoreSavedState, setThemeBasic} from "./config/cachedStates";
 import {setHomeDir, setProjectDir} from "./config/config";
 import {BluetoothMenu} from "./widget/bar/widgets/Bluetooth";
+import {AudioInMenu, AudioOutMenu} from "./widget/bar/widgets/Audio";
 
 const hyprland = Hyprland.get_default()
 
@@ -43,6 +45,8 @@ App.start({
         BatteryMenu()
         NetworkMenu()
         BluetoothMenu()
+        AudioOutMenu()
+        AudioInMenu()
 
         hyprland.monitors.map((monitor) => {
             VolumeAlert(monitor)
@@ -77,6 +81,12 @@ App.start({
         } else if (request.startsWith("volume-down")) {
             decreaseVolume()
             res("volume down")
+        } else if (request.startsWith("brightness-up")) {
+            increaseBrightness()
+            res("brightness up")
+        } else if (request.startsWith("brightness-down")) {
+            decreaseBrightness()
+            res("brightness down")
         } else if (request.startsWith("mute")) {
             muteVolume()
             res("mute")

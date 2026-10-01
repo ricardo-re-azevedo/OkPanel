@@ -8,13 +8,7 @@ export function getVolumeIcon(speaker?: Wp.Endpoint) {
     let speakerIcon = speaker?.icon
     if (volume == null || speakerIcon == null) return ""
 
-    if (speakerIcon.includes("bluetooth")) {
-        if (volume === 0 || muted) {
-            return "󰟎"
-        } else {
-            return "󰥰"
-        }
-    } else if (speakerIcon.includes("headset")) {
+    if (speakerIcon.includes("bluetooth") || speakerIcon.includes("headset")) {
         if (volume === 0 || muted) {
             return "󰟎"
         } else {
@@ -38,13 +32,7 @@ export function getMicrophoneIcon(mic?: Wp.Endpoint): string {
     let muted = mic?.mute
     let micIcon = mic?.icon
 
-    if (micIcon != null && micIcon.includes("bluetooth")) {
-        if (volume === 0 || muted) {
-            return "󰟎"
-        } else {
-            return "󰥰"
-        }
-    } else if (micIcon != null && micIcon.includes("headset")) {
+    if (micIcon != null && (micIcon.includes("bluetooth") || micIcon.includes("headset"))) {
         if (volume === 0 || muted) {
             return "󰋐"
         } else {

@@ -1,7 +1,3 @@
-import EndpointControls from "./EndpointControls";
-import Wp from "gi://AstalWp"
-import {bind} from "astal"
-import {getMicrophoneIcon, getVolumeIcon} from "../utils/audio";
 import PowerOptions from "./PowerOptions";
 import MediaPlayers from "./MediaPlayers";
 import NotificationHistory from "./NotificationHistory";
@@ -15,8 +11,6 @@ import {Bar} from "../../config/bar";
 export const SystemMenuWindowName = "systemMenuWindow"
 
 export default function () {
-    const {audio} = Wp.get_default()!
-
     return <ScrimScrollWindow
         monitor={config.mainMonitor}
         windowName={SystemMenuWindowName}
@@ -62,14 +56,6 @@ export default function () {
                 marginEnd={20}
                 vertical={true}
                 spacing={10}>
-                <EndpointControls
-                    defaultEndpoint={audio.default_speaker}
-                    endpointsBinding={bind(audio, "speakers")}
-                    getIcon={getVolumeIcon}/>
-                <EndpointControls
-                    defaultEndpoint={audio.default_microphone}
-                    endpointsBinding={bind(audio, "microphones")}
-                    getIcon={getMicrophoneIcon}/>
                 <BrightnessControls/>
                 <LookAndFeelControls/>
                 {/*MediaPlayersAstal uses the astal mpris component.  It causes UI jank.  Until it gets fix

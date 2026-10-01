@@ -3,7 +3,7 @@ import Wp from "gi://AstalWp"
 import {bind, Variable, Binding, GLib} from "astal"
 import {getVolumeIcon, playPowerPlug, playPowerUnplug} from "../utils/audio";
 import Brightness from "../utils/connectables/brightness";
-import {getBrightnessIcon} from "../utils/brightness";
+import {brightnessKeyPressed, getBrightnessIcon} from "../utils/brightness";
 import Battery from "gi://AstalBattery"
 import Hyprland from "gi://AstalHyprland"
 
@@ -120,10 +120,6 @@ export function VolumeAlert(monitor: Hyprland.Monitor): Astal.Window {
 export function BrightnessAlert(monitor: Hyprland.Monitor): Astal.Window {
     const brightness = Brightness.get_default()
 
-    const showVariable = Variable.derive([
-        bind(brightness, "screen")
-    ])
-    
     return <AlertWindow
         iconLabel={bind(brightness, "screen").as(() => {
             return getBrightnessIcon(brightness)
@@ -131,7 +127,7 @@ export function BrightnessAlert(monitor: Hyprland.Monitor): Astal.Window {
         label="Brightness"
         sliderValue={bind(brightness, "screen")}
         windowName={BrightnessAlertName}
-        showVariable={showVariable}
+        showVariable={brightnessKeyPressed}
         monitor={monitor}/> as  Astal.Window
 }
 

@@ -36,7 +36,7 @@ Scan and connect to bluetooth devices.
 
 ### Audio controls
 
-In the audio section you can adjust the volume sliders or click the icon button to mute.
+Click the speaker or microphone icon in the bar to open its popup.  There you can adjust the volume slider or click the icon button to mute.
 You can swap the default input/output.
 
 ![screenshot](screenshots/features/audio.png)

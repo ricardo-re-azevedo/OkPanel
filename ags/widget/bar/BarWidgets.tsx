@@ -1,8 +1,6 @@
 import {bind, GLib, Variable} from "astal"
 import Hyprland from "gi://AstalHyprland"
 import {CalendarWindowName} from "../calendar/Calendar"
-import Wp from "gi://AstalWp"
-import {getMicrophoneIcon, getVolumeIcon} from "../utils/audio"
 import {execAsync} from "astal/process"
 import {SystemMenuWindowName} from "../systemMenu/SystemMenuWindow";
 import {isRecording, ScreenshotWindowName} from "../screenshot/Screenshot";
@@ -15,6 +13,7 @@ import {BarWidget} from "../../config/configSchema";
 import {BatteryIndicator} from "./widgets/Battery";
 import {NetworkIndicator} from "./widgets/Network";
 import {BluetoothIndicator} from "./widgets/Bluetooth";
+import {AudioInIndicator, AudioOutIndicator} from "./widgets/Audio";
 import {tailscale_installed, tailscale_status, Tailscale} from "./widgets/Tailscale";
 
 const tray = Tray.get_default()
@@ -107,36 +106,6 @@ function ScreenRecordingStopButton() {
         }}/>
 }
 
-function AudioOut() {
-    const defaultSpeaker = Wp.get_default()!.audio.default_speaker
-
-    const speakerVar = Variable.derive([
-        bind(defaultSpeaker, "description"),
-        bind(defaultSpeaker, "volume"),
-        bind(defaultSpeaker, "mute")
-    ])
-
-    return <label
-        cssClasses={["iconLabel"]}
-        label={speakerVar(() => getVolumeIcon(defaultSpeaker))}/>
-}
-
-function AudioIn() {
-    const {defaultMicrophone} = Wp.get_default()!.audio
-
-    const micVar = Variable.derive([
-        bind(defaultMicrophone, "description"),
-        bind(defaultMicrophone, "volume"),
-        bind(defaultMicrophone, "mute")
-    ])
-
-    return <label
-        cssClasses={["iconLabel"]}
-        label={micVar(() => getMicrophoneIcon(defaultMicrophone))}/>
-}
-
-
-
 function MenuButton() {
     return <button
         cssClasses={["iconButton"]}
@@ -205,9 +174,9 @@ export function addWidgets(widgets: BarWidget[], isVertical: boolean) {
             case BarWidget.BATTERY:
                 return <BatteryIndicator/>
             case BarWidget.AUDIO_IN:
-                return <AudioIn/>
+                return <AudioInIndicator/>
             case BarWidget.AUDIO_OUT:
-                return <AudioOut/>
+                return <AudioOutIndicator/>
             case BarWidget.BLUETOOTH:
                 return <BluetoothIndicator/>
             case BarWidget.CLOCK:
