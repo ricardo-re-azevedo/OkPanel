@@ -112,10 +112,10 @@ export function AudioOutMenu() {
         windowName={AudioOutWindowName}
         content={
             <EndpointControls
-                windowName={AudioOutWindowName}
                 defaultEndpoint={audio.default_speaker}
                 endpointsBinding={bind(audio, "speakers")}
-                getIcon={getVolumeIcon}/>
+                getIcon={getVolumeIcon}
+                devicesLabel="Output devices"/>
         }/>
 }
 
@@ -126,9 +126,9 @@ export function AudioInMenu() {
         windowName={AudioInWindowName}
         content={
             <EndpointControls
-                windowName={AudioInWindowName}
                 defaultEndpoint={audio.default_microphone}
                 endpointsBinding={bind(audio, "microphones")}
-                getIcon={getMicrophoneIcon}/>
+                getIcon={getMicrophoneIcon}
+                devicesLabel="Input devices"/>
         }/>
 }
