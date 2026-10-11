@@ -93,8 +93,8 @@ function setDirectories() {
         "bash",
         "-c",
         `
-    mkdir -p $(xdg-user-dir PICTURES)/Screenshots
-    echo $(xdg-user-dir PICTURES)/Screenshots
+    mkdir -p $HOME/downloads
+    echo $HOME/downloads
     `
     ]).then((value) => {
         screenshotDir = value
@@ -104,8 +104,8 @@ function setDirectories() {
         "bash",
         "-c",
         `
-        mkdir -p $(xdg-user-dir VIDEOS)/ScreenRecordings
-        echo $(xdg-user-dir VIDEOS)/ScreenRecordings
+        mkdir -p $HOME/downloads
+        echo $HOME/downloads
         `
     ]).then((value) => {
         screenRecordingDir = value
