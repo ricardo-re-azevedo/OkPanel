@@ -9,7 +9,7 @@ window.NotificationPopups {
   border-radius: vars.$windowBorderRadius;
   background-color: vars.$bg;
   margin: vars.$gaps;
-  border: 2px solid vars.$primary;
+  border: vars.$windowBorderWidth solid vars.$alertBorder;
 }
 
 .notificationCritical {
@@ -17,7 +17,7 @@ window.NotificationPopups {
   border-radius: vars.$windowBorderRadius;
   background-color: vars.$bg;
   margin: vars.$gaps;
-  border: 2px solid vars.$warning;
+  border: vars.$windowBorderWidth solid vars.$warning;
 }
 
 .notificationHistorical {
