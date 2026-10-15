@@ -19,7 +19,7 @@ Hyprland is assumed to already be installed
 ```
 yay -S aylurs-gtk-shell-git \
 gvfs \
-sox \
+pipewire \
 wf-recorder \
 pipewire-pulse \
 grim \

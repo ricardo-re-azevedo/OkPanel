@@ -80,35 +80,35 @@ export function decreaseVolume() {
 }
 
 export function playVolumeTick() {
-    execAsync(`bash -c "play ${projectDir}/sounds/audio-volume-change.oga"`)
+    execAsync(`bash -c "pw-play ${projectDir}/sounds/audio-volume-change.oga"`)
         .catch((error) => {
             print(error)
         })
 }
 
 export function playCameraShutter() {
-    execAsync(`bash -c "play ${projectDir}/sounds/camera-shutter.ogg"`)
+    execAsync(`bash -c "pw-play ${projectDir}/sounds/camera-shutter.ogg"`)
         .catch((error) => {
             print(error)
         })
 }
 
 export function playBatteryWarning() {
-    execAsync(`bash -c "play ${projectDir}/sounds/battery-low.ogg"`)
+    execAsync(`bash -c "pw-play ${projectDir}/sounds/battery-low.ogg"`)
         .catch((error) => {
             print(error)
         })
 }
 
 export function playPowerPlug() {
-    execAsync(`bash -c "play ${projectDir}/sounds/power-plug.ogg"`)
+    execAsync(`bash -c "pw-play ${projectDir}/sounds/power-plug.ogg"`)
         .catch((error) => {
             print(error)
         })
 }
 
 export function playPowerUnplug() {
-    execAsync(`bash -c "play ${projectDir}/sounds/power-unplug.ogg"`)
+    execAsync(`bash -c "pw-play ${projectDir}/sounds/power-unplug.ogg"`)
         .catch((error) => {
             print(error)
         })

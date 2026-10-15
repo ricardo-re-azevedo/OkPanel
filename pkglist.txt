@@ -1,7 +1,7 @@
 libastal-meta
 aylurs-gtk-shell-git
 gvfs
-sox
+pipewire
 wf-recorder
 pipewire-pulse
 grim
