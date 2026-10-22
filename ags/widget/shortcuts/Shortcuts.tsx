@@ -27,6 +27,11 @@ const keycodeMap: { [key: number]: string } = {
     0: ""
 }
 
+const keyNameMap: { [key: string]: string } = {
+    "mouse:272": "Left Drag",
+    "mouse:273": "Right Drag",
+}
+
 function KeybindColumn({keybinds}: { keybinds: Keybind[] }) {
     return (
         <box
@@ -50,7 +55,7 @@ function KeybindColumn({keybinds}: { keybinds: Keybind[] }) {
                         +
                         <label
                             cssClasses={["keyboardKey"]}
-                            label={keybind.key}/>
+                            label={keyNameMap[keybind.key] ?? keybind.key}/>
                     </box>
                 })}
 
