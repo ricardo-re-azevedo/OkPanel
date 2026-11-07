@@ -1,5 +1,5 @@
 import {bind, Binding, Variable} from "astal";
-import {App, Gtk} from "astal/gtk4";
+import {App, Gdk, Gtk} from "astal/gtk4";
 import LargeIconButton from "./LargeIconButton";
 
 type Params = {
@@ -73,7 +73,17 @@ export default function (
             }
             <box marginEnd={10}/>
             <box
-                marginTop={4}>
+                marginTop={4}
+                hexpand={true}
+                cursor={Gdk.Cursor.new_from_name("pointer", null)}
+                setup={(self) => {
+                    // clicking the row's text toggles it like the arrow button does
+                    const gesture = new Gtk.GestureClick()
+                    gesture.connect("released", () => {
+                        revealed.set(!revealed.get())
+                    })
+                    self.add_controller(gesture)
+                }}>
                 {content}
             </box>
             <button

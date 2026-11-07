@@ -19,6 +19,7 @@ import {restoreSavedState, setThemeBasic} from "./config/cachedStates";
 import {setHomeDir, setProjectDir} from "./config/config";
 import {BluetoothMenu} from "./widget/bar/widgets/Bluetooth";
 import {AudioInMenu, AudioOutMenu} from "./widget/bar/widgets/Audio";
+import {DictationMenu} from "./widget/bar/widgets/Dictation";
 
 const hyprland = Hyprland.get_default()
 
@@ -47,6 +48,7 @@ App.start({
         BluetoothMenu()
         AudioOutMenu()
         AudioInMenu()
+        DictationMenu()
 
         hyprland.monitors.map((monitor) => {
             VolumeAlert(monitor)

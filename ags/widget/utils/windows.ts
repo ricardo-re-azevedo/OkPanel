@@ -9,6 +9,7 @@ import {BatteryWindowName} from "../bar/widgets/Battery";
 import {NetworkWindowName} from "../bar/widgets/Network"
 import {BluetoothWindowName} from "../bar/widgets/Bluetooth";
 import {AudioInWindowName, AudioOutWindowName} from "../bar/widgets/Audio";
+import {DictationWindowName} from "../bar/widgets/Dictation";
 
 export function toggleWindow(windowName: string) {
     const window = App.get_windows().find((window) => window.name === windowName)
@@ -31,7 +32,8 @@ export function hideAllWindows() {
             window.name === NetworkWindowName ||
             window.name === BluetoothWindowName ||
             window.name === AudioOutWindowName ||
-            window.name === AudioInWindowName
+            window.name === AudioInWindowName ||
+            window.name === DictationWindowName
     })
     windows.forEach((window) => {
         window.hide()

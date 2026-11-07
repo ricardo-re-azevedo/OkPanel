@@ -43,6 +43,7 @@ export enum BarWidget {
     NETWORK = "network",
     RECORDING_INDICATOR =  "recording_indicator",
     TAILSCALE = "tailscale",
+    DICTATION = "dictation",
     VPN_INDICATOR = "vpn_indicator",
     BATTERY = "battery",
     TRAY = "tray",
@@ -197,6 +198,7 @@ export const CONFIG_SCHEMA = [
                     BarWidget.VPN_INDICATOR,
                     BarWidget.NETWORK,
                     BarWidget.TAILSCALE,
+                    BarWidget.DICTATION,
                     BarWidget.BATTERY,
                     BarWidget.CLOCK
                 ],

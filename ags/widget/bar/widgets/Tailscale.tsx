@@ -14,7 +14,7 @@ export function tailscale_installed(): boolean {
     }
 }
 
-function tailscale_status() {
+export function tailscale_status() {
 
     execAsync("bash -c 'tailscale status --json'")
         .then((out) => {

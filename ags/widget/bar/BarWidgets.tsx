@@ -15,6 +15,7 @@ import {NetworkIndicator} from "./widgets/Network";
 import {BluetoothIndicator} from "./widgets/Bluetooth";
 import {AudioInIndicator, AudioOutIndicator} from "./widgets/Audio";
 import {tailscale_installed, tailscale_status, Tailscale} from "./widgets/Tailscale";
+import {dictation_installed, Dictation} from "./widgets/Dictation";
 
 const tray = Tray.get_default()
 
@@ -183,10 +184,16 @@ export function addWidgets(widgets: BarWidget[], isVertical: boolean) {
                 return <Clock singleLine={!isVertical}/>
             case BarWidget.NETWORK:
                 return <NetworkIndicator/>
+            case BarWidget.DICTATION:
+                if (dictation_installed()) {
+                    return <Dictation/>
+                }
+                break
             case BarWidget.TAILSCALE:
                 if (tailscale_installed()) {
                     return <Tailscale/>
                 }
+                break
             case BarWidget.RECORDING_INDICATOR:
                 return <ScreenRecordingStopButton/>
             case BarWidget.TRAY:
