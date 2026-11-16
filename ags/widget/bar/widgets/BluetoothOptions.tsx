@@ -1,8 +1,7 @@
 import {bind, Variable} from "astal"
 import {Gtk, App, astalify} from "astal/gtk4"
-import {execAsync} from "astal/process"
 import {BluetoothWindowName} from "./Bluetooth"
-import {getBluetoothName} from "../../utils/bluetooth";
+import {getBluetoothName, pairDevice} from "../../utils/bluetooth";
 import Bluetooth from "gi://AstalBluetooth";
 
 const Spinner = astalify<Gtk.Spinner, Gtk.Spinner.ConstructorProps>(Gtk.Spinner)
@@ -118,14 +117,8 @@ function BluetoothDevices() {
                                     if (pairing.get()) {
                                         return
                                     }
-                                    // device.pair() is synchronous and blocks the UI, so make the same dbus call through busctl.
-                                    // bluetoothctl can't be used here because it doesn't register a pairing agent when non-interactive.
                                     pairing.set(true)
-                                    const devicePath = `/org/bluez/hci0/dev_${device.address.replaceAll(":", "_")}`
-                                    execAsync(["busctl", "call", "--timeout=60", "org.bluez", devicePath, "org.bluez.Device1", "Pair"])
-                                        .then(() => {
-                                            device.set_trusted(true)
-                                        })
+                                    pairDevice(device)
                                         .catch((error) => {
                                             print(error)
                                         })
